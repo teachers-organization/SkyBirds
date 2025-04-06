@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.proyectonavidad"
+    namespace = "com.example.skybird"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.proyectonavidad"
+        applicationId = "com.example.skybird"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

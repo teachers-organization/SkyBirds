@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.skybird.View.inicioSesion
 
 
 @Composable
@@ -16,10 +17,10 @@ fun Navegador(modifier: Modifier = Modifier){
     //val homeScreenViewModel = HomeScreenViewModel(LocalContext.current)
     //val detailsScreenViewModel = DetailsScreenViewModel()
     NavHost(navController = navController,
-        startDestination = "HomeScreen"){
+        startDestination = "InicioSesion"){
 
-        composable(route = "HomeScreen"){
-            HomeScreen()
+        composable(route = "InicioSesion"){
+            inicioSesion()
         }
     }
 
