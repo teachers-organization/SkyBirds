@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.skybird.View.inicioSesion
+import com.example.skybird.View.registro
 
 
 @Composable
@@ -21,6 +22,9 @@ fun Navegador(modifier: Modifier = Modifier){
 
         composable(route = "InicioSesion"){
             inicioSesion()
+        }
+        composable(route = "Registro"){
+            registro()
         }
     }
 
