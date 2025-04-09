@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.skybird.View.Configuracion
 import com.example.skybird.View.Home
 import com.example.skybird.View.inicioSesion
 import com.example.skybird.View.registro
@@ -28,7 +29,10 @@ fun Navegador(modifier: Modifier = Modifier){
             registro(volver = { navController.navigate("InicioSesion") })
         }
         composable(route = "Home"){
-            Home()
+            Home(config = { navController.navigate("Configuracion") })
+        }
+        composable(route = "Configuracion"){
+            Configuracion(volver = { navController.navigate("Home") })
         }
     }
 

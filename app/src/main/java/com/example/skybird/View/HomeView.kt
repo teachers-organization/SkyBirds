@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.example.skybird.R
 
 @Composable
-fun Home() {
+fun Home(config: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -63,7 +63,7 @@ fun Home() {
             )
 
             Button(
-                onClick = { },
+                onClick = { config() },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF5A7391),
                     contentColor = Color.White
