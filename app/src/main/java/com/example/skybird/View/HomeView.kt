@@ -90,9 +90,10 @@ fun Home() {
                 ),
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
-                    .height(50.dp)
+                    .height(80.dp)
             ) {
-                Text("Diccionario de aves")
+                Text(text = "Diccionario de aves",
+                    fontSize = 23.sp)
             }
 
             Button(
@@ -104,9 +105,10 @@ fun Home() {
                 ),
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
-                    .height(50.dp)
+                    .height(80.dp)
             ) {
-                Text("Foro")
+                Text(text = "Foro",
+                    fontSize = 23.sp)
             }
 
             Button(
@@ -118,9 +120,10 @@ fun Home() {
                 ),
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
-                    .height(50.dp)
+                    .height(80.dp)
             ) {
-                Text("Avistamientos")
+                Text(text = "Avistamientos",
+                    fontSize = 23.sp)
             }
         }
     }
