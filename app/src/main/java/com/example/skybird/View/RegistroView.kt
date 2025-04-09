@@ -26,7 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun registro(){
+fun registro(volver: () -> Unit){
 
     val nick = remember { mutableStateOf("") }
     val nombre = remember { mutableStateOf("") }
@@ -47,7 +47,7 @@ fun registro(){
         ) {
 
             Button(
-                onClick = { /* Lógica de volver aquí */ },
+                onClick = { volver() },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF5A7391),
                     contentColor = Color.White

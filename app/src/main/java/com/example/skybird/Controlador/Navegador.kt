@@ -21,10 +21,10 @@ fun Navegador(modifier: Modifier = Modifier){
         startDestination = "InicioSesion"){
 
         composable(route = "InicioSesion"){
-            inicioSesion()
+            inicioSesion(crearCuenta = { navController.navigate("Registro") })
         }
         composable(route = "Registro"){
-            registro()
+            registro(volver = { navController.navigate("InicioSesion") })
         }
     }
 

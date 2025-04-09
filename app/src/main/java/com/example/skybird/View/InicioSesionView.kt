@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.example.skybird.R
 
 @Composable
-fun inicioSesion(modifier: Modifier = Modifier){
+fun inicioSesion(crearCuenta: () -> Unit, modifier: Modifier = Modifier){
 
     val password = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }
@@ -112,7 +112,7 @@ fun inicioSesion(modifier: Modifier = Modifier){
                     )
 
                     Button(
-                        onClick = { /* Lógica de envío aquí */ },
+                        onClick = { crearCuenta() },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF5A7391),
                             contentColor = Color.White
