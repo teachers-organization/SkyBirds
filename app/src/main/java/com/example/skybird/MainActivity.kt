@@ -11,17 +11,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.room.Room
 import com.example.skybird.Controlador.Navegador
+import com.example.skybird.Data.BBDD.SkybirdBBDD
 import com.example.skybird.ui.theme.SkyBirdTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //instancia de SkybirdDao para ejecutar las consultas
+        val SkybirdBBDD = Room.databaseBuilder(
+            applicationContext,
+            SkybirdBBDD::class.java, "SkybirdBBDD"
+        ).fallbackToDestructiveMigration()
+            .build()
+        val SkybirdDAO = SkybirdBBDD.SkybirdDAO()
         enableEdgeToEdge()
         setContent {
             SkyBirdTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Navegador(modifier = Modifier.padding(innerPadding))
+                    Navegador(SkybirdDAO, modifier = Modifier.padding(innerPadding))
                 }
             }
         }

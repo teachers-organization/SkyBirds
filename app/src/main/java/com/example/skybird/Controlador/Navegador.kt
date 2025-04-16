@@ -7,6 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.skybird.Controlador.ViewModels.RegistroViewModel
+import com.example.skybird.Data.BBDD.SkybirdDAO
 import com.example.skybird.View.Configuracion
 import com.example.skybird.View.Home
 import com.example.skybird.View.inicioSesion
@@ -14,11 +16,12 @@ import com.example.skybird.View.registro
 
 
 @Composable
-fun Navegador(modifier: Modifier = Modifier){
+fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
     val navController: NavHostController = rememberNavController()
+
     //Inicializamos los viewModels
-    //val homeScreenViewModel = HomeScreenViewModel(LocalContext.current)
-    //val detailsScreenViewModel = DetailsScreenViewModel()
+    val registroViewModel = RegistroViewModel(LocalContext.current)
+
     NavHost(navController = navController,
         startDestination = "InicioSesion"){
 
