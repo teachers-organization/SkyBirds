@@ -25,6 +25,10 @@ interface SkybirdDAO {
     fun getAllUsers(): Flow<List<Users>>
 
     @Query("SELECT * FROM users WHERE id = :query")
-    fun searchUserById(query: Int): Flow<Users>
+    fun getUserById(query: Int): Flow<Users>
+
+    @Query("SELECT * FROM users WHERE email = :email AND psswd = :password LIMIT 1")
+    suspend fun getUserByEmailAndPassword(email: String, password: String): Users?
+
 
 }

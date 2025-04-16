@@ -24,9 +24,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.skybird.Controlador.ViewModels.RegistroViewModel
+import com.example.skybird.Data.BBDD.SkybirdDAO
+import com.example.skybird.Data.BBDD.Users
 
 @Composable
-fun registro(volver: () -> Unit){
+fun registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volver: () -> Unit){
 
     val nick = remember { mutableStateOf("") }
     val nombre = remember { mutableStateOf("") }
@@ -142,7 +145,24 @@ fun registro(volver: () -> Unit){
                     }
 
                     Button(
-                        onClick = { /* Lógica de envío aquí */ },
+                        onClick = {
+                            //comprobar que no existe nadie con ese correo previamente
+                            try {
+                            registroViewModel.altaUsuario(
+                                Users(
+                                    id = 0,
+                                    nombreCompleto = nombre.toString(),
+                                    admin = false,
+                                    nick = nick.toString(),
+                                    email = email.toString(),
+                                    psswd = contrasenya.toString()
+                                ),
+                                skybirdDAO
+                            )
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+
+                        } },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF5A7391),
                             contentColor = Color.White

@@ -20,7 +20,7 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
     val navController: NavHostController = rememberNavController()
 
     //Inicializamos los viewModels
-    val registroViewModel = RegistroViewModel(LocalContext.current)
+    val registroViewModel = RegistroViewModel()
 
     NavHost(navController = navController,
         startDestination = "InicioSesion"){
@@ -29,7 +29,7 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
             inicioSesion(crearCuenta = { navController.navigate("Registro") }, login = { navController.navigate("Home") })
         }
         composable(route = "Registro"){
-            registro(volver = { navController.navigate("InicioSesion") })
+            registro(registroViewModel, volver = { navController.navigate("InicioSesion") })
         }
         composable(route = "Home"){
             Home(config = { navController.navigate("Configuracion") })
