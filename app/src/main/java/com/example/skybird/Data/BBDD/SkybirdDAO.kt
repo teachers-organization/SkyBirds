@@ -1,0 +1,30 @@
+package com.example.skybird.Data.BBDD
+
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+interface SkybirdDAO {
+
+    //Usuarios
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertUser(user: Users)
+
+    @Delete
+    suspend fun deleteUser(user: Users)
+
+    @Update
+    suspend fun updateUser(user: Users)
+
+    @Query("SELECT * FROM users")
+    fun getAllUsers(): Flow<List<Users>>
+
+    @Query("SELECT * FROM users WHERE id = :query")
+    fun searchUserById(query: Int): Flow<Users>
+
+}
