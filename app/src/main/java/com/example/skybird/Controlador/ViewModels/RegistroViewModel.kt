@@ -14,12 +14,25 @@ class RegistroViewModel() : ViewModel() {
     var usuarioActual = mutableStateOf<Users?>(null)
 
     //Crear nuevo usuario
-    fun altaUsuario(user: Users, skybirdDAO: SkybirdDAO){
+    fun altaUsuario(user: Users, skybirdDAO: SkybirdDAO) {
         viewModelScope.launch {
-                skybirdDAO.insertUser(user)
+            skybirdDAO.insertUser(user)
         }
     }
 
+    //Comprobar si el usuario existe previamente en la base de datos
+    fun comprobarUsuario(user: Users, skybirdDAO: SkybirdDAO): Boolean {
+        var userExists: Users? = null
+        viewModelScope.launch {
+            userExists = skybirdDAO.getUserByEmail(user.email)
+        }
+        if (userExists == null) {
+            altaUsuario(user, skybirdDAO)
+            return false
+        } else {
+            return true
+        }
+    }
 
 
 }

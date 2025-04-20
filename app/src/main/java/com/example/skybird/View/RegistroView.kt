@@ -1,5 +1,6 @@
 package com.example.skybird.View
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.skybird.Controlador.ViewModels.RegistroViewModel
 import com.example.skybird.Data.BBDD.SkybirdDAO
@@ -38,6 +40,8 @@ fun registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
     val repetirContrasenya = remember { mutableStateOf("") }
     val isChecked = remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
+    var existeUsuario : Boolean = false
+    var context = LocalContext.current
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -148,7 +152,7 @@ fun registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
                         onClick = {
                             //comprobar que no existe nadie con ese correo previamente
                             try {
-                            registroViewModel.altaUsuario(
+                            existeUsuario = registroViewModel.comprobarUsuario(
                                 Users(
                                     id = 0,
                                     nombreCompleto = nombre.toString(),
@@ -161,8 +165,12 @@ fun registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
                             )
                         } catch (e: Exception) {
                             e.printStackTrace()
-
-                        } },
+                        }
+                                  if (existeUsuario){
+                                      Toast.makeText(context, "Este correo ya está registrado", Toast.LENGTH_SHORT).show()
+                                  }else{
+                                      Toast.makeText(context, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show()
+                                  }},
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF5A7391),
                             contentColor = Color.White
@@ -181,4 +189,8 @@ fun registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
     }
 
 }
+
+
+
+
 

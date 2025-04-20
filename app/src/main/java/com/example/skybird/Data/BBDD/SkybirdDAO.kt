@@ -30,5 +30,7 @@ interface SkybirdDAO {
     @Query("SELECT * FROM users WHERE email = :email AND psswd = :password LIMIT 1")
     suspend fun getUserByEmailAndPassword(email: String, password: String): Users?
 
+    @Query("SELECT * FROM users WHERE email = :email")
+    suspend fun getUserByEmail(email: String): Users?
 
 }
