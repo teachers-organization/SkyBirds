@@ -12,13 +12,6 @@ class RegistroViewModel : ViewModel() {
     //Almacenar usuario al iniciar sesión
     var usuarioActual = mutableStateOf<Users?>(null)
 
-    //Crear nuevo usuario
-    fun altaUsuario(user: Users, skybirdDAO: SkybirdDAO) {
-        viewModelScope.launch {
-            skybirdDAO.insertUser(user)
-        }
-    }
-
     //Comprobar si el correo existe previamente en la base de datos
     fun comprobarUsuario(
         user: Users,
