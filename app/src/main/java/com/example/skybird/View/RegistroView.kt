@@ -2,6 +2,7 @@ package com.example.skybird.View
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,7 +41,7 @@ fun registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
     val repetirContrasenya = remember { mutableStateOf("") }
     val isChecked = remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
-    var existeUsuario : Boolean = false
+    val existeUsuario = remember { mutableStateOf(false) }
     var context = LocalContext.current
 
     Box(modifier = Modifier
@@ -136,41 +137,51 @@ fun registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    Row() {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.clickable { isChecked.value = !isChecked.value }
+                    ) {
                         Checkbox(
                             checked = isChecked.value,
                             onCheckedChange = { isChecked.value = it }
                         )
-
-                        Text(
-                            text = "Aceptar términos y condiciones",
-                            color = Color.Black
-                        )
+                        Text("Aceptar términos y condiciones", color = Color.Black)
                     }
 
                     Button(
                         onClick = {
-                            //comprobar que no existe nadie con ese correo previamente
-                            try {
-                            existeUsuario = registroViewModel.comprobarUsuario(
-                                Users(
-                                    id = 0,
-                                    nombreCompleto = nombre.toString(),
-                                    admin = false,
-                                    nick = nick.toString(),
-                                    email = email.toString(),
-                                    psswd = contrasenya.toString()
-                                ),
-                                skybirdDAO
-                            )
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                                  if (existeUsuario){
-                                      Toast.makeText(context, "Este correo ya está registrado", Toast.LENGTH_SHORT).show()
-                                  }else{
-                                      Toast.makeText(context, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show()
-                                  }},
+                            if (!isChecked.value){
+                                Toast.makeText(context, "Debe aceptar los términos y condiciones", Toast.LENGTH_SHORT).show()
+                            }else if (contrasenya.value != repetirContrasenya.value){
+                                Toast.makeText(context, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
+                            }else if (contrasenya.value.length < 5){
+                                Toast.makeText(context, "La contraseña debe contener al menos 5 caracteres", Toast.LENGTH_SHORT).show()
+                            }else if (listOf(nombre, nick, email, contrasenya, repetirContrasenya).any { it.value.isBlank() }){
+                                Toast.makeText(context, "Por favor, rellene todos los campos", Toast.LENGTH_SHORT).show()
+                            }else{
+                                //comprobar que no existe nadie con ese correo previamente
+                                try {
+                                    existeUsuario.value = registroViewModel.comprobarUsuario(
+                                        Users(
+                                            id = 0,
+                                            nombreCompleto = nombre.value,
+                                            admin = false,
+                                            nick = nick.value,
+                                            email = email.value,
+                                            psswd = contrasenya.value
+                                        ),
+                                        skybirdDAO
+                                    )
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
+                                if (existeUsuario){
+                                    Toast.makeText(context, "Este correo ya está registrado", Toast.LENGTH_SHORT).show()
+                                }else{
+                                    Toast.makeText(context, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF5A7391),
                             contentColor = Color.White
@@ -189,6 +200,7 @@ fun registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
     }
 
 }
+
 
 
 

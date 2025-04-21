@@ -20,7 +20,7 @@ class RegistroViewModel() : ViewModel() {
         }
     }
 
-    //Comprobar si el usuario existe previamente en la base de datos
+    //Comprobar si el correo existe previamente en la base de datos
     fun comprobarUsuario(user: Users, skybirdDAO: SkybirdDAO): Boolean {
         var userExists: Users? = null
         viewModelScope.launch {
@@ -33,6 +33,8 @@ class RegistroViewModel() : ViewModel() {
             return true
         }
     }
+
+    fun
 
 
 }

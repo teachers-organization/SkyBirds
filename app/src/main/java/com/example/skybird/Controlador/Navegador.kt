@@ -29,7 +29,7 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
             inicioSesion(crearCuenta = { navController.navigate("Registro") }, login = { navController.navigate("Home") })
         }
         composable(route = "Registro"){
-            registro(registroViewModel, volver = { navController.navigate("InicioSesion") })
+            registro(SkybirdDAO, registroViewModel, volver = { navController.navigate("InicioSesion") })
         }
         composable(route = "Home"){
             Home(config = { navController.navigate("Configuracion") })
