@@ -41,7 +41,6 @@ fun registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
     val repetirContrasenya = remember { mutableStateOf("") }
     val isChecked = remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
-    val existeUsuario = remember { mutableStateOf(false) }
     var context = LocalContext.current
 
     Box(modifier = Modifier
@@ -156,32 +155,30 @@ fun registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
                                 Toast.makeText(context, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
                             }else if (contrasenya.value.length < 5){
                                 Toast.makeText(context, "La contraseña debe contener al menos 5 caracteres", Toast.LENGTH_SHORT).show()
+
+                            //Recorre la lista de los campos comprobando que no hay ninguno vacío
+                            //Si algún campo está vacío muestra la advertencia
                             }else if (listOf(nombre, nick, email, contrasenya, repetirContrasenya).any { it.value.isBlank() }){
                                 Toast.makeText(context, "Por favor, rellene todos los campos", Toast.LENGTH_SHORT).show()
                             }else{
-                                //comprobar que no existe nadie con ese correo previamente
-                                try {
-                                    existeUsuario.value = registroViewModel.comprobarUsuario(
-                                        Users(
-                                            id = 0,
-                                            nombreCompleto = nombre.value,
-                                            admin = false,
-                                            nick = nick.value,
-                                            email = email.value,
-                                            psswd = contrasenya.value
-                                        ),
-                                        skybirdDAO
-                                    )
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
-                                }
-                                if (existeUsuario){
-                                    Toast.makeText(context, "Este correo ya está registrado", Toast.LENGTH_SHORT).show()
+                                registroViewModel.comprobarUsuario(
+                                    Users(
+                                        id = 0,
+                                        nombreCompleto = nombre.value,
+                                        admin = false,
+                                        nick = nick.value,
+                                        email = email.value,
+                                        psswd = contrasenya.value
+                                    ),
+                                    skybirdDAO
+                                ){ yaExiste ->
+                                 if (yaExiste){
+                                        Toast.makeText(context, "Este correo ya existe", Toast.LENGTH_SHORT).show()
                                 }else{
                                     Toast.makeText(context, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show()
                                 }
                             }
-                            },
+                            }},
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF5A7391),
                             contentColor = Color.White
