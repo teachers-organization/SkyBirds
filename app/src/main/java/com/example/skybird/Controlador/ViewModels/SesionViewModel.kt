@@ -31,6 +31,34 @@ class SesionViewModel : ViewModel() {
 
     }
 
+    //Función para cambiar de contraseña
+    fun cambiarContrasenya(skybirdDAO: SkybirdDAO,
+                           contrasenyaNueva: String,
+                           contrasenyaAntigua: String,
+                           onResultado: (Boolean) -> Unit){
+
+        if (contrasenyaAntigua == usuarioActual.value?.psswd){
+
+            //Creamos una copia del usuario actual, cambiamos el valor de la contraseña
+            //y lo actualizamos en la base de datos
+
+            usuarioActual.value?.let { usuario ->
+                usuarioActual.value = usuario.copy(psswd = contrasenyaNueva)
+            }
+
+            var userActualizar: Users = usuarioActual.value!!
+            viewModelScope.launch {
+                skybirdDAO.updateUser(userActualizar)
+            }
+
+            onResultado(true)
+
+        }else{
+            onResultado(false)
+        }
+
+    }
+
 
 
 

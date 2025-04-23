@@ -28,10 +28,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.R
 
 @Composable
-fun Home(config: () -> Unit) {
+fun Home(sesionViewModel: SesionViewModel, config: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -57,7 +58,7 @@ fun Home(config: () -> Unit) {
             )
 
             Text(
-                text = "Aitana",
+                text = sesionViewModel.usuarioActual.value?.nick ?: "Sin nombre",
                 fontSize = 25.sp,
                 color = Color.Black,
                 modifier = Modifier.padding(start = 8.dp)
@@ -71,7 +72,6 @@ fun Home(config: () -> Unit) {
                     .clip(CircleShape)
                     .clickable { config() }
             )
-
         }
 
         Column(
