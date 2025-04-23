@@ -32,7 +32,7 @@ import com.example.skybird.Data.BBDD.SkybirdDAO
 import com.example.skybird.Data.BBDD.Users
 
 @Composable
-fun registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volver: () -> Unit){
+fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volver: () -> Unit){
 
     val nick = remember { mutableStateOf("") }
     val nombre = remember { mutableStateOf("") }
@@ -41,7 +41,7 @@ fun registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
     val repetirContrasenya = remember { mutableStateOf("") }
     val isChecked = remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
-    var context = LocalContext.current
+    val context = LocalContext.current
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -158,7 +158,7 @@ fun registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
                             }else if (contrasenya.value != repetirContrasenya.value){
                                 Toast.makeText(context, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
                             }else if (!isChecked.value){
-                            Toast.makeText(context, "Debe aceptar los términos y condiciones", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Debe aceptar los términos y condiciones", Toast.LENGTH_SHORT).show()
                             }else{
                                 registroViewModel.comprobarUsuario(
                                     Users(

@@ -9,9 +9,6 @@ import kotlinx.coroutines.launch
 
 class RegistroViewModel : ViewModel() {
 
-    //Almacenar usuario al iniciar sesión
-    var usuarioActual = mutableStateOf<Users?>(null)
-
     //Comprobar si el correo existe previamente en la base de datos
     fun comprobarUsuario(
         user: Users,

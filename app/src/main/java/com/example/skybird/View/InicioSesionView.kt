@@ -1,5 +1,6 @@
 package com.example.skybird.View
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,16 +28,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.skybird.Controlador.ViewModels.SesionViewModel
+import com.example.skybird.Data.BBDD.SkybirdDAO
+import com.example.skybird.Data.BBDD.Users
 import com.example.skybird.R
 
 @Composable
-fun inicioSesion(crearCuenta: () -> Unit, login: () -> Unit, modifier: Modifier = Modifier){
+fun InicioSesion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, crearCuenta: () -> Unit, login: () -> Unit, modifier: Modifier = Modifier){
 
     val password = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -94,7 +100,24 @@ fun inicioSesion(crearCuenta: () -> Unit, login: () -> Unit, modifier: Modifier 
                     )
 
                     Button(
-                        onClick = { login() },
+                        onClick = {
+                            //Recorre la lista de los campos comprobando que no hay ninguno vacío
+                            //Si algún campo está vacío muestra la advertencia
+                            if(listOf(password, email).any { it.value.isBlank() }){
+                                Toast.makeText(context, "Por favor, rellene todos los campos", Toast.LENGTH_SHORT).show()
+                            }else{
+                                sesionViewModel.iniciarSesion(
+                                    skybirdDAO,
+                                    email.value,
+                                    password.value
+                                ){ yaExiste ->
+                                    if (yaExiste){
+                                        login()
+                                    }else{
+                                        Toast.makeText(context, "Email o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }  },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF5A7391),
                             contentColor = Color.White

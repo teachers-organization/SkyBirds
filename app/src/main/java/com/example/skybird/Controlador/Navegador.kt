@@ -8,11 +8,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.skybird.Controlador.ViewModels.RegistroViewModel
+import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Data.BBDD.SkybirdDAO
 import com.example.skybird.View.Configuracion
 import com.example.skybird.View.Home
-import com.example.skybird.View.inicioSesion
-import com.example.skybird.View.registro
+import com.example.skybird.View.InicioSesion
+import com.example.skybird.View.Registro
 
 
 @Composable
@@ -21,15 +22,16 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
 
     //Inicializamos los viewModels
     val registroViewModel = RegistroViewModel()
+    val sesionViewModel = SesionViewModel()
 
     NavHost(navController = navController,
         startDestination = "InicioSesion"){
 
         composable(route = "InicioSesion"){
-            inicioSesion(crearCuenta = { navController.navigate("Registro") }, login = { navController.navigate("Home") })
+            InicioSesion(SkybirdDAO, sesionViewModel, crearCuenta = { navController.navigate("Registro") }, login = { navController.navigate("Home") })
         }
         composable(route = "Registro"){
-            registro(SkybirdDAO, registroViewModel, volver = { navController.navigate("InicioSesion") })
+            Registro(SkybirdDAO, registroViewModel, volver = { navController.navigate("InicioSesion") })
         }
         composable(route = "Home"){
             Home(config = { navController.navigate("Configuracion") })
