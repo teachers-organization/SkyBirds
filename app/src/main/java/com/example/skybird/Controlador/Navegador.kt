@@ -11,6 +11,7 @@ import com.example.skybird.Controlador.ViewModels.RegistroViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Data.BBDD.SkybirdDAO
 import com.example.skybird.View.Configuracion
+import com.example.skybird.View.Foro
 import com.example.skybird.View.Home
 import com.example.skybird.View.InicioSesion
 import com.example.skybird.View.Registro
@@ -25,7 +26,7 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
     val sesionViewModel = SesionViewModel()
 
     NavHost(navController = navController,
-        startDestination = "InicioSesion"){
+        startDestination = "Foro"){
 
         composable(route = "InicioSesion"){
             InicioSesion(SkybirdDAO, sesionViewModel, crearCuenta = { navController.navigate("Registro") }, login = { navController.navigate("Home") })
@@ -34,10 +35,13 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
             Registro(SkybirdDAO, registroViewModel, volver = { navController.navigate("InicioSesion") })
         }
         composable(route = "Home"){
-            Home(sesionViewModel, config = { navController.navigate("Configuracion") })
+            Home(sesionViewModel, config = { navController.navigate("Configuracion") }, foro = { navController.navigate("Foro") })
         }
         composable(route = "Configuracion"){
             Configuracion(SkybirdDAO, sesionViewModel, volver = { navController.navigate("Home") })
+        }
+        composable(route = "Foro"){
+            Foro(SkybirdDAO, sesionViewModel, volver = { navController.navigate("Home") })
         }
     }
 

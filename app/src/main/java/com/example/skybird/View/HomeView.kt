@@ -32,7 +32,7 @@ import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.R
 
 @Composable
-fun Home(sesionViewModel: SesionViewModel, config: () -> Unit) {
+fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -97,7 +97,7 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit) {
             }
 
             Button(
-                onClick = { /* Acción 2 */ },
+                onClick = { foro() },
                 shape = RoundedCornerShape(50),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF5A7391),
