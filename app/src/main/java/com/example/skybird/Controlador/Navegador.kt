@@ -7,9 +7,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.skybird.Controlador.ViewModels.ForoViewModel
 import com.example.skybird.Controlador.ViewModels.RegistroViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Data.BBDD.SkybirdDAO
+import com.example.skybird.View.AñadirPregunta
 import com.example.skybird.View.Configuracion
 import com.example.skybird.View.Foro
 import com.example.skybird.View.Home
@@ -24,6 +26,7 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
     //Inicializamos los viewModels
     val registroViewModel = RegistroViewModel()
     val sesionViewModel = SesionViewModel()
+    val foroViewModel = ForoViewModel()
 
     NavHost(navController = navController,
         startDestination = "Foro"){
@@ -41,7 +44,10 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
             Configuracion(SkybirdDAO, sesionViewModel, volver = { navController.navigate("Home") })
         }
         composable(route = "Foro"){
-            Foro(SkybirdDAO, sesionViewModel, volver = { navController.navigate("Home") })
+            Foro(SkybirdDAO, sesionViewModel, volver = { navController.navigate("Home") }, pregunta = { navController.navigate("AñadirPregunta") })
+        }
+        composable(route = "AñadirPregunta"){
+            AñadirPregunta(SkybirdDAO, sesionViewModel, foroViewModel, volver = { navController.navigate("Foro") })
         }
     }
 

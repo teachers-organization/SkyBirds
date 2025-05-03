@@ -26,26 +26,28 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Data.BBDD.SkybirdDAO
 
 @Composable
-fun Foro(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volver: () -> Unit){
+fun Foro(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volver: () -> Unit, pregunta: () -> Unit){
 
     val scrollState = rememberScrollState()
     val a = remember { mutableStateOf("") }
     val context = LocalContext.current
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.White))
-    {
-        Column(modifier = Modifier
+    Box(
+        modifier = Modifier
             .fillMaxSize()
-            .align(alignment = Alignment.Center)
-            .padding(60.dp)
+            .background(Color.White)
+            .padding(top = 60.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp)
         ) {
-
             Button(
                 onClick = { volver() },
                 colors = ButtonDefaults.buttonColors(
@@ -57,24 +59,40 @@ fun Foro(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volver: () ->
                 Text("Volver")
             }
 
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 10.dp, top = 10.dp)
-                .background(
-                    color = Color(0xFFADD8E6)
-                )
-                .verticalScroll(scrollState)
+            Text(
+                text = "Foro",
+                fontSize = 35.sp,
+                color = Color.Black,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(vertical = 16.dp)
             )
-            {
 
-
-
-
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color(0xFFADD8E6))
+                    .padding(10.dp)
+                    .verticalScroll(scrollState)
+            ) {
+                //Aquí irán las preguntas
             }
-
         }
 
-
+        Button(
+            onClick = { pregunta() },
+            shape = RoundedCornerShape(50),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF5A7391),
+                contentColor = Color.White
+            ),
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(30.dp)
+        ) {
+            Text(text = "+",
+                fontSize = 35.sp)
+        }
     }
 
 }

@@ -33,4 +33,8 @@ interface SkybirdDAO {
     @Query("SELECT * FROM users WHERE email = :email")
     suspend fun getUserByEmail(email: String): Users?
 
+    //Foro
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertQuestion(question: Questions)
+
 }
