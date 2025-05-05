@@ -19,14 +19,14 @@ class ForoViewModel: ViewModel() {
                       )
     {
 
-        val pregunta = Questions(0, titulo, contenido, , usuario.id)
+        val timestamp = System.currentTimeMillis()
+        val pregunta = Questions(0, titulo, contenido, timestamp, usuario.id)
         viewModelScope.launch {
-            val userExists = skybirdDAO.getUserByEmail(user.email)
-            if (userExists == null) {
-                skybirdDAO.insertUser(user)
-                onResultado(false)
-            } else {
+            try {
+                skybirdDAO.insertQuestion(pregunta)
                 onResultado(true)
+            }catch(e: Exception){
+                onResultado(false)
             }
         }
     }

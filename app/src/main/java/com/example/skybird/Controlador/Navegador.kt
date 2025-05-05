@@ -29,7 +29,7 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
     val foroViewModel = ForoViewModel()
 
     NavHost(navController = navController,
-        startDestination = "Foro"){
+        startDestination = "InicioSesion"){
 
         composable(route = "InicioSesion"){
             InicioSesion(SkybirdDAO, sesionViewModel, crearCuenta = { navController.navigate("Registro") }, login = { navController.navigate("Home") })

@@ -1,6 +1,8 @@
 package com.example.skybird.View
 
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.ForoViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Data.BBDD.SkybirdDAO
+import com.example.skybird.Data.BBDD.Users
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -37,8 +40,6 @@ fun AñadirPregunta(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, fo
     val scrollState = rememberScrollState()
     val titulo = remember { mutableStateOf("") }
     val contenido = remember { mutableStateOf("") }
-    val ahora = LocalDateTime.now()
-    val fechaHoraFormateada = ahora.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))
 
     val context = LocalContext.current
 
@@ -104,7 +105,22 @@ fun AñadirPregunta(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, fo
 
                     Button(
                         onClick = {
-
+                            if(listOf(titulo, contenido).any { it.value.isBlank() }){
+                                Toast.makeText(context, "Por favor, rellene todos los campos", Toast.LENGTH_SHORT).show()
+                            }else{
+                                foroViewModel.crearPregunta(
+                                    skybirdDAO,
+                                    titulo.value,
+                                    contenido.value,
+                                    sesionViewModel.usuarioActual.value!!
+                                ){ correcto ->
+                                    if (correcto){
+                                        Toast.makeText(context, "Pregunta añadida correctamente al foro", Toast.LENGTH_SHORT).show()
+                                    }else{
+                                        Toast.makeText(context, "Error al añadir la pregunta al foro", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF5A7391),
