@@ -37,4 +37,7 @@ interface SkybirdDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertQuestion(question: Questions)
 
+    @Query("SELECT * FROM pregunta_usuario")
+    fun getAllQuestions(): Flow<List<Questions>>
+
 }
