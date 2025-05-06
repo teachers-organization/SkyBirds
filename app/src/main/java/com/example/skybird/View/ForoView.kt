@@ -37,17 +37,13 @@ import com.example.skybird.Data.BBDD.Questions
 import com.example.skybird.Data.BBDD.SkybirdDAO
 
 @Composable
-fun Foro(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volver: () -> Unit, pregunta: () -> Unit, foroViewModel: ForoViewModel){
-
-    val scrollState = rememberScrollState()
-    val a = remember { mutableStateOf("") }
-    val context = LocalContext.current
+fun Foro(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volver: () -> Unit, pregunta: () -> Unit, foroViewModel: ForoViewModel, navDetPregunta: () -> Unit){
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(top = 60.dp)
+            .padding(top = 60.dp, bottom = 30.dp)
     ) {
         Column(
             modifier = Modifier
@@ -74,22 +70,15 @@ fun Foro(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volver: () ->
                     .padding(vertical = 16.dp)
             )
 
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color(0xFFADD8E6))
-                    .padding(10.dp)
-                    .verticalScroll(scrollState)
-            ) {
-                MostrarDudas(skybirdDAO, foroViewModel)
-            }
+                MostrarDudas(skybirdDAO, foroViewModel, navDetPregunta)
+
         }
 
         Button(
             onClick = { pregunta() },
             shape = RoundedCornerShape(50),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF5A7391),
+                containerColor = Color(0xFFA3B18A),
                 contentColor = Color.White
             ),
             modifier = Modifier
@@ -104,24 +93,51 @@ fun Foro(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volver: () ->
 }
 
 @Composable
-fun MostrarDudas(skybirdDAO: SkybirdDAO, foroViewModel: ForoViewModel, navDetPregunta: () -> Unit){
+fun MostrarDudas(skybirdDAO: SkybirdDAO, foroViewModel: ForoViewModel, navDetPregunta: () -> Unit) {
     //Obtenemos todas las dudas almacenadas en la base de datos
     var listaPreguntas = foroViewModel.obtenerPreguntas(skybirdDAO).collectAsState(initial = emptyList()).value
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2), //Esto crea dos columnas
-        modifier = Modifier.fillMaxSize()
-            .padding(16.dp)
-    ) {
-        items(listaPreguntas) { pregunta ->
-            PreguntaItem(pregunta, navDetPregunta, foroViewModel)
+    if (listaPreguntas.isEmpty()) {
+        Text(
+            text = "Todavía no hay preguntas",
+            color = Color.Black,
+            fontSize = 20.sp,
+            modifier = Modifier.padding(top = 20.dp)
+        )
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 10.dp)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            listaPreguntas.forEach { pregunta ->
+                PreguntaItem(pregunta, navDetPregunta)
+            }
         }
     }
 }
 
 @Composable
-fun PreguntaItem(question: Questions, navDetPregunta: () -> Unit, foroViewModel: ForoViewModel){
-
+fun PreguntaItem(question: Questions, navDetPregunta: () -> Unit){
+    Button(
+        onClick = { navDetPregunta() },
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(4.dp, RoundedCornerShape(16.dp)),
+        shape = RoundedCornerShape(16.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFF5A7391),
+            contentColor = Color.White
+        )
+    ) {
+        Text(
+            text = question.titulo,
+            fontSize = 18.sp,
+            modifier = Modifier.padding(8.dp)
+        )
+    }
 }
 
 

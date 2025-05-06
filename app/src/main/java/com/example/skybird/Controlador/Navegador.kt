@@ -44,7 +44,7 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
             Configuracion(SkybirdDAO, sesionViewModel, volver = { navController.navigate("Home") })
         }
         composable(route = "Foro"){
-            Foro(SkybirdDAO, sesionViewModel, volver = { navController.navigate("Home") }, pregunta = { navController.navigate("AñadirPregunta") }, foroViewModel)
+            Foro(SkybirdDAO, sesionViewModel, volver = { navController.navigate("Home") }, pregunta = { navController.navigate("AñadirPregunta") }, foroViewModel, navDetPregunta = { navController.navigate("AñadirPregunta") })
         }
         composable(route = "AñadirPregunta"){
             AñadirPregunta(SkybirdDAO, sesionViewModel, foroViewModel, volver = { navController.navigate("Foro") })
