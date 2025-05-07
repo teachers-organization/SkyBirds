@@ -16,6 +16,7 @@ import com.example.skybird.View.Configuracion
 import com.example.skybird.View.Foro
 import com.example.skybird.View.Home
 import com.example.skybird.View.InicioSesion
+import com.example.skybird.View.MostrarPregunta
 import com.example.skybird.View.Registro
 
 
@@ -44,10 +45,13 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
             Configuracion(SkybirdDAO, sesionViewModel, volver = { navController.navigate("Home") })
         }
         composable(route = "Foro"){
-            Foro(SkybirdDAO, sesionViewModel, volver = { navController.navigate("Home") }, pregunta = { navController.navigate("AñadirPregunta") }, foroViewModel, navDetPregunta = { navController.navigate("AñadirPregunta") })
+            Foro(SkybirdDAO, sesionViewModel, volver = { navController.navigate("Home") }, pregunta = { navController.navigate("AñadirPregunta") }, foroViewModel, navDetPregunta = { navController.navigate("MostrarPregunta") })
         }
         composable(route = "AñadirPregunta"){
             AñadirPregunta(SkybirdDAO, sesionViewModel, foroViewModel, volver = { navController.navigate("Foro") })
+        }
+        composable(route = "MostrarPregunta"){
+            MostrarPregunta()
         }
     }
 

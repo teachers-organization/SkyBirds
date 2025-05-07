@@ -1,5 +1,6 @@
 package com.example.skybird.Controlador.ViewModels
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -14,6 +15,9 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class ForoViewModel: ViewModel() {
+
+    //Almacenar la pregunta seleccionada
+    var preguntaSeleccionada = mutableStateOf<Questions?>(null)
 
     fun crearPregunta(skybirdDAO: SkybirdDAO,
                       titulo: String,

@@ -113,16 +113,22 @@ fun MostrarDudas(skybirdDAO: SkybirdDAO, foroViewModel: ForoViewModel, navDetPre
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             listaPreguntas.forEach { pregunta ->
-                PreguntaItem(pregunta, navDetPregunta)
+                PreguntaItem(pregunta, navDetPregunta, foroViewModel)
             }
         }
     }
 }
 
 @Composable
-fun PreguntaItem(question: Questions, navDetPregunta: () -> Unit){
+fun PreguntaItem(question: Questions, navDetPregunta: () -> Unit, foroViewModel: ForoViewModel){
+
+    val timestamp = System.currentTimeMillis()
+    val diferenciaTiempo = timestamp - question.fechaCreacion
+    val tiempoFormateado = formatearTiempoTranscurrido(diferenciaTiempo)
+
     Button(
-        onClick = { navDetPregunta() },
+        onClick = { foroViewModel.preguntaSeleccionada.value = question
+            navDetPregunta() },
         modifier = Modifier
             .fillMaxWidth()
             .shadow(4.dp, RoundedCornerShape(16.dp)),
@@ -133,13 +139,26 @@ fun PreguntaItem(question: Questions, navDetPregunta: () -> Unit){
         )
     ) {
         Text(
-            text = question.titulo,
+            text = question.titulo + "\n" + tiempoFormateado,
             fontSize = 18.sp,
             modifier = Modifier.padding(8.dp)
         )
     }
 }
 
+fun formatearTiempoTranscurrido(millis: Long): String {
+    val segundos = millis / 1000
+    val minutos = segundos / 60
+    val horas = minutos / 60
+    val dias = horas / 24
+
+    return when {
+        dias > 0 -> "hace $dias día${if (dias > 1) "s" else ""}"
+        horas > 0 -> "hace $horas hora${if (horas > 1) "s" else ""}"
+        minutos > 0 -> "hace $minutos minuto${if (minutos > 1) "s" else ""}"
+        else -> "hace unos segundos"
+    }
+}
 
 
 
