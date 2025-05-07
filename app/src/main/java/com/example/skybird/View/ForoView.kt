@@ -124,7 +124,7 @@ fun PreguntaItem(question: Questions, navDetPregunta: () -> Unit, foroViewModel:
 
     val timestamp = System.currentTimeMillis()
     val diferenciaTiempo = timestamp - question.fechaCreacion
-    val tiempoFormateado = formatearTiempoTranscurrido(diferenciaTiempo)
+    val tiempoFormateado = foroViewModel.formatearTiempoTranscurrido(diferenciaTiempo)
 
     Button(
         onClick = { foroViewModel.preguntaSeleccionada.value = question
@@ -145,22 +145,6 @@ fun PreguntaItem(question: Questions, navDetPregunta: () -> Unit, foroViewModel:
         )
     }
 }
-
-fun formatearTiempoTranscurrido(millis: Long): String {
-    val segundos = millis / 1000
-    val minutos = segundos / 60
-    val horas = minutos / 60
-    val dias = horas / 24
-
-    return when {
-        dias > 0 -> "hace $dias día${if (dias > 1) "s" else ""}"
-        horas > 0 -> "hace $horas hora${if (horas > 1) "s" else ""}"
-        minutos > 0 -> "hace $minutos minuto${if (minutos > 1) "s" else ""}"
-        else -> "hace unos segundos"
-    }
-}
-
-
 
 
 

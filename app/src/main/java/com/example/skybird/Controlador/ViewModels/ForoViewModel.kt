@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.skybird.Data.BBDD.Answers
 import com.example.skybird.Data.BBDD.Questions
 import com.example.skybird.Data.BBDD.SkybirdDAO
 import com.example.skybird.Data.BBDD.Users
@@ -74,6 +75,29 @@ class ForoViewModel: ViewModel() {
     fun borrarPregunta(skybirdDAO: SkybirdDAO){
         viewModelScope.launch {
             preguntaSeleccionada.value?.let { skybirdDAO.deleteQuestion(it) }
+        }
+    }
+
+    var listaRespuestas = MutableStateFlow<List<Answers>>(emptyList())
+
+    fun obtenerRespuestas(skybirdDAO: SkybirdDAO): StateFlow<List<Answers>>{
+        viewModelScope.launch {
+            listaRespuestas.value = skybirdDAO.getAnswerByIdQuestion(preguntaSeleccionada.value!!.id).first()
+        }
+        return listaRespuestas
+    }
+
+    fun formatearTiempoTranscurrido(millis: Long): String {
+        val segundos = millis / 1000
+        val minutos = segundos / 60
+        val horas = minutos / 60
+        val dias = horas / 24
+
+        return when {
+            dias > 0 -> "hace $dias día${if (dias > 1) "s" else ""}"
+            horas > 0 -> "hace $horas hora${if (horas > 1) "s" else ""}"
+            minutos > 0 -> "hace $minutos minuto${if (minutos > 1) "s" else ""}"
+            else -> "hace unos segundos"
         }
     }
 

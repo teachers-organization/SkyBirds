@@ -14,13 +14,16 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.ForoViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
+import com.example.skybird.Data.BBDD.Answers
 import com.example.skybird.Data.BBDD.SkybirdDAO
 
 @Composable
@@ -94,6 +97,8 @@ fun MostrarDudaYRespuestas(foroViewModel: ForoViewModel, skybirdDAO: SkybirdDAO)
 
     val pregunta = foroViewModel.preguntaSeleccionada.value
     val creador = foroViewModel.obtenerCreador(skybirdDAO)
+    //Obtenemos todas las respuestas almacenadas en la base de datos para esa pregunta
+    var listaRespuestas = foroViewModel.obtenerRespuestas(skybirdDAO).collectAsState(initial = emptyList()).value
 
     Column(
         modifier = Modifier
@@ -122,13 +127,49 @@ fun MostrarDudaYRespuestas(foroViewModel: ForoViewModel, skybirdDAO: SkybirdDAO)
                 color = Color.Gray
             )
         }
+
+        if (listaRespuestas.isEmpty()) {
+            Text(
+                text = "Todavía no hay respuestas",
+                color = Color.Black,
+                fontSize = 20.sp,
+                modifier = Modifier.padding(top = 20.dp)
+            )
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 10.dp)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                listaRespuestas.reversed().forEach { respuesta ->
+                    RespuestaItem(respuesta, foroViewModel)
+                }
+            }
+        }
     }
-
-
-
 }
 
+@Composable
+fun RespuestaItem(answer: Answers, foroViewModel: ForoViewModel){
+    val timestamp = System.currentTimeMillis()
+    val diferenciaTiempo = timestamp - answer.fechaCreacion
+    val tiempoFormateado = foroViewModel.formatearTiempoTranscurrido(diferenciaTiempo)
 
+    Column(Modifier.padding(20.dp)
+        .fillMaxWidth()
+        .background(color = Color(0xFFADD8E6)),
+        verticalArrangement = Arrangement.spacedBy(12.dp)) {
+
+        Text(
+            text = answer.contenido + "\n- " + tiempoFormateado,
+            fontSize = 18.sp,
+            modifier = Modifier.padding(8.dp)
+        )
+    }
+
+}
 
 
 

@@ -43,4 +43,10 @@ interface SkybirdDAO {
     @Delete
     suspend fun deleteQuestion(question: Questions)
 
+    @Query("SELECT * FROM respuesta_usuario WHERE questionId = :query")
+    fun getAnswerByIdQuestion(query: Int): Flow<List<Answers>>
+
+    @Delete
+    suspend fun deleteAnswer(answers: Answers)
+
 }
