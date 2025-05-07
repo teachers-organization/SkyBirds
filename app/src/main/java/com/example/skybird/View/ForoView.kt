@@ -37,7 +37,7 @@ import com.example.skybird.Data.BBDD.Questions
 import com.example.skybird.Data.BBDD.SkybirdDAO
 
 @Composable
-fun Foro(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volver: () -> Unit, pregunta: () -> Unit, foroViewModel: ForoViewModel, navDetPregunta: () -> Unit){
+fun Foro(skybirdDAO: SkybirdDAO, volver: () -> Unit, pregunta: () -> Unit, foroViewModel: ForoViewModel, navDetPregunta: () -> Unit){
 
     Box(
         modifier = Modifier
@@ -112,7 +112,7 @@ fun MostrarDudas(skybirdDAO: SkybirdDAO, foroViewModel: ForoViewModel, navDetPre
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            listaPreguntas.forEach { pregunta ->
+            listaPreguntas.reversed().forEach { pregunta ->
                 PreguntaItem(pregunta, navDetPregunta, foroViewModel)
             }
         }
@@ -139,7 +139,7 @@ fun PreguntaItem(question: Questions, navDetPregunta: () -> Unit, foroViewModel:
         )
     ) {
         Text(
-            text = question.titulo + "\n" + tiempoFormateado,
+            text = question.titulo + "\n- " + tiempoFormateado,
             fontSize = 18.sp,
             modifier = Modifier.padding(8.dp)
         )

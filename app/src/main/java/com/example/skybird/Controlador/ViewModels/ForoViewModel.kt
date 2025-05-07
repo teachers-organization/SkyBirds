@@ -48,4 +48,33 @@ class ForoViewModel: ViewModel() {
         return listaPreguntas
     }
 
+    var usuarioPregunta = MutableStateFlow<Users?>(null)
+
+    fun obtenerCreador(skybirdDAO: SkybirdDAO):String{
+        viewModelScope.launch {
+            val usuario = skybirdDAO.getUserById(preguntaSeleccionada.value!!.userId).first()
+            usuarioPregunta.value = usuario
+        }
+        return usuarioPregunta.value?.nick ?: "Usuario desconocido"
+    }
+
+    fun esAutor(sesionViewModel: SesionViewModel):Boolean{
+        try {
+            if (sesionViewModel.usuarioActual.value?.id == preguntaSeleccionada.value?.userId){
+                return true
+            }else{
+                return false
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
+            return false
+        }
+    }
+
+    fun borrarPregunta(skybirdDAO: SkybirdDAO){
+        viewModelScope.launch {
+            preguntaSeleccionada.value?.let { skybirdDAO.deleteQuestion(it) }
+        }
+    }
+
 }

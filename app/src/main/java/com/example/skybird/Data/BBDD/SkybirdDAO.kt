@@ -40,4 +40,7 @@ interface SkybirdDAO {
     @Query("SELECT * FROM pregunta_usuario")
     fun getAllQuestions(): Flow<List<Questions>>
 
+    @Delete
+    suspend fun deleteQuestion(question: Questions)
+
 }
