@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,6 +29,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.RegistroViewModel
 import com.example.skybird.Data.BBDD.SkybirdDAO
 import com.example.skybird.Data.BBDD.Users
@@ -43,14 +46,16 @@ fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
     val scrollState = rememberScrollState()
     val context = LocalContext.current
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.White))
-    {
-        Column(modifier = Modifier
+    Box(
+        modifier = Modifier
             .fillMaxSize()
-            .align(alignment = Alignment.Center)
-            .padding(60.dp)
+            .background(Color(0xFFF5F5F5))
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .align(Alignment.Center)
+                .padding(horizontal = 20.dp, vertical = 40.dp)
         ) {
 
             Button(
@@ -64,76 +69,90 @@ fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
                 Text("Volver")
             }
 
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .shadow(12.dp, RoundedCornerShape(16.dp), clip = false)
-                .background(
-                    color = Color(0xFFADD8E6),
-                    shape = RoundedCornerShape(16.dp)
-                )
-            )
-            {
+            Spacer(modifier = Modifier.height(40.dp))
 
-                Column(modifier = Modifier
-                    .align(Alignment.Center)
+            Box(
+                modifier = Modifier
                     .fillMaxSize()
-                    .padding(30.dp)
-                    .verticalScroll(scrollState), //Desplazamiento para scrollear
-                    verticalArrangement = Arrangement.spacedBy(15.dp)
+                    .padding(bottom = 100.dp)
+                    .shadow(8.dp, RoundedCornerShape(16.dp))
+                    .background(
+                        color = Color(0xFFF0F8FF),
+                        shape = RoundedCornerShape(16.dp)
+                    )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .fillMaxSize()
+                        .padding(20.dp)
+                        .verticalScroll(scrollState),
+                    verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
+
                     Text(
                         text = "Nombre completo",
-                        color = Color.Black
+                        color = Color(0xFF5A7391),
+                        fontSize = 20.sp
                     )
-
                     TextField(
                         value = nombre.value,
                         onValueChange = { nombre.value = it },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp),
+                        placeholder = { Text("Introduce tu nombre completo...", color = Color.Gray) }
                     )
 
                     Text(
                         text = "Nick",
-                        color = Color.Black
+                        color = Color(0xFF5A7391),
+                        fontSize = 20.sp
                     )
-
                     TextField(
                         value = nick.value,
                         onValueChange = { nick.value = it },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp),
+                        placeholder = { Text("Introduce tu nick...", color = Color.Gray) }
                     )
 
                     Text(
                         text = "Correo electrónico",
-                        color = Color.Black
+                        color = Color(0xFF5A7391),
+                        fontSize = 20.sp
                     )
-
                     TextField(
                         value = email.value,
                         onValueChange = { email.value = it },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp),
+                        placeholder = { Text("Introduce tu correo electrónico...", color = Color.Gray) }
                     )
 
                     Text(
                         text = "Contraseña",
-                        color = Color.Black
+                        color = Color(0xFF5A7391),
+                        fontSize = 20.sp
                     )
-
                     TextField(
                         value = contrasenya.value,
                         onValueChange = { contrasenya.value = it },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp),
+                        placeholder = { Text("Introduce la contraseña...", color = Color.Gray) }
                     )
 
                     Text(
                         text = "Repetir contraseña",
-                        color = Color.Black
+                        color = Color(0xFF5A7391),
+                        fontSize = 20.sp
                     )
-
                     TextField(
                         value = repetirContrasenya.value,
                         onValueChange = { repetirContrasenya.value = it },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp),
+                        placeholder = { Text("Repite la contraseña...", color = Color.Gray) }
                     )
 
                     Row(
@@ -179,7 +198,7 @@ fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
                             }
                             }},
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF5A7391),
+                            containerColor = Color(0xFFA3B18A),
                             contentColor = Color.White
                         ),
                         modifier = Modifier.fillMaxWidth()

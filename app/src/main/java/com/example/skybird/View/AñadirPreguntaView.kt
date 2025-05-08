@@ -7,8 +7,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,17 +42,18 @@ fun AñadirPregunta(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, fo
     val scrollState = rememberScrollState()
     val titulo = remember { mutableStateOf("") }
     val contenido = remember { mutableStateOf("") }
-
     val context = LocalContext.current
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.White))
-    {
-        Column(modifier = Modifier
+    Box(
+        modifier = Modifier
             .fillMaxSize()
-            .align(alignment = Alignment.Center)
-            .padding(60.dp)
+            .background(Color(0xFFF5F5F5))
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .align(Alignment.Center)
+                .padding(horizontal = 20.dp, vertical = 40.dp)
         ) {
 
             Button(
@@ -64,43 +67,52 @@ fun AñadirPregunta(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, fo
                 Text("Volver")
             }
 
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 100.dp, top = 100.dp)
-                .shadow(12.dp, RoundedCornerShape(16.dp), clip = false)
-                .verticalScroll(scrollState)
-                .background(
-                    color = Color(0xFFADD8E6),
-                    shape = RoundedCornerShape(16.dp)
-                )
-            )
-            {
-                Column(modifier = Modifier
-                    .align(Alignment.Center)
+            Spacer(modifier = Modifier.height(40.dp))
+
+            Box(
+                modifier = Modifier
                     .fillMaxSize()
-                    .padding(30.dp),
-                    verticalArrangement = Arrangement.spacedBy(15.dp)
+                    .padding(bottom = 100.dp)
+                    .shadow(8.dp, RoundedCornerShape(16.dp))
+                    .verticalScroll(scrollState)
+                    .background(
+                        color = Color(0xFFF0F8FF),
+                        shape = RoundedCornerShape(16.dp)
+                    )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .fillMaxSize()
+                        .padding(20.dp),
+                    verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
                     Text(
                         text = "Título",
-                        color = Color.Black
+                        color = Color(0xFF5A7391),
+                        fontSize = 20.sp
                     )
 
                     TextField(
                         value = titulo.value,
                         onValueChange = { titulo.value = it },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp),
+                        placeholder = { Text("Introduce un título...", color = Color.Gray) }
                     )
 
                     Text(
                         text = "Contenido",
-                        color = Color.Black
+                        color = Color(0xFF5A7391),
+                        fontSize = 20.sp
                     )
 
                     TextField(
                         value = contenido.value,
                         onValueChange = { contenido.value = it },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp),
+                        placeholder = { Text("Describe tu duda...", color = Color.Gray) }
                     )
 
                     Button(
@@ -123,7 +135,7 @@ fun AñadirPregunta(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, fo
                             }
                         },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF5A7391),
+                            containerColor = Color(0xFFA3B18A),
                             contentColor = Color.White
                         ),
                         modifier = Modifier.fillMaxWidth()

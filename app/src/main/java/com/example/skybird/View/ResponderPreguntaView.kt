@@ -84,7 +84,7 @@ fun ResponderPregunta(skybirdDAO: SkybirdDAO, volver: () -> Unit, foroViewModel:
                 ) {
                     Text(
                         text = "Respuesta",
-                        color = Color(0xFF1A2C47),
+                        color = Color(0xFF5A7391),
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold
                     )
