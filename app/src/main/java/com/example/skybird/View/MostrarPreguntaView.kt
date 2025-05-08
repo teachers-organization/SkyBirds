@@ -27,7 +27,7 @@ import com.example.skybird.Data.BBDD.Answers
 import com.example.skybird.Data.BBDD.SkybirdDAO
 
 @Composable
-fun MostrarPregunta(skybirdDAO: SkybirdDAO, volver: () -> Unit, foroViewModel: ForoViewModel, sesionViewModel: SesionViewModel) {
+fun MostrarPregunta(skybirdDAO: SkybirdDAO, volver: () -> Unit, foroViewModel: ForoViewModel, sesionViewModel: SesionViewModel, responder: () -> Unit) {
 
     val esAutor = foroViewModel.esAutor(sesionViewModel)
 
@@ -57,7 +57,7 @@ fun MostrarPregunta(skybirdDAO: SkybirdDAO, volver: () -> Unit, foroViewModel: F
 
         }
         Button(
-            onClick = {  },
+            onClick = { responder() },
             shape = RoundedCornerShape(50),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFA3B18A),
@@ -139,8 +139,7 @@ fun MostrarDudaYRespuestas(foroViewModel: ForoViewModel, skybirdDAO: SkybirdDAO)
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 10.dp)
-                    .verticalScroll(rememberScrollState()),
+                    .padding(top = 10.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 listaRespuestas.reversed().forEach { respuesta ->

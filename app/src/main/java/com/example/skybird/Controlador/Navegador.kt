@@ -18,6 +18,7 @@ import com.example.skybird.View.Home
 import com.example.skybird.View.InicioSesion
 import com.example.skybird.View.MostrarPregunta
 import com.example.skybird.View.Registro
+import com.example.skybird.View.ResponderPregunta
 
 
 @Composable
@@ -51,7 +52,10 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
             AñadirPregunta(SkybirdDAO, sesionViewModel, foroViewModel, volver = { navController.navigate("Foro") })
         }
         composable(route = "MostrarPregunta"){
-            MostrarPregunta(SkybirdDAO, volver = { navController.navigate("Foro") }, foroViewModel, sesionViewModel)
+            MostrarPregunta(SkybirdDAO, volver = { navController.navigate("Foro") }, foroViewModel, sesionViewModel, responder = { navController.navigate("ResponerPregunta") })
+        }
+        composable(route = "ResponerPregunta"){
+            ResponderPregunta(SkybirdDAO, volver = { navController.navigate("MostrarPregunta") }, foroViewModel, sesionViewModel)
         }
     }
 

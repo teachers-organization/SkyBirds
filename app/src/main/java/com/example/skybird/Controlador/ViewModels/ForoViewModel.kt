@@ -40,6 +40,25 @@ class ForoViewModel: ViewModel() {
         }
     }
 
+    fun crearRespuesta(skybirdDAO: SkybirdDAO,
+                       contenido: String,
+                       usuario: Users,
+                       onResultado: (Boolean) -> Unit
+                       ){
+
+        val timestamp = System.currentTimeMillis()
+        val respuesta = Answers(0, contenido, timestamp, usuario.id, preguntaSeleccionada.value!!.id)
+
+        viewModelScope.launch {
+            try {
+                skybirdDAO.insertAnswer(respuesta)
+                onResultado(true)
+            }catch(e: Exception){
+                onResultado(false)
+            }
+        }
+    }
+
     var listaPreguntas = MutableStateFlow<List<Questions>>(emptyList())
 
     fun obtenerPreguntas(skybirdDAO: SkybirdDAO): StateFlow<List<Questions>>{

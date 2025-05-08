@@ -49,4 +49,7 @@ interface SkybirdDAO {
     @Delete
     suspend fun deleteAnswer(answers: Answers)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertAnswer(answers: Answers)
+
 }
