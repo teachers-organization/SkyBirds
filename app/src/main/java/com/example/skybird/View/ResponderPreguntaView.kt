@@ -48,7 +48,7 @@ fun ResponderPregunta(skybirdDAO: SkybirdDAO, volver: () -> Unit, foroViewModel:
             Button(
                 onClick = { volver() },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF5A7391),
+                    containerColor = Color(0xFFA3B18A),
                     contentColor = Color.White
                 ),
                 modifier = Modifier.align(Alignment.Start)
