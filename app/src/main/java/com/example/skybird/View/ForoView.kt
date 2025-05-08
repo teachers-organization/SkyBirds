@@ -42,7 +42,7 @@ fun Foro(skybirdDAO: SkybirdDAO, volver: () -> Unit, pregunta: () -> Unit, foroV
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(Color(0xFFF5F5F5))
             .padding(top = 60.dp, bottom = 30.dp)
     ) {
         Column(
@@ -64,7 +64,7 @@ fun Foro(skybirdDAO: SkybirdDAO, volver: () -> Unit, pregunta: () -> Unit, foroV
             Text(
                 text = "Foro",
                 fontSize = 35.sp,
-                color = Color.Black,
+                color = Color(0xFF1A2C47),
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(vertical = 16.dp)
@@ -131,17 +131,18 @@ fun PreguntaItem(question: Questions, navDetPregunta: () -> Unit, foroViewModel:
             navDetPregunta() },
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(4.dp, RoundedCornerShape(16.dp)),
+            .shadow(8.dp, RoundedCornerShape(16.dp)),
         shape = RoundedCornerShape(16.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF5A7391),
+            containerColor = Color(0xFF56658C),
             contentColor = Color.White
         )
     ) {
         Text(
-            text = question.titulo + "\n- " + tiempoFormateado,
+            text = question.titulo + "\n- " + tiempoFormateado + " -",
             fontSize = 18.sp,
             modifier = Modifier.padding(8.dp)
+                .fillMaxWidth()
         )
     }
 }
