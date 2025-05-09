@@ -17,7 +17,10 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -28,6 +31,7 @@ import com.example.skybird.Controlador.ViewModels.ForoViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Data.BBDD.Answers
 import com.example.skybird.Data.BBDD.SkybirdDAO
+import kotlinx.coroutines.flow.firstOrNull
 
 @Composable
 fun MostrarPregunta(skybirdDAO: SkybirdDAO, volver: () -> Unit, foroViewModel: ForoViewModel, sesionViewModel: SesionViewModel, responder: () -> Unit) {
@@ -173,7 +177,7 @@ fun MostrarDudaYRespuestas(foroViewModel: ForoViewModel, skybirdDAO: SkybirdDAO,
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 listaRespuestas.reversed().forEach { respuesta ->
-                    RespuestaItem(respuesta, foroViewModel, sesionViewModel)
+                    RespuestaItem(respuesta, foroViewModel, skybirdDAO)
                 }
             }
         }
@@ -181,7 +185,14 @@ fun MostrarDudaYRespuestas(foroViewModel: ForoViewModel, skybirdDAO: SkybirdDAO,
 }
 
 @Composable
-fun RespuestaItem(answer: Answers, foroViewModel: ForoViewModel, sesionViewModel: SesionViewModel){
+fun RespuestaItem(answer: Answers, foroViewModel: ForoViewModel, skybirdDAO: SkybirdDAO){
+    val creador = remember { mutableStateOf("Cargando...") }
+
+    LaunchedEffect(answer.userId) {
+        val usuario = skybirdDAO.getUserById(answer.userId).firstOrNull()
+        creador.value = usuario?.nick ?: "Usuario desconocido"
+    }
+
     val timestamp = System.currentTimeMillis()
     val diferenciaTiempo = timestamp - answer.fechaCreacion
     val tiempoFormateado = foroViewModel.formatearTiempoTranscurrido(diferenciaTiempo)
@@ -204,7 +215,7 @@ fun RespuestaItem(answer: Answers, foroViewModel: ForoViewModel, sesionViewModel
                 color = Color(0xFF2E2E2E)
             )
             Text(
-                text = sesionViewModel.usuarioActual.value?.nick ?: "Usuario anónmio",
+                text = creador.value,
                 fontSize = 12.sp,
                 color = Color.Gray,
                 modifier = Modifier.align(Alignment.End)
