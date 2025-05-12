@@ -3,7 +3,6 @@ package com.example.skybird.Controlador.ViewModels
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.skybird.Data.BBDD.Answers
 import com.example.skybird.Data.BBDD.Questions
 import com.example.skybird.Data.BBDD.SkybirdDAO
@@ -11,10 +10,7 @@ import com.example.skybird.Data.BBDD.Users
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class ForoViewModel: ViewModel() {
 
@@ -119,6 +115,15 @@ class ForoViewModel: ViewModel() {
             minutos > 0 -> "hace $minutos minuto${if (minutos > 1) "s" else ""}"
             else -> "hace unos segundos"
         }
+    }
+
+    //Función para filtrar por título
+    fun filtrarTitulo(lista: List<Questions>, texto: String): List<Questions> {
+        val listaFiltrada = lista.filter { pregunta ->
+            val regex = Regex(".*${Regex.escape(texto)}.*", RegexOption.IGNORE_CASE)
+            regex.containsMatchIn(pregunta.titulo)
+        }
+        return listaFiltrada
     }
 
 }

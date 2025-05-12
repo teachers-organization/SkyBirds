@@ -24,6 +24,9 @@ interface SkybirdDAO {
     @Query("SELECT * FROM users")
     fun getAllUsers(): Flow<List<Users>>
 
+    @Query("SELECT * FROM users WHERE nombreCompleto = :nombre")
+    suspend fun getUsersByName(nombre: String): List<Users>
+
     @Query("SELECT * FROM users WHERE id = :query")
     fun getUserById(query: Int): Flow<Users>
 
