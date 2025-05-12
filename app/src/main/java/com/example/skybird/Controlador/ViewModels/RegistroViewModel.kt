@@ -25,5 +25,8 @@ class RegistroViewModel : ViewModel() {
         }
     }
 
+    fun esEmailValido(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
 
 }

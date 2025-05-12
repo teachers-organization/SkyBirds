@@ -170,8 +170,14 @@ fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
                         onClick = {
                             //Recorre la lista de los campos comprobando que no hay ninguno vacío
                             //Si algún campo está vacío muestra la advertencia
-                            if(listOf(nombre, nick, email, contrasenya, repetirContrasenya).any { it.value.isBlank() }){
-                                Toast.makeText(context, "Por favor, rellene todos los campos", Toast.LENGTH_SHORT).show()
+                            if(listOf(nombre, nick, email, contrasenya, repetirContrasenya).any { it.value.isBlank() }) {
+                                Toast.makeText(
+                                    context,
+                                    "Por favor, rellene todos los campos",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }else if (!registroViewModel.esEmailValido(email.value)){
+                                Toast.makeText(context, "Correo electrónico no válido", Toast.LENGTH_SHORT).show()
                             }else if (contrasenya.value.length < 5){
                                 Toast.makeText(context, "La contraseña debe contener al menos 5 caracteres", Toast.LENGTH_SHORT).show()
                             }else if (contrasenya.value != repetirContrasenya.value){
