@@ -34,7 +34,7 @@ import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.R
 
 @Composable
-fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit) {
+fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit, inicioSesion: () -> Unit) {
 
     val botonModifier = Modifier
         .fillMaxWidth()
@@ -145,6 +145,24 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit)
                     letterSpacing = 0.5.sp
                 )
             }
+
+            Button(
+                onClick = { sesionViewModel.cerrarSesión()
+                          inicioSesion()},
+                shape = RoundedCornerShape(50),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFBC4749),
+                    contentColor = Color.White
+                ),
+                modifier = botonModifier
+            ) {
+                Text(
+                    text = "Cerrar sesión",
+                    fontSize = 20.sp,
+                    letterSpacing = 0.5.sp
+                )
+            }
+
         }
     }
 }

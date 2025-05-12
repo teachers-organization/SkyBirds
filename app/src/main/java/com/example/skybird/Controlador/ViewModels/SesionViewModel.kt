@@ -120,4 +120,13 @@ class SesionViewModel : ViewModel() {
         }
     }
 
+    //Función para cerrar sesión
+    fun cerrarSesión(){
+        try {
+            usuarioActual.value = null
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
+
 }
