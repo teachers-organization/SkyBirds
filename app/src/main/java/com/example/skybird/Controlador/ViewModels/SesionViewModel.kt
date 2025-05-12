@@ -46,7 +46,7 @@ class SesionViewModel : ViewModel() {
                 usuarioActual.value = usuario.copy(psswd = contrasenyaNueva)
             }
 
-            var userActualizar: Users = usuarioActual.value!!
+            val userActualizar: Users = usuarioActual.value!!
             viewModelScope.launch {
                 skybirdDAO.updateUser(userActualizar)
             }
@@ -56,10 +56,68 @@ class SesionViewModel : ViewModel() {
         }else{
             onResultado(false)
         }
-
     }
 
+    //Función para cambiar de nombre
+    fun cambiarNombre(skybirdDAO: SkybirdDAO,
+                           nombreNuevo: String,
+                           onResultado: (Boolean) -> Unit){
 
+        try {
+            //Creamos una copia del usuario actual, cambiamos el valor del nombre
+            //y lo actualizamos en la base de datos
 
+            usuarioActual.value?.let { usuario ->
+                usuarioActual.value = usuario.copy(nombreCompleto = nombreNuevo)
+            }
+
+            val userActualizar: Users = usuarioActual.value!!
+            viewModelScope.launch {
+                skybirdDAO.updateUser(userActualizar)
+            }
+
+            onResultado(true)
+
+        }catch (e:Exception) {
+            onResultado(false)
+        }
+    }
+
+    //Función para cambiar de nick
+    fun cambiarNick(skybirdDAO: SkybirdDAO,
+                      nuevoNick: String,
+                      onResultado: (Boolean) -> Unit){
+
+        try {
+            //Creamos una copia del usuario actual, cambiamos el valor del nick
+            //y lo actualizamos en la base de datos
+
+            usuarioActual.value?.let { usuario ->
+                usuarioActual.value = usuario.copy(nick = nuevoNick)
+            }
+
+            val userActualizar: Users = usuarioActual.value!!
+            viewModelScope.launch {
+                skybirdDAO.updateUser(userActualizar)
+            }
+
+            onResultado(true)
+
+        }catch (e:Exception) {
+            onResultado(false)
+        }
+    }
+
+    //Función para borrar usuario
+    fun borrarUsuario(skybirdDAO: SkybirdDAO){
+        try {
+            viewModelScope.launch {
+                usuarioActual.value?.let { skybirdDAO.deleteUser(it) }
+                usuarioActual.value = null
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
 
 }
