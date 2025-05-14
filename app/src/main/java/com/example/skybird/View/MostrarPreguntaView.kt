@@ -36,7 +36,7 @@ import kotlinx.coroutines.flow.firstOrNull
 @Composable
 fun MostrarPregunta(skybirdDAO: SkybirdDAO, volver: () -> Unit, foroViewModel: ForoViewModel, sesionViewModel: SesionViewModel, responder: () -> Unit) {
 
-    val esAutor = foroViewModel.esAutor(sesionViewModel)
+    val esAutor = foroViewModel.esAutorPregunta(sesionViewModel)
 
     Box(
         modifier = Modifier
@@ -77,7 +77,7 @@ fun MostrarPregunta(skybirdDAO: SkybirdDAO, volver: () -> Unit, foroViewModel: F
             Text(text = "Responder",
                 fontSize = 20.sp)
         }
-        if (esAutor){
+        if (esAutor || sesionViewModel.usuarioActual.value!!.admin){
             Button(
                 onClick = {
                     foroViewModel.borrarPregunta(skybirdDAO)
@@ -85,7 +85,7 @@ fun MostrarPregunta(skybirdDAO: SkybirdDAO, volver: () -> Unit, foroViewModel: F
                 },
                 shape = RoundedCornerShape(50),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFA3B18A),
+                    containerColor = Color(0xFFBC4749),
                     contentColor = Color.White
                 ),
                 modifier = Modifier
@@ -177,7 +177,7 @@ fun MostrarDudaYRespuestas(foroViewModel: ForoViewModel, skybirdDAO: SkybirdDAO,
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 listaRespuestas.reversed().forEach { respuesta ->
-                    RespuestaItem(respuesta, foroViewModel, skybirdDAO)
+                    RespuestaItem(respuesta, foroViewModel, skybirdDAO, sesionViewModel)
                 }
             }
         }
@@ -185,8 +185,9 @@ fun MostrarDudaYRespuestas(foroViewModel: ForoViewModel, skybirdDAO: SkybirdDAO,
 }
 
 @Composable
-fun RespuestaItem(answer: Answers, foroViewModel: ForoViewModel, skybirdDAO: SkybirdDAO){
+fun RespuestaItem(answer: Answers, foroViewModel: ForoViewModel, skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel){
     val creador = remember { mutableStateOf("Cargando...") }
+    val esAutor = foroViewModel.esAutorRespuesta(sesionViewModel, answer)
 
     LaunchedEffect(answer.userId) {
         val usuario = skybirdDAO.getUserById(answer.userId).firstOrNull()
@@ -226,6 +227,23 @@ fun RespuestaItem(answer: Answers, foroViewModel: ForoViewModel, skybirdDAO: Sky
                 color = Color.Gray,
                 modifier = Modifier.align(Alignment.End)
             )
+            if (esAutor || sesionViewModel.usuarioActual.value!!.admin){
+                Button(
+                    onClick = {
+                        foroViewModel.borrarRespuesta(skybirdDAO, answer)
+                    },
+                    shape = RoundedCornerShape(50),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFBC4749),
+                        contentColor = Color.White
+                    ),
+                    modifier = Modifier
+                        .padding(3.dp)
+                ) {
+                    Text(text = "Borrar",
+                        fontSize = 15.sp)
+                }
+            }
         }
     }
 }

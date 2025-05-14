@@ -75,9 +75,22 @@ class ForoViewModel: ViewModel() {
         return usuarioPregunta.value?.nick ?: "Usuario desconocido"
     }
 
-    fun esAutor(sesionViewModel: SesionViewModel):Boolean{
+    fun esAutorPregunta(sesionViewModel: SesionViewModel):Boolean{
         try {
             if (sesionViewModel.usuarioActual.value?.id == preguntaSeleccionada.value?.userId){
+                return true
+            }else{
+                return false
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
+            return false
+        }
+    }
+
+    fun esAutorRespuesta(sesionViewModel: SesionViewModel, answer: Answers):Boolean{
+        try {
+            if (sesionViewModel.usuarioActual.value?.id == answer.userId){
                 return true
             }else{
                 return false
@@ -93,6 +106,11 @@ class ForoViewModel: ViewModel() {
             preguntaSeleccionada.value?.let { skybirdDAO.deleteQuestion(it) }
         }
     }
+
+    fun borrarRespuesta(skybirdDAO: SkybirdDAO, answer: Answers){
+        viewModelScope.launch {
+            skybirdDAO.deleteAnswer(answer) }
+        }
 
     var listaRespuestas = MutableStateFlow<List<Answers>>(emptyList())
 
