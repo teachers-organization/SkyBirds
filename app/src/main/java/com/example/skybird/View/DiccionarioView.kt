@@ -8,6 +8,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -18,6 +22,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -86,14 +91,20 @@ fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit, avesViewModel: Ave
                 )
             }
 
-            MostrarAves(navDetPajaro, filtrarNombre.value, listaAves)
+            MostrarAves(navDetPajaro, filtrarNombre.value, listaAves, avesViewModel){
+                //Esta función se llama al finalizar el scroll
+                avesViewModel.obtenerAves()
+            }
 
         }
     }
 }
 
 @Composable
-fun MostrarAves(navDetPajaro: () -> Unit, filtrarTitulo: String, listaAves: List<Bird>) {
+fun MostrarAves(navDetPajaro: () -> Unit, filtrarNombre: String, listaAves: List<Bird>, avesViewModel: AvesViewModel, finalLista: () -> Unit) {
+
+    //Variable para detectar si el usuario ha llegado al final del scroll
+    val listState = rememberLazyListState()
 
     if (listaAves.isEmpty()) {
         Text(
@@ -103,20 +114,36 @@ fun MostrarAves(navDetPajaro: () -> Unit, filtrarTitulo: String, listaAves: List
             modifier = Modifier.padding(top = 20.dp)
         )
     } else {
-        /*
-        if (filtrarTitulo != ""){
-            listaPreguntas = foroViewModel.filtrarTitulo(listaPreguntas, filtrarTitulo)
-        }*/
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 10.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+        val avesFiltradas = if (filtrarNombre != "") {
+            avesViewModel.filtrarNombre(listaAves, filtrarNombre)
+        } else {
+            listaAves
+        }
+
+        LazyColumn(
+            state = listState,
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.fillMaxSize().padding(top = 10.dp)
         ) {
-            listaAves.forEach { ave ->
+            items(avesFiltradas) { ave ->
                 PajaroItem(ave, navDetPajaro)
+            }
+        }
+
+        //Detectar si llegó al final del scroll
+        //Cuando se llegan a los 5 últimos elementos la variable se vuelve true
+        val cargarMas = remember {
+            derivedStateOf {
+                val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+                lastVisible >= listaAves.size - 5
+            }
+        }
+
+        //Carga los siguientes elementos de la api
+        LaunchedEffect(cargarMas.value) {
+            if (cargarMas.value) {
+                finalLista()
             }
         }
     }
