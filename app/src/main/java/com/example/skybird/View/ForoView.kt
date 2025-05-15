@@ -32,7 +32,6 @@ import com.example.skybird.Data.BBDD.SkybirdDAO
 @Composable
 fun Foro(skybirdDAO: SkybirdDAO, volver: () -> Unit, pregunta: () -> Unit, foroViewModel: ForoViewModel, navDetPregunta: () -> Unit){
 
-    val filtrarAutor = remember { mutableStateOf("") }
     val filtrarTitulo = remember { mutableStateOf("") }
 
     Box(

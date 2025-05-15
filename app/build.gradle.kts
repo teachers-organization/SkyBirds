@@ -53,6 +53,9 @@ android {
 
 dependencies {
 
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
     //Room
     implementation (libs.androidx.room.runtime)
     implementation(libs.navigation.compose)

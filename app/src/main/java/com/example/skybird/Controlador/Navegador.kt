@@ -13,6 +13,7 @@ import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Data.BBDD.SkybirdDAO
 import com.example.skybird.View.AñadirPregunta
 import com.example.skybird.View.Configuracion
+import com.example.skybird.View.Diccionario
 import com.example.skybird.View.Foro
 import com.example.skybird.View.Home
 import com.example.skybird.View.InicioSesion
@@ -40,7 +41,7 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
             Registro(SkybirdDAO, registroViewModel, volver = { navController.navigate("InicioSesion") })
         }
         composable(route = "Home"){
-            Home(sesionViewModel, config = { navController.navigate("Configuracion") }, foro = { navController.navigate("Foro") }, inicioSesion = { navController.navigate("InicioSesion") })
+            Home(sesionViewModel, config = { navController.navigate("Configuracion") }, foro = { navController.navigate("Foro") }, inicioSesion = { navController.navigate("InicioSesion") }, diccionarioAves = { navController.navigate("DiccionarioAves") })
         }
         composable(route = "Configuracion"){
             Configuracion(SkybirdDAO, sesionViewModel, volver = { navController.navigate("Home") }, inicio = { navController.navigate("InicioSesion") })
@@ -57,10 +58,11 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
         composable(route = "ResponerPregunta"){
             ResponderPregunta(SkybirdDAO, volver = { navController.navigate("MostrarPregunta") }, foroViewModel, sesionViewModel)
         }
+        composable(route = "DiccionarioAves"){
+            Diccionario(volver = { navController.navigate("Home") }, navDetPajaro = { navController.navigate("Home") })
+        }
+
     }
-
-
-
 }
 
 

@@ -34,7 +34,7 @@ import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.R
 
 @Composable
-fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit, inicioSesion: () -> Unit) {
+fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit, inicioSesion: () -> Unit, diccionarioAves: () -> Unit) {
 
     val botonModifier = Modifier
         .fillMaxWidth()
@@ -108,7 +108,7 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit,
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { /* Acción 1 */ },
+                onClick = { diccionarioAves() },
                 shape = RoundedCornerShape(50),
                 colors = botonColors,
                 modifier = botonModifier
