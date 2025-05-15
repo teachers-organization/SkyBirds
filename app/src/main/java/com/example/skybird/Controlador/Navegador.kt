@@ -10,7 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.skybird.Controlador.ViewModels.ForoViewModel
 import com.example.skybird.Controlador.ViewModels.RegistroViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
-import com.example.skybird.Data.BBDD.SkybirdDAO
+import com.example.skybird.Modelo.BBDD.SkybirdDAO
 import com.example.skybird.View.AñadirPregunta
 import com.example.skybird.View.Configuracion
 import com.example.skybird.View.Diccionario

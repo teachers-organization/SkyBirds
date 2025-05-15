@@ -1,4 +1,4 @@
-package com.example.skybird.Data.BBDD
+package com.example.skybird.Modelo.BBDD
 
 import androidx.room.Entity
 import androidx.room.ForeignKey

@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.ForoViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
-import com.example.skybird.Data.BBDD.Answers
-import com.example.skybird.Data.BBDD.SkybirdDAO
+import com.example.skybird.Modelo.BBDD.Answers
+import com.example.skybird.Modelo.BBDD.SkybirdDAO
 import kotlinx.coroutines.flow.firstOrNull
 
 @Composable

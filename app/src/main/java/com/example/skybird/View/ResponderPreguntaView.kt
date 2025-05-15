@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.ForoViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
-import com.example.skybird.Data.BBDD.SkybirdDAO
+import com.example.skybird.Modelo.BBDD.SkybirdDAO
 
 @Composable
 fun ResponderPregunta(skybirdDAO: SkybirdDAO, volver: () -> Unit, foroViewModel: ForoViewModel, sesionViewModel: SesionViewModel) {

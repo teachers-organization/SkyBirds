@@ -1,4 +1,4 @@
-package com.example.skybird.Data.BBDD
+package com.example.skybird.Modelo.BBDD
 
 import android.content.Context
 import androidx.room.Database
@@ -15,7 +15,7 @@ abstract class SkybirdBBDD : RoomDatabase(){
 
         //Encerrar el código para obtener la base de datos dentro de un bloque synchronized asegura que solo
         // un hilo de ejecución pueda ingresar a este bloque de código a la vez, garantizando que la base de datos solo se inicialice una vez
-        fun getDatabase(context: Context): SkybirdBBDD{
+        fun getDatabase(context: Context): SkybirdBBDD {
             return Instance ?: synchronized(this){
                 Room.databaseBuilder(context, SkybirdBBDD::class.java, "SkybirdBBDD").fallbackToDestructiveMigration()
                     .build()

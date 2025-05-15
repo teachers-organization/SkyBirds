@@ -3,8 +3,8 @@ package com.example.skybird.Controlador.ViewModels
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.skybird.Data.BBDD.SkybirdDAO
-import com.example.skybird.Data.BBDD.Users
+import com.example.skybird.Modelo.BBDD.SkybirdDAO
+import com.example.skybird.Modelo.BBDD.Users
 import kotlinx.coroutines.launch
 
 class SesionViewModel : ViewModel() {
@@ -60,8 +60,8 @@ class SesionViewModel : ViewModel() {
 
     //Función para cambiar de nombre
     fun cambiarNombre(skybirdDAO: SkybirdDAO,
-                           nombreNuevo: String,
-                           onResultado: (Boolean) -> Unit){
+                      nombreNuevo: String,
+                      onResultado: (Boolean) -> Unit){
 
         try {
             //Creamos una copia del usuario actual, cambiamos el valor del nombre
@@ -85,8 +85,8 @@ class SesionViewModel : ViewModel() {
 
     //Función para cambiar de nick
     fun cambiarNick(skybirdDAO: SkybirdDAO,
-                      nuevoNick: String,
-                      onResultado: (Boolean) -> Unit){
+                    nuevoNick: String,
+                    onResultado: (Boolean) -> Unit){
 
         try {
             //Creamos una copia del usuario actual, cambiamos el valor del nick

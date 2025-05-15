@@ -26,8 +26,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.ForoViewModel
-import com.example.skybird.Data.BBDD.Questions
-import com.example.skybird.Data.BBDD.SkybirdDAO
+import com.example.skybird.Modelo.BBDD.Questions
+import com.example.skybird.Modelo.BBDD.SkybirdDAO
 
 @Composable
 fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit){

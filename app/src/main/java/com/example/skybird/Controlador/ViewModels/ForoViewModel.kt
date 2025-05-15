@@ -3,10 +3,10 @@ package com.example.skybird.Controlador.ViewModels
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.skybird.Data.BBDD.Answers
-import com.example.skybird.Data.BBDD.Questions
-import com.example.skybird.Data.BBDD.SkybirdDAO
-import com.example.skybird.Data.BBDD.Users
+import com.example.skybird.Modelo.BBDD.Answers
+import com.example.skybird.Modelo.BBDD.Questions
+import com.example.skybird.Modelo.BBDD.SkybirdDAO
+import com.example.skybird.Modelo.BBDD.Users
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first

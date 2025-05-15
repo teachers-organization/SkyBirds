@@ -31,8 +31,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.RegistroViewModel
-import com.example.skybird.Data.BBDD.SkybirdDAO
-import com.example.skybird.Data.BBDD.Users
+import com.example.skybird.Modelo.BBDD.SkybirdDAO
+import com.example.skybird.Modelo.BBDD.Users
 
 @Composable
 fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volver: () -> Unit){

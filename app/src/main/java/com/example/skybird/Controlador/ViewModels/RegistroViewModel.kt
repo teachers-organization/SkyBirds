@@ -2,8 +2,8 @@ package com.example.skybird.Controlador.ViewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.skybird.Data.BBDD.SkybirdDAO
-import com.example.skybird.Data.BBDD.Users
+import com.example.skybird.Modelo.BBDD.SkybirdDAO
+import com.example.skybird.Modelo.BBDD.Users
 import kotlinx.coroutines.launch
 
 class RegistroViewModel : ViewModel() {

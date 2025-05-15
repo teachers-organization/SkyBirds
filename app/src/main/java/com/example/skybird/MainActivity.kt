@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.room.Room
 import com.example.skybird.Controlador.Navegador
-import com.example.skybird.Data.BBDD.SkybirdBBDD
+import com.example.skybird.Modelo.BBDD.SkybirdBBDD
 import com.example.skybird.ui.theme.SkyBirdTheme
 
 class MainActivity : ComponentActivity() {

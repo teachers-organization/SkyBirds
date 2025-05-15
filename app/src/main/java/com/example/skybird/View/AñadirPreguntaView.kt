@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.ForoViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
-import com.example.skybird.Data.BBDD.SkybirdDAO
-import com.example.skybird.Data.BBDD.Users
+import com.example.skybird.Modelo.BBDD.SkybirdDAO
+import com.example.skybird.Modelo.BBDD.Users
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
