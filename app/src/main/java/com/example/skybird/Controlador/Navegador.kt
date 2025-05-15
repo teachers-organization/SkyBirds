@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.skybird.Controlador.ViewModels.AvesViewModel
 import com.example.skybird.Controlador.ViewModels.ForoViewModel
 import com.example.skybird.Controlador.ViewModels.RegistroViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
@@ -30,6 +31,7 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
     val registroViewModel = RegistroViewModel()
     val sesionViewModel = SesionViewModel()
     val foroViewModel = ForoViewModel()
+    val avesViewModel = AvesViewModel()
 
     NavHost(navController = navController,
         startDestination = "InicioSesion"){
@@ -59,7 +61,7 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
             ResponderPregunta(SkybirdDAO, volver = { navController.navigate("MostrarPregunta") }, foroViewModel, sesionViewModel)
         }
         composable(route = "DiccionarioAves"){
-            Diccionario(volver = { navController.navigate("Home") }, navDetPajaro = { navController.navigate("Home") })
+            Diccionario(volver = { navController.navigate("Home") }, navDetPajaro = { navController.navigate("Home") }, avesViewModel)
         }
 
     }

@@ -16,6 +16,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,14 +26,23 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.skybird.Controlador.ViewModels.AvesViewModel
 import com.example.skybird.Controlador.ViewModels.ForoViewModel
+import com.example.skybird.Modelo.API.Bird
 import com.example.skybird.Modelo.BBDD.Questions
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 
 @Composable
-fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit){
+fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit, avesViewModel: AvesViewModel){
 
     val filtrarNombre = remember { mutableStateOf("") }
+    //Observamos la variable para que cuando la corrutina termine nos devuelve la lista de aves
+    val listaAves = avesViewModel.aves.value
+
+    //Llamamos a obtenerAves solo una vez al entrar en la pantalla
+    LaunchedEffect(Unit) {
+        avesViewModel.obtenerAves()
+    }
 
     Box(
         modifier = Modifier
@@ -76,14 +86,65 @@ fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit){
                 )
             }
 
-
+            MostrarAves(navDetPajaro, filtrarNombre.value, listaAves)
 
         }
-
     }
 }
 
+@Composable
+fun MostrarAves(navDetPajaro: () -> Unit, filtrarTitulo: String, listaAves: List<Bird>) {
 
+    if (listaAves.isEmpty()) {
+        Text(
+            text = "Cargando...",
+            color = Color.Black,
+            fontSize = 20.sp,
+            modifier = Modifier.padding(top = 20.dp)
+        )
+    } else {
+        /*
+        if (filtrarTitulo != ""){
+            listaPreguntas = foroViewModel.filtrarTitulo(listaPreguntas, filtrarTitulo)
+        }*/
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 10.dp)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            listaAves.forEach { ave ->
+                PajaroItem(ave, navDetPajaro)
+            }
+        }
+    }
+}
+
+@Composable
+fun PajaroItem(ave: Bird, navDetPajaro: () -> Unit){
+
+    Button(
+        onClick = {
+            navDetPajaro() },
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(8.dp, RoundedCornerShape(16.dp)),
+        shape = RoundedCornerShape(16.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFF56658C),
+            contentColor = Color.White
+        )
+    ) {
+        Text(
+            text = ave.name,
+            fontSize = 18.sp,
+            modifier = Modifier.padding(8.dp)
+                .fillMaxWidth()
+        )
+    }
+}
 
 
 
