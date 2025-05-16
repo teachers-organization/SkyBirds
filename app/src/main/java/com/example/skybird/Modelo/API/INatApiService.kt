@@ -9,7 +9,7 @@ interface InatApiService {
     suspend fun getBirds(
         @Query("q") query: String = "bird",
         @Query("rank") rank: String = "species",
-        @Query("per_page") perPage: Int = 20,
+        @Query("per_page") perPage: Int = 40,
         @Query("page") page: Int = 1
     ): InatResponse
 }

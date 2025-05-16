@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -36,13 +39,14 @@ import com.example.skybird.Controlador.ViewModels.ForoViewModel
 import com.example.skybird.Modelo.API.Bird
 import com.example.skybird.Modelo.BBDD.Questions
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
+import androidx.compose.runtime.getValue
 
 @Composable
 fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit, avesViewModel: AvesViewModel){
 
     val filtrarNombre = remember { mutableStateOf("") }
     //Observamos la variable para que cuando la corrutina termine nos devuelve la lista de aves
-    val listaAves = avesViewModel.aves.value
+    val listaAves by avesViewModel.aves
 
     //Llamamos a obtenerAves solo una vez al entrar en la pantalla
     LaunchedEffect(Unit) {
@@ -84,7 +88,8 @@ fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit, avesViewModel: Ave
                 TextField(
                     value = filtrarNombre.value,
                     onValueChange = { filtrarNombre.value = it },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
+                        .weight(1f)
                         .padding(2.dp),
                     shape = RoundedCornerShape(8.dp),
                     placeholder = { Text("Filtrar por nombre...", color = Color.Gray) }
@@ -104,7 +109,7 @@ fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit, avesViewModel: Ave
 fun MostrarAves(navDetPajaro: () -> Unit, filtrarNombre: String, listaAves: List<Bird>, avesViewModel: AvesViewModel, finalLista: () -> Unit) {
 
     //Variable para detectar si el usuario ha llegado al final del scroll
-    val listState = rememberLazyListState()
+    val gridState = rememberLazyGridState()
 
     if (listaAves.isEmpty()) {
         Text(
@@ -113,30 +118,21 @@ fun MostrarAves(navDetPajaro: () -> Unit, filtrarNombre: String, listaAves: List
             fontSize = 20.sp,
             modifier = Modifier.padding(top = 20.dp)
         )
-    } else {
+    }else {
 
+        //Filtramos las aves por nombre
         val avesFiltradas = if (filtrarNombre != "") {
             avesViewModel.filtrarNombre(listaAves, filtrarNombre)
         } else {
             listaAves
         }
 
-        LazyColumn(
-            state = listState,
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.fillMaxSize().padding(top = 10.dp)
-        ) {
-            items(avesFiltradas) { ave ->
-                PajaroItem(ave, navDetPajaro)
-            }
-        }
-
         //Detectar si llegó al final del scroll
         //Cuando se llegan a los 5 últimos elementos la variable se vuelve true
         val cargarMas = remember {
             derivedStateOf {
-                val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-                lastVisible >= listaAves.size - 5
+                val lastVisible = gridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+                lastVisible >= avesFiltradas.size - 3
             }
         }
 
@@ -144,6 +140,20 @@ fun MostrarAves(navDetPajaro: () -> Unit, filtrarNombre: String, listaAves: List
         LaunchedEffect(cargarMas.value) {
             if (cargarMas.value) {
                 finalLista()
+            }
+        }
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            state = gridState,
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 10.dp)
+        ) {
+            items(avesFiltradas) { ave ->
+                PajaroItem(ave, navDetPajaro)
             }
         }
     }
@@ -167,7 +177,8 @@ fun PajaroItem(ave: Bird, navDetPajaro: () -> Unit){
         Text(
             text = ave.name,
             fontSize = 18.sp,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier
+                .padding(8.dp)
                 .fillMaxWidth()
         )
     }
