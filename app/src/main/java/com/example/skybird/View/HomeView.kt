@@ -42,7 +42,7 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit,
         .shadow(4.dp, RoundedCornerShape(50))
 
     val botonColors = ButtonDefaults.buttonColors(
-        containerColor = Color(0xFF5A7391),
+        containerColor = Color(0xFF687054),
         contentColor = Color.White
     )
 

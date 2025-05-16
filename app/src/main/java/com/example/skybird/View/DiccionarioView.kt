@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -40,6 +41,11 @@ import com.example.skybird.Modelo.API.Bird
 import com.example.skybird.Modelo.BBDD.Questions
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 
 @Composable
 fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit, avesViewModel: AvesViewModel){
@@ -128,11 +134,11 @@ fun MostrarAves(navDetPajaro: () -> Unit, filtrarNombre: String, listaAves: List
         }
 
         //Detectar si llegó al final del scroll
-        //Cuando se llegan a los 5 últimos elementos la variable se vuelve true
+        //Cuando se llegan a los 3 últimos pájaros la variable se vuelve true
         val cargarMas = remember {
             derivedStateOf {
                 val lastVisible = gridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-                lastVisible >= avesFiltradas.size - 3
+                lastVisible >= avesFiltradas.size - 10
             }
         }
 
@@ -162,25 +168,44 @@ fun MostrarAves(navDetPajaro: () -> Unit, filtrarNombre: String, listaAves: List
 @Composable
 fun PajaroItem(ave: Bird, navDetPajaro: () -> Unit){
 
-    Button(
-        onClick = {
-            navDetPajaro() },
-        modifier = Modifier
-            .fillMaxWidth()
-            .shadow(8.dp, RoundedCornerShape(16.dp)),
-        shape = RoundedCornerShape(16.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF56658C),
-            contentColor = Color.White
-        )
-    ) {
-        Text(
-            text = ave.name,
-            fontSize = 18.sp,
+    Column() {
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(ave.default_photo?.medium_url)
+                .crossfade(true)
+                .build(),
+            contentDescription = "Imágen del ave " + ave.common_name,
             modifier = Modifier
-                .padding(8.dp)
                 .fillMaxWidth()
+                .height(200.dp),
+            contentScale = ContentScale.FillHeight
         )
+
+        Button(
+            onClick = {
+                navDetPajaro()
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF687054),
+                contentColor = Color.White
+            ),
+            shape = RectangleShape,
+            elevation = ButtonDefaults.elevatedButtonElevation(
+                defaultElevation = 8.dp,
+                pressedElevation = 10.dp
+            )
+        ) {
+            Text(
+                text = ave.name,
+                fontSize = 18.sp,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth()
+            )
+        }
     }
 }
 

@@ -53,6 +53,8 @@ android {
 
 dependencies {
 
+    implementation(libs.coil.compose)
+
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 

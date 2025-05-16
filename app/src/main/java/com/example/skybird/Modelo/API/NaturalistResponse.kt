@@ -10,5 +10,11 @@ data class InatResponse(
 data class Bird(
     val name: String,
     val common_name: String?,
-    val wikipedia_url: String?
+    val wikipedia_url: String?,
+    val default_photo: DefaultPhoto?
+)
+
+data class DefaultPhoto(
+    val square_url: String,
+    val medium_url: String
 )
