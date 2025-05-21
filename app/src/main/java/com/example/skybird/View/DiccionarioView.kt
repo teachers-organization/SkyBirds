@@ -9,23 +9,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,10 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.AvesViewModel
-import com.example.skybird.Controlador.ViewModels.ForoViewModel
 import com.example.skybird.Modelo.API.Bird
-import com.example.skybird.Modelo.BBDD.Questions
-import com.example.skybird.Modelo.BBDD.SkybirdDAO
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
@@ -102,17 +93,14 @@ fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit, avesViewModel: Ave
                 )
             }
 
-            MostrarAves(navDetPajaro, filtrarNombre.value, listaAves, avesViewModel){
-                //Esta función se llama al finalizar el scroll
-                avesViewModel.obtenerAves()
-            }
+            MostrarAves(navDetPajaro, filtrarNombre.value, listaAves, avesViewModel)
 
         }
     }
 }
 
 @Composable
-fun MostrarAves(navDetPajaro: () -> Unit, filtrarNombre: String, listaAves: List<Bird>, avesViewModel: AvesViewModel, finalLista: () -> Unit) {
+fun MostrarAves(navDetPajaro: () -> Unit, filtrarNombre: String, listaAves: List<Bird>, avesViewModel: AvesViewModel) {
 
     //Variable para detectar si el usuario ha llegado al final del scroll
     val gridState = rememberLazyGridState()
@@ -127,11 +115,11 @@ fun MostrarAves(navDetPajaro: () -> Unit, filtrarNombre: String, listaAves: List
     }else {
 
         //Filtramos las aves por nombre
-        val avesFiltradas = if (filtrarNombre != "") {
+        val avesFiltradas = remember { if (filtrarNombre != "") {
             avesViewModel.filtrarNombre(listaAves, filtrarNombre)
         } else {
             listaAves
-        }
+        }}
 
         //Detectar si llegó al final del scroll
         //Cuando se llegan a los 3 últimos pájaros la variable se vuelve true
@@ -145,7 +133,9 @@ fun MostrarAves(navDetPajaro: () -> Unit, filtrarNombre: String, listaAves: List
         //Carga los siguientes elementos de la api
         LaunchedEffect(cargarMas.value) {
             if (cargarMas.value) {
-                finalLista()
+                println(gridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0)
+                println(avesFiltradas.size)
+                avesViewModel.obtenerAves()
             }
         }
 
@@ -183,7 +173,7 @@ fun PajaroItem(ave: Bird, navDetPajaro: () -> Unit){
 
         Button(
             onClick = {
-                navDetPajaro()
+                //navDetPajaro()
             },
             modifier = Modifier
                 .fillMaxWidth()

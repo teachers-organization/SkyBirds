@@ -8,13 +8,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -56,7 +54,7 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 60.dp)
-                .background(color = Color(0xFFA3B18A))
+                .background(color = Color(0xFF8AB19D))
         ) {
             Row(
                 modifier = Modifier

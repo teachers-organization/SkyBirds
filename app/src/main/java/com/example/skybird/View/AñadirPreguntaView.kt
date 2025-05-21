@@ -1,8 +1,6 @@
 package com.example.skybird.View
 
-import android.os.Build
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,9 +30,6 @@ import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.ForoViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
-import com.example.skybird.Modelo.BBDD.Users
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun AñadirPregunta(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, foroViewModel: ForoViewModel, volver: () -> Unit){

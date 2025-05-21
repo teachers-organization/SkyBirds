@@ -1,6 +1,5 @@
 package com.example.skybird.Controlador.ViewModels
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -8,7 +7,6 @@ import com.example.skybird.Modelo.API.RetrofitClient
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewModelScope
 import com.example.skybird.Modelo.API.Bird
-import com.example.skybird.Modelo.BBDD.Questions
 
 class AvesViewModel: ViewModel() {
 
@@ -25,8 +23,9 @@ class AvesViewModel: ViewModel() {
             cargando = true
             viewModelScope.launch {
                 try {
-                    val response = RetrofitClient.inatApi.getBirds(perPage = 20, page = pagina)
+                    val response = RetrofitClient.inatApi.getBirds(perPage = 40, page = pagina)
                     _aves.value += response.results
+                    println(aves.value.size)
                     pagina++
                 } catch (e: Exception) {
                     e.printStackTrace()
