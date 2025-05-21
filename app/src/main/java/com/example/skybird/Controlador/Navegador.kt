@@ -13,6 +13,7 @@ import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 import com.example.skybird.View.AñadirPregunta
 import com.example.skybird.View.Configuracion
+import com.example.skybird.View.DetallesAve
 import com.example.skybird.View.Diccionario
 import com.example.skybird.View.Foro
 import com.example.skybird.View.Home
@@ -60,7 +61,10 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
             ResponderPregunta(SkybirdDAO, volver = { navController.navigate("MostrarPregunta") }, foroViewModel, sesionViewModel)
         }
         composable(route = "DiccionarioAves"){
-            Diccionario(volver = { navController.navigate("Home") }, navDetPajaro = { navController.navigate("Home") }, avesViewModel)
+            Diccionario(volver = { navController.navigate("Home") }, navDetPajaro = { navController.navigate("DetallesAve") }, avesViewModel)
+        }
+        composable(route = "DetallesAve"){
+            DetallesAve(volver = { navController.navigate("DiccionarioAves") }, avesViewModel)
         }
 
     }

@@ -11,3 +11,6 @@ data class WikiSummary(
 data class WikiImage(
     val source: String
 )
+
+
+

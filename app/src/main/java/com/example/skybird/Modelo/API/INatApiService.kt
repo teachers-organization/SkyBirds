@@ -10,6 +10,7 @@ interface InatApiService {
         @Query("rank") rank: String = "species",
         @Query("taxon_id") taxon_id: Int = 3,
         @Query("per_page") perPage: Int = 40,
-        @Query("page") page: Int = 1
+        @Query("page") page: Int = 1,
+        @Query("locale") locale: String = "es"
     ): InatResponse
 }

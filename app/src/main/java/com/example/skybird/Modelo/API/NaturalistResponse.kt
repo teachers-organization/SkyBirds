@@ -9,7 +9,7 @@ data class InatResponse(
 //Cada pájaro tiene nombre, nombre común y link a la wikipedia de donde sacaremos el resto de la información
 data class Bird(
     val name: String,
-    val common_name: String?,
+    val preferred_common_name: String?,
     val wikipedia_url: String?,
     val default_photo: DefaultPhoto?
 )

@@ -149,14 +149,14 @@ fun MostrarAves(navDetPajaro: () -> Unit, filtrarNombre: String, listaAves: List
                 .padding(top = 10.dp)
         ) {
             items(avesFiltradas) { ave ->
-                PajaroItem(ave, navDetPajaro)
+                PajaroItem(ave, navDetPajaro, avesViewModel)
             }
         }
     }
 }
 
 @Composable
-fun PajaroItem(ave: Bird, navDetPajaro: () -> Unit){
+fun PajaroItem(ave: Bird, navDetPajaro: () -> Unit, avesViewModel: AvesViewModel){
 
     Column() {
         AsyncImage(
@@ -164,7 +164,7 @@ fun PajaroItem(ave: Bird, navDetPajaro: () -> Unit){
                 .data(ave.default_photo?.medium_url)
                 .crossfade(true)
                 .build(),
-            contentDescription = "Imágen del ave " + ave.common_name,
+            contentDescription = "Imágen del ave " + ave.preferred_common_name,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp),
@@ -173,7 +173,8 @@ fun PajaroItem(ave: Bird, navDetPajaro: () -> Unit){
 
         Button(
             onClick = {
-                //navDetPajaro()
+                avesViewModel.pajaroActual.value = ave
+                navDetPajaro()
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -188,13 +189,15 @@ fun PajaroItem(ave: Bird, navDetPajaro: () -> Unit){
                 pressedElevation = 10.dp
             )
         ) {
-            Text(
-                text = ave.name,
-                fontSize = 18.sp,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth()
-            )
+            ave.preferred_common_name?.let {
+                Text(
+                    text = it,
+                    fontSize = 18.sp,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                )
+            }
         }
     }
 }
