@@ -377,7 +377,8 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
                         )
                         Row (Modifier.fillMaxWidth()) {
                             Button(
-                                onClick = { sesionViewModel.borrarUsuario(skybirdDAO)
+                                onClick = { sesionViewModel.usuarioActual.value?.let {
+                                    sesionViewModel.borrarUsuario(skybirdDAO, it) }
                                     inicio()
                                 },
                                 colors = ButtonDefaults.buttonColors(

@@ -3,8 +3,12 @@ package com.example.skybird.Controlador.ViewModels
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.skybird.Modelo.BBDD.Questions
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 import com.example.skybird.Modelo.BBDD.Users
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class SesionViewModel : ViewModel() {
@@ -28,7 +32,6 @@ class SesionViewModel : ViewModel() {
                 onResultado(true)
             }
         }
-
     }
 
     fun crearAdmin(skybirdDAO: SkybirdDAO)
@@ -126,10 +129,10 @@ class SesionViewModel : ViewModel() {
     }
 
     //Función para borrar usuario
-    fun borrarUsuario(skybirdDAO: SkybirdDAO){
+    fun borrarUsuario(skybirdDAO: SkybirdDAO, users: Users){
         try {
             viewModelScope.launch {
-                usuarioActual.value?.let { skybirdDAO.deleteUser(it) }
+                skybirdDAO.deleteUser(users)
                 usuarioActual.value = null
             }
         }catch (e: Exception){
@@ -144,6 +147,27 @@ class SesionViewModel : ViewModel() {
         }catch (e: Exception){
             e.printStackTrace()
         }
+    }
+
+    private val _listaUsuarios = MutableStateFlow<List<Users>>(emptyList())
+    val listaUsuarios: StateFlow<List<Users>> = _listaUsuarios
+
+    //Función para obtener todos los usuarios
+    fun obtenerUsuarios(skybirdDAO: SkybirdDAO) {
+        viewModelScope.launch {
+            skybirdDAO.getAllUsers().collect { usuarios ->
+                _listaUsuarios.value = usuarios
+            }
+        }
+    }
+
+    //Función para filtrar por nombre de usuario
+    fun filtrarNombre(lista: List<Users>, texto: String): List<Users> {
+        val listaFiltrada = lista.filter { user ->
+            val regex = Regex(".*${Regex.escape(texto)}.*", RegexOption.IGNORE_CASE)
+            regex.containsMatchIn(user.nombreCompleto)
+        }
+        return listaFiltrada
     }
 
 }

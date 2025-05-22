@@ -32,7 +32,7 @@ import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.R
 
 @Composable
-fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit, inicioSesion: () -> Unit, diccionarioAves: () -> Unit) {
+fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit, inicioSesion: () -> Unit, diccionarioAves: () -> Unit, adminUsers: () -> Unit) {
 
     val botonModifier = Modifier
         .fillMaxWidth()
@@ -40,7 +40,7 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit,
         .shadow(4.dp, RoundedCornerShape(50))
 
     val botonColors = ButtonDefaults.buttonColors(
-        containerColor = Color(0xFF687054),
+        containerColor = Color(0xFFA3B18A),
         contentColor = Color.White
     )
 
@@ -54,7 +54,7 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 60.dp)
-                .background(color = Color(0xFF8AB19D))
+                .background(color = Color(0xFF687054))
         ) {
             Row(
                 modifier = Modifier
@@ -104,6 +104,21 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit,
         ) {
 
             Spacer(modifier = Modifier.height(16.dp))
+
+            if (sesionViewModel.usuarioActual.value?.admin == true){
+                Button(
+                    onClick = { adminUsers() },
+                    shape = RoundedCornerShape(50),
+                    colors = botonColors,
+                    modifier = botonModifier
+                ) {
+                    Text(
+                        text = "Administrar usuarios",
+                        fontSize = 20.sp,
+                        letterSpacing = 0.5.sp
+                    )
+                }
+            }
 
             Button(
                 onClick = { diccionarioAves() },
