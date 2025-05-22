@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.skybird.Controlador.ViewModels.AvesViewModel
+import com.example.skybird.Controlador.ViewModels.AvistamientoViewModel
 import com.example.skybird.Controlador.ViewModels.ForoViewModel
 import com.example.skybird.Controlador.ViewModels.RegistroViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
@@ -19,7 +20,9 @@ import com.example.skybird.View.Diccionario
 import com.example.skybird.View.Foro
 import com.example.skybird.View.Home
 import com.example.skybird.View.InicioSesion
+import com.example.skybird.View.ListaAnillamiento
 import com.example.skybird.View.MostrarPregunta
+import com.example.skybird.View.NuevoAnillamiento
 import com.example.skybird.View.Registro
 import com.example.skybird.View.ResponderPregunta
 
@@ -33,6 +36,7 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
     val sesionViewModel = SesionViewModel()
     val foroViewModel = ForoViewModel()
     val avesViewModel = AvesViewModel()
+    val avistamientoViewModel = AvistamientoViewModel()
 
     NavHost(navController = navController,
         startDestination = "InicioSesion"){
@@ -44,7 +48,7 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
             Registro(SkybirdDAO, registroViewModel, volver = { navController.navigate("InicioSesion") })
         }
         composable(route = "Home"){
-            Home(sesionViewModel, config = { navController.navigate("Configuracion") }, foro = { navController.navigate("Foro") }, inicioSesion = { navController.navigate("InicioSesion") }, diccionarioAves = { navController.navigate("DiccionarioAves") }, adminUsers = { navController.navigate("AdminUsers") })
+            Home(sesionViewModel, config = { navController.navigate("Configuracion") }, foro = { navController.navigate("Foro") }, inicioSesion = { navController.navigate("InicioSesion") }, diccionarioAves = { navController.navigate("DiccionarioAves") }, adminUsers = { navController.navigate("AdminUsers") }, listaAnillamientos = { navController.navigate("ListaAnillamientos") })
         }
         composable(route = "Configuracion"){
             Configuracion(SkybirdDAO, sesionViewModel, volver = { navController.navigate("Home") }, inicio = { navController.navigate("InicioSesion") })
@@ -70,7 +74,12 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
         composable(route = "AdminUsers"){
             AdminUsuarios(volver = { navController.navigate("Home") }, SkybirdDAO, sesionViewModel)
         }
-
+        composable(route = "ListaAnillamientos"){
+            ListaAnillamiento(SkybirdDAO, volver = { navController.navigate("Home") }, sesionViewModel, avistamientoViewModel, nuevoAnilla = { navController.navigate("NuevoAnillamiento") })
+        }
+        composable(route = "NuevoAnillamiento"){
+            NuevoAnillamiento(SkybirdDAO,avesViewModel, avistamientoViewModel, volver = { navController.navigate("ListaAnillamientos") })
+        }
     }
 }
 
