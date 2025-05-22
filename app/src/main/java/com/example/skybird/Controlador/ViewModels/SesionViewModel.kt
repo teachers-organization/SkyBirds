@@ -31,6 +31,23 @@ class SesionViewModel : ViewModel() {
 
     }
 
+    fun crearAdmin(skybirdDAO: SkybirdDAO)
+    {
+        viewModelScope.launch {
+            val userExists = skybirdDAO.getUserByEmailAndPassword("admin@admin.com", "admin")
+            if (userExists == null) {
+                skybirdDAO.insertUser(Users(
+                    id = 0,
+                    nombreCompleto = "admin",
+                    admin = true,
+                    nick = "admin",
+                    email = "admin@admin.com",
+                    psswd = "admin"
+                ))
+            }
+        }
+    }
+
     //Función para cambiar de contraseña
     fun cambiarContrasenya(skybirdDAO: SkybirdDAO,
                            contrasenyaNueva: String,

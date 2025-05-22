@@ -19,6 +19,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -43,6 +44,10 @@ fun InicioSesion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, crear
     val email = remember { mutableStateOf("") }
     val context = LocalContext.current
     val scrollState = rememberScrollState()
+
+    LaunchedEffect(Unit) {
+        sesionViewModel.crearAdmin(skybirdDAO)
+    }
 
     Box(modifier = Modifier
         .fillMaxSize()
