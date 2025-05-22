@@ -21,12 +21,13 @@ object RetrofitClient {
             .create(IWikipediaApiService::class.java)
     }
 
-    val wikipediaMobileApi: IWikipediaDetalles by lazy {
+    val wikipediaHtmlApi: IWikiApiHTMLService by lazy {
         Retrofit.Builder()
-            .baseUrl("https://es.wikipedia.org/api/rest_v1/")
+            .baseUrl("https://es.wikipedia.org/w/rest.php/v1/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(IWikipediaDetalles::class.java)
+            .create(IWikiApiHTMLService::class.java)
     }
+
 
 }

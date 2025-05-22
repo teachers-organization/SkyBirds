@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.skybird.Modelo.API.Bird
 import com.example.skybird.Modelo.API.WikiSummary
 import com.example.skybird.Modelo.BBDD.Users
+import org.jsoup.Jsoup
 
 class AvesViewModel: ViewModel() {
 
@@ -51,23 +52,7 @@ class AvesViewModel: ViewModel() {
             try {
                 val responseGeneral = pajaroActual.value?.let { RetrofitClient.wikipediaApi.getSummary(it.name) }
                 wikiSummary.value = responseGeneral
-
-                val response = pajaroActual.value?.let { it.preferred_common_name?.let { it1 ->
-                    RetrofitClient.wikipediaMobileApi.getMobileSections(
-                        it1
-                    )
-                } }
-                alimentacionText.value = response?.remaining?.sections?.find {
-                    (it.heading!!.contains("Alimentación", ignoreCase = true) ) || (it.heading.contains("Diet", ignoreCase = true))
-                }?.text
-
-                habitatText.value = response?.remaining?.sections?.find {
-                    (it.heading!!.contains("Hábitat", ignoreCase = true)) || (it.heading.contains("Habitat", ignoreCase = true))
-                }?.text
-
-                comportamientoText.value = response?.remaining?.sections?.find {
-                    (it.heading!!.contains("Comportamiento", ignoreCase = true)) || (it.heading.contains("Behavior", ignoreCase = true))
-                }?.text
+                pajaroActual.value?.let { cargarDetallesHTML(it.name) }
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e("WikiMobileAPI", "Error en llamada: ${e.message}", e)
@@ -82,6 +67,59 @@ class AvesViewModel: ViewModel() {
             regex.containsMatchIn(pajaro.name)
         }
         return listaFiltrada
+    }
+
+    fun cargarDetallesHTML(nombreCientifico: String) {
+        viewModelScope.launch {
+            try {
+                val response = RetrofitClient.wikipediaHtmlApi.getHtml(nombreCientifico)
+                if (response.isSuccessful) {
+                    val html = response.body()?.string()
+                    html?.let {
+                        val secciones = extraerSecciones(it)
+                        alimentacionText.value = secciones.entries.find { it.key.contains("Alimentación", true) }?.value
+                        habitatText.value = secciones.entries.find { it.key.contains("Hábitat", true) }?.value
+                        comportamientoText.value = secciones.entries.find { it.key.contains("Comportamiento", true) }?.value
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+
+   //Devuelve un mapa con el nombre de la sección encontrada en el html y su contenido
+    fun extraerSecciones(html: String): Map<String, String> {
+        //Parseamos el html para poder recorrerlo
+        val doc = Jsoup.parse(html)
+        val secciones = mutableMapOf<String, String>()
+       //Le indicamos qué tipo de encabezados vamos a buscar en el html
+        val encabezados = doc.select("h2, h3")
+
+       //Recorremos todos los encabezados h2 y h3 que se encuentren en el html
+        for (i in encabezados.indices) {
+            val encabezado = encabezados[i]
+            val titulo = encabezado.text()
+
+            //Si el encabezado tiene alguno de estos títulos pasamos a obtener su contenido
+            if (titulo.contains("Hábitat", true) || titulo.contains("Alimentación", true) || titulo.contains("Comportamiento", true)) {
+                val contenido = StringBuilder()
+                var siguiente = encabezado.nextElementSibling()
+
+                //Recogemos el contenido hasta llegar al siguiente encabezado o que no haya más texto
+                while (siguiente != null && !siguiente.tagName().startsWith("h2") && !siguiente.tagName().startsWith("h3")) {
+                    if (siguiente.tagName() == "p") {
+                        contenido.append(siguiente.text()).append("\n\n")
+                    }
+                    siguiente = siguiente.nextElementSibling()
+                }
+                //Almacena en el mapa el titulo del encabezado y su contenido
+                secciones[titulo] = contenido.toString().trim()
+            }
+        }
+
+        return secciones
     }
 
 

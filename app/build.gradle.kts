@@ -53,6 +53,8 @@ android {
 
 dependencies {
 
+    implementation(libs.jsoup.jsoup)
+
     implementation(libs.coil.compose)
 
     implementation(libs.retrofit)
