@@ -13,6 +13,14 @@ object RetrofitClient {
             .create(InatApiService::class.java)
     }
 
+    val inatApiSpecies: InatApiSpecieService by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://api.inaturalist.org/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(InatApiSpecieService::class.java)
+    }
+
     val wikipediaApi: IWikipediaApiService by lazy {
         Retrofit.Builder()
             .baseUrl("https://es.wikipedia.org/api/rest_v1/")

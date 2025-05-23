@@ -61,7 +61,43 @@ data class Answers(
     val questionId: Int
 )
 
+@Entity(
+    tableName = "anillamientos",
+    foreignKeys = [
+        ForeignKey(
+            entity = Users::class,
+            parentColumns = ["id"],
+            childColumns = ["userId"],
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = Especie::class,
+            parentColumns = ["id"],
+            childColumns = ["idEspecie"],
+            onDelete = ForeignKey.SET_NULL
+        )
+    ]
+)
+data class Anillamiento(
+    @PrimaryKey
+    val codigoAnillamiento: String,
+    val idEspecie: Int,
+    val fecha: String,
+    val lugar: String,
+    val edad: String? = null,
+    val sexo: String? = null,
+    val peso: String? = null,
+    val ala: String? = null,
+    val observaciones: String? = null,
+    val userId: Int
+)
 
+@Entity(tableName = "especies")
+data class Especie(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val nombre: String
+)
 
 
 

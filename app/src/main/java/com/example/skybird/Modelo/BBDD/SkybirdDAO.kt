@@ -55,4 +55,17 @@ interface SkybirdDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAnswer(answers: Answers)
 
+    //Anillamientos
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertAnillamiento(anillamiento: Anillamiento)
+
+    @Query("SELECT * FROM anillamientos")
+    fun getAllAnillamientos(): Flow<List<Anillamiento>>
+
+    @Delete
+    suspend fun deleteNillamiento(anillamiento: Anillamiento)
+
+    @Query("SELECT * FROM anillamientos WHERE codigoAnillamiento = :query")
+    fun getAnillamientoByCodigo(query: String): Flow<Anillamiento>
+
 }

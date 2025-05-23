@@ -14,3 +14,15 @@ interface InatApiService {
         @Query("locale") locale: String = "es"
     ): InatResponse
 }
+
+interface InatApiSpecieService {
+    @GET("v1/taxa")
+    suspend fun getBirdsByName(
+        @Query("q") query: String,
+        @Query("rank") rank: String = "species",
+        @Query("taxon_id") taxonId: Int = 3,
+        @Query("per_page") perPage: Int = 10,
+        @Query("page") page: Int = 1,
+        @Query("locale") locale: String = "es"
+    ): InatResponse
+}

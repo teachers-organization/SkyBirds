@@ -78,7 +78,7 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
             ListaAnillamiento(SkybirdDAO, volver = { navController.navigate("Home") }, sesionViewModel, avistamientoViewModel, nuevoAnilla = { navController.navigate("NuevoAnillamiento") })
         }
         composable(route = "NuevoAnillamiento"){
-            NuevoAnillamiento(SkybirdDAO,avesViewModel, avistamientoViewModel, volver = { navController.navigate("ListaAnillamientos") })
+            NuevoAnillamiento(SkybirdDAO,avesViewModel, avistamientoViewModel, volver = { navController.navigate("ListaAnillamientos") }, sesionViewModel)
         }
     }
 }

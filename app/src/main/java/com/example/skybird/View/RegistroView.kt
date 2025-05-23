@@ -71,6 +71,15 @@ fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
 
             Spacer(modifier = Modifier.height(40.dp))
 
+            Text(
+                text = "Registro",
+                fontSize = 35.sp,
+                color = Color(0xFF1A2C47),
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(vertical = 16.dp)
+            )
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()
