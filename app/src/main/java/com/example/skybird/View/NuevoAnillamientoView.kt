@@ -2,6 +2,7 @@ package com.example.skybird.View
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -46,7 +48,6 @@ fun NuevoAnillamiento(
     sesionViewModel: SesionViewModel
 ) {
 
-    val especie = remember { mutableStateOf("") }
     val fecha = remember { mutableStateOf("") }
     val lugar = remember { mutableStateOf("") }
     val codigoAnilla = remember { mutableStateOf("") }
@@ -55,6 +56,7 @@ fun NuevoAnillamiento(
     val longitud_ala = remember { mutableStateOf<String?>(null) }
     val peso = remember { mutableStateOf<String?>(null) }
     val observaciones = remember { mutableStateOf<String?>(null) }
+    val especie = remember { mutableStateOf("") }
 
     val scrollState = rememberScrollState()
     val context = LocalContext.current
@@ -129,6 +131,8 @@ fun NuevoAnillamiento(
                         shape = RoundedCornerShape(8.dp),
                         placeholder = { Text("Código de la anilla...", color = Color.Gray) }
                     )
+
+                    especie.value = Desplegable(avistamientoViewModel)
 
                     Text(
                         buildAnnotatedString {
@@ -211,15 +215,6 @@ fun NuevoAnillamiento(
                         }
                     }
 
-                    TextField(
-                        value = sexo.value ?: "",
-                        onValueChange = { sexo.value = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(8.dp),
-                        placeholder = { Text("Sexo...", color = Color.Gray) }
-                    )
-
-
                     Text(
                         text = "Edad",
                         color = Color(0xFF5A7391),
@@ -289,33 +284,37 @@ fun NuevoAnillamiento(
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
-                                avistamientoViewModel.comprobarAnillamiento(
-                                    Anillamiento(
-                                        codigoAnillamiento = codigoAnilla.value,
-                                        especie = especie.value,
-                                        fecha = fecha.value,
-                                        lugar = lugar.value,
-                                        edad = edad.value,
-                                        sexo = sexo.value,
-                                        peso = peso.value,
-                                        ala = longitud_ala.value,
-                                        observaciones = observaciones.value,
-                                        userId = sesionViewModel.usuarioActual.value!!.id
-                                    ),
-                                    skybirdDAO
-                                ) { yaExiste ->
-                                    if (yaExiste) {
-                                        Toast.makeText(
-                                            context,
-                                            "Esta anilla ya ha sido asignada",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    } else {
-                                        Toast.makeText(
-                                            context,
-                                            "Anillamiento registrado correctamente",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                                var numEspecie = 0
+                                avistamientoViewModel.crearEspecie(especie.value, skybirdDAO) { id ->
+                                    numEspecie = id
+                                    avistamientoViewModel.comprobarAnillamiento(
+                                        Anillamiento(
+                                            codigoAnillamiento = codigoAnilla.value,
+                                            numEspecie,
+                                            fecha = fecha.value,
+                                            lugar = lugar.value,
+                                            edad = edad.value,
+                                            sexo = sexo.value,
+                                            peso = peso.value,
+                                            ala = longitud_ala.value,
+                                            observaciones = observaciones.value,
+                                            userId = sesionViewModel.usuarioActual.value!!.id
+                                        ),
+                                        skybirdDAO
+                                    ) { yaExiste ->
+                                        if (yaExiste) {
+                                            Toast.makeText(
+                                                context,
+                                                "Esta anilla ya ha sido asignada",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        } else {
+                                            Toast.makeText(
+                                                context,
+                                                "Anillamiento registrado correctamente",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
                                     }
                                 }
                             }
@@ -334,7 +333,67 @@ fun NuevoAnillamiento(
     }
 }
 
+@Composable
+fun Desplegable(avistamientoViewModel: AvistamientoViewModel): String {
+    val especie = remember { mutableStateOf("") }
+    val expanded = remember { mutableStateOf(false) }
+    val especiesSugeridas = avistamientoViewModel.especies.value
+    val especieInput = especie.value
 
+    Text(
+        buildAnnotatedString {
+            append("Especie")
+            withStyle(style = SpanStyle(color = Color.Red)) {
+                append(" *")
+            }
+        },
+        color = Color(0xFF5A7391),
+        fontSize = 20.sp
+    )
+
+    Column {
+        TextField(
+            value = especieInput,
+            onValueChange = {
+                especie.value = it
+                if (it.isNotEmpty()) {
+                    avistamientoViewModel.buscarEspecies(it)
+                    expanded.value = true
+                } else {
+                    expanded.value = false
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(8.dp),
+            placeholder = { Text("Nombre de la especie...", color = Color.Gray) }
+        )
+
+        if (expanded.value && especiesSugeridas.isNotEmpty()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .shadow(2.dp, shape = RoundedCornerShape(4.dp))
+            ) {
+                especiesSugeridas.take(5).forEach { sugerencia ->
+                    Text(
+                        text = sugerencia,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp)
+                            .background(Color(0xFFF5F5F5))
+                            .clickable {
+                                especie.value = sugerencia
+                                expanded.value = false
+                            }
+                    )
+                }
+            }
+        }
+    }
+    return especie.value
+}
 
 
 

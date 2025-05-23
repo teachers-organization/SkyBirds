@@ -68,4 +68,10 @@ interface SkybirdDAO {
     @Query("SELECT * FROM anillamientos WHERE codigoAnillamiento = :query")
     fun getAnillamientoByCodigo(query: String): Flow<Anillamiento>
 
+    @Query("SELECT * FROM especies WHERE nombre = :query LIMIT 1")
+    fun getEspecieByName(query: String): Flow<Especie>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertEspecie(especie: Especie)
+
 }

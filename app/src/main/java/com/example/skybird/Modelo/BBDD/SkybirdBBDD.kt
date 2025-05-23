@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Users::class, Questions::class, Answers::class, Anillamiento::class, Especie::class], version = 4, exportSchema = false)
+@Database(entities = [Users::class, Questions::class, Answers::class, Anillamiento::class, Especie::class], version = 5, exportSchema = false)
 abstract class SkybirdBBDD : RoomDatabase(){
     abstract fun SkybirdDAO(): SkybirdDAO
     companion object{

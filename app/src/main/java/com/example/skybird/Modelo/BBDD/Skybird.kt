@@ -74,7 +74,7 @@ data class Answers(
             entity = Especie::class,
             parentColumns = ["id"],
             childColumns = ["idEspecie"],
-            onDelete = ForeignKey.SET_NULL
+            onDelete = ForeignKey.RESTRICT
         )
     ]
 )
