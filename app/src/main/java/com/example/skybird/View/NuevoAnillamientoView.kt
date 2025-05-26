@@ -136,7 +136,7 @@ fun NuevoAnillamiento(
 
                     Text(
                         buildAnnotatedString {
-                            append("Fecha")
+                            append("Fecha (dd/MM/yyyy)")
                             withStyle(style = SpanStyle(color = Color.Red)) {
                                 append(" *")
                             }
@@ -149,7 +149,7 @@ fun NuevoAnillamiento(
                         onValueChange = { fecha.value = it },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
-                        placeholder = { Text("Fecha...", color = Color.Gray) }
+                        placeholder = { Text("Fecha(dd/MM/yyyy)...", color = Color.Gray) }
                     )
 
                     Text(
@@ -281,6 +281,12 @@ fun NuevoAnillamiento(
                                 Toast.makeText(
                                     context,
                                     "Los campos con asterisco son OBLIGATORIOS",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }else if(!avistamientoViewModel.esFechaValida(fecha.value)){
+                                Toast.makeText(
+                                    context,
+                                    "Formato o fecha incorrecto",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {

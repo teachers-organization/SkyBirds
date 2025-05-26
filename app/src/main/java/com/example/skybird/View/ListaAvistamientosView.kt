@@ -31,8 +31,8 @@ import com.example.skybird.Modelo.BBDD.Anillamiento
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 
 @Composable
-fun ListaAnillamiento(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewModel: SesionViewModel, avistamientoViewModel: AvistamientoViewModel, nuevoAnilla: () -> Unit, avistamientosAnilla: () -> Unit){
-
+fun ListaAvistamientos(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewModel: SesionViewModel, avistamientoViewModel: AvistamientoViewModel, nuevoAnilla: () -> Unit){
+/*
     val filtrarNumAnilla = remember { mutableStateOf("") }
 
     Box(
@@ -77,7 +77,7 @@ fun ListaAnillamiento(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewMode
                 )
             }
 
-            MostrarAnillas(skybirdDAO, avistamientosAnilla, filtrarNumAnilla.value, avistamientoViewModel)
+            MostrarAnillas(skybirdDAO)
 
         }
 
@@ -137,7 +137,7 @@ fun AnillaItem(anilla: Anillamiento, navDetAnilla: () -> Unit, avistamientoViewM
 
     Button(
         onClick = { avistamientoViewModel.anillaSeleccionada.value = anilla
-                  navDetAnilla() },
+            navDetAnilla() },
         modifier = Modifier
             .fillMaxWidth()
             .shadow(8.dp, RoundedCornerShape(16.dp)),
@@ -153,7 +153,7 @@ fun AnillaItem(anilla: Anillamiento, navDetAnilla: () -> Unit, avistamientoViewM
             modifier = Modifier.padding(8.dp)
                 .fillMaxWidth()
         )
-    }
+    }*/
 }
 
 

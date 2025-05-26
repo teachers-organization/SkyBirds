@@ -21,6 +21,7 @@ import com.example.skybird.View.Foro
 import com.example.skybird.View.Home
 import com.example.skybird.View.InicioSesion
 import com.example.skybird.View.ListaAnillamiento
+import com.example.skybird.View.ListaAvistamientos
 import com.example.skybird.View.MostrarPregunta
 import com.example.skybird.View.NuevoAnillamiento
 import com.example.skybird.View.Registro
@@ -75,10 +76,13 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
             AdminUsuarios(volver = { navController.navigate("Home") }, SkybirdDAO, sesionViewModel)
         }
         composable(route = "ListaAnillamientos"){
-            ListaAnillamiento(SkybirdDAO, volver = { navController.navigate("Home") }, sesionViewModel, avistamientoViewModel, nuevoAnilla = { navController.navigate("NuevoAnillamiento") })
+            ListaAnillamiento(SkybirdDAO, volver = { navController.navigate("Home") }, sesionViewModel, avistamientoViewModel, nuevoAnilla = { navController.navigate("NuevoAnillamiento") }, avistamientosAnilla = { navController.navigate("AvistamientosAnilla") })
         }
         composable(route = "NuevoAnillamiento"){
             NuevoAnillamiento(SkybirdDAO,avesViewModel, avistamientoViewModel, volver = { navController.navigate("ListaAnillamientos") }, sesionViewModel)
+        }
+        composable(route = "AvistamientosAnilla"){
+            ListaAvistamientos(SkybirdDAO, volver = { navController.navigate("Home") }, sesionViewModel, avistamientoViewModel, nuevoAnilla = { navController.navigate("NuevoAnillamiento") })
         }
     }
 }
