@@ -148,7 +148,8 @@ fun InicioSesion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, crear
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Iniciar sesión")
+                        Text("Iniciar sesión",
+                            fontSize = 20.sp)
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -167,7 +168,8 @@ fun InicioSesion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, crear
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Crear cuenta")
+                        Text("Crear cuenta",
+                            fontSize = 20.sp)
                     }
                 }
             }

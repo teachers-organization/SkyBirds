@@ -308,7 +308,8 @@ fun NuevoAvistamiento(
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Registrar")
+                        Text("Registrar",
+                            fontSize = 20.sp)
                     }
                 }
             }

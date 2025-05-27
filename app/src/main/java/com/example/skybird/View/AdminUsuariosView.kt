@@ -169,7 +169,8 @@ fun UsuarioItem(users: Users, sesionViewModel: SesionViewModel, skybirdDAO: Skyb
                     ),
                     modifier = Modifier.padding(2.dp)
                 ) {
-                    Text("Borrar")
+                    Text("Borrar",
+                        fontSize = 20.sp)
                 }
             }
         }

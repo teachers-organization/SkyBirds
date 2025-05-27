@@ -147,7 +147,8 @@ fun AñadirPregunta(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, fo
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Añadir pregunta")
+                        Text("Añadir pregunta",
+                            fontSize = 20.sp)
                     }
 
                 }

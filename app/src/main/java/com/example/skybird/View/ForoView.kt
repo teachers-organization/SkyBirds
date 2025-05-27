@@ -162,7 +162,7 @@ fun PreguntaItem(question: Questions, navDetPregunta: () -> Unit, foroViewModel:
     ) {
         Text(
             text = question.titulo + "\n- " + tiempoFormateado + " -",
-            fontSize = 18.sp,
+            fontSize = 20.sp,
             modifier = Modifier.padding(8.dp)
                 .fillMaxWidth()
         )

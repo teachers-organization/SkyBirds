@@ -230,7 +230,8 @@ fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Darme de alta")
+                        Text(text = "Darme de alta",
+                            fontSize = 20.sp)
                     }
 
                 }

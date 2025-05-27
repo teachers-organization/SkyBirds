@@ -204,7 +204,7 @@ fun PajaroItem(ave: Bird, navDetPajaro: () -> Unit, avesViewModel: AvesViewModel
             ave.preferred_common_name?.let {
                 Text(
                     text = it,
-                    fontSize = 18.sp,
+                    fontSize = 20.sp,
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxWidth()

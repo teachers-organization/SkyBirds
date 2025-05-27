@@ -210,7 +210,8 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Cambiar contraseña")
+                        Text("Cambiar contraseña",
+                            fontSize = 20.sp)
                     }
 
                     HorizontalDivider(
@@ -276,7 +277,8 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Cambiar nombre")
+                        Text("Cambiar nombre",
+                            fontSize = 20.sp)
                     }
 
                     HorizontalDivider(
@@ -342,7 +344,8 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Cambiar nick")
+                        Text("Cambiar nick",
+                            fontSize = 20.sp)
                     }
 
                     HorizontalDivider(
@@ -376,7 +379,8 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
                             ),
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text("Borrar cuenta")
+                            Text("Borrar cuenta",
+                                fontSize = 20.sp)
                         }
                     }else{
                         Text(
@@ -400,7 +404,8 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
                                 modifier = Modifier.weight(1f)
                                     .padding(2.dp)
                             ) {
-                                Text("Sí, borrar")
+                                Text("Sí, borrar",
+                                    fontSize = 20.sp)
                             }
                             Button(
                                 onClick = { comprobarBorrar.value = false
@@ -412,7 +417,8 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
                                 modifier = Modifier.weight(1f)
                                     .padding(2.dp)
                             ) {
-                                Text("No")
+                                Text("No",
+                                    fontSize = 20.sp)
                             }
                         }
                     }

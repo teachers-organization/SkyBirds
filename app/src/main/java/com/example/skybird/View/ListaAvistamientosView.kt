@@ -94,7 +94,8 @@ fun ListaAvistamientos(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewMod
                     .padding(30.dp)
             ) {
                 Text(
-                    text = "Nuevo avistamiento"
+                    text = "Nuevo avistamiento",
+                    fontSize = 20.sp
                 )
             }
         }
@@ -182,14 +183,14 @@ fun AvistamientoItem(avistamiento: Avistamiento, navDetAvistamiento: () -> Unit,
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = avistamiento.fecha,
-                fontSize = 18.sp,
+                fontSize = 20.sp,
                 modifier = Modifier
                     .padding(8.dp)
                     .fillMaxWidth()
             )
             Text(
                 text = avistamiento.lugar,
-                fontSize = 18.sp,
+                fontSize = 20.sp,
                 modifier = Modifier
                     .padding(horizontal = 8.dp, vertical = 0.dp)
                     .fillMaxWidth()

@@ -86,7 +86,7 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit,
 
                 Text(
                     text = sesionViewModel.usuarioActual.value?.nick ?: "Sin nombre",
-                    fontSize = 24.sp,
+                    fontSize = 30.sp,
                     color = Color.White,
                     modifier = Modifier.padding(horizontal = 16.dp),
                     letterSpacing = 0.5.sp
@@ -131,17 +131,13 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit,
 
             Button(
                 onClick = { diccionarioAves() },
-                shape = RoundedCornerShape(40.dp),
+                shape = RoundedCornerShape(50),
                 colors = botonColors,
-                elevation = ButtonDefaults.elevatedButtonElevation(8.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
+                modifier = botonModifier
             ) {
                 Text(
                     text = "Diccionario de aves",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontSize = 20.sp,
                     letterSpacing = 0.5.sp
                 )
             }

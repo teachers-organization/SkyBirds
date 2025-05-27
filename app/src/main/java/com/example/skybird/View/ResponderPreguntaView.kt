@@ -133,7 +133,8 @@ fun ResponderPregunta(skybirdDAO: SkybirdDAO, volver: () -> Unit, foroViewModel:
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Responder")
+                        Text("Responder",
+                            fontSize = 20.sp)
                     }
                 }
             }

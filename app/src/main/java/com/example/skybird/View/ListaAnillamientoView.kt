@@ -106,7 +106,8 @@ fun ListaAnillamiento(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewMode
                     .padding(30.dp)
             ) {
                 Text(
-                    text = "Nuevo anillamiento"
+                    text = "Nuevo anillamiento",
+                            fontSize = 20.sp
                 )
             }
         }
@@ -161,7 +162,7 @@ fun AnillaItem(anilla: Anillamiento, navDetAnilla: () -> Unit, avistamientoViewM
     ) {
         Text(
             text = anilla.codigoAnillamiento,
-            fontSize = 18.sp,
+            fontSize = 20.sp,
             modifier = Modifier.padding(8.dp)
                 .fillMaxWidth()
         )
