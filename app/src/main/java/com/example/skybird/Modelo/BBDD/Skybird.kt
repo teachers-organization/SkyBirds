@@ -99,8 +99,29 @@ data class Especie(
     val nombre: String
 )
 
-
-
-
+@Entity(
+    tableName = "avistamientos",
+    foreignKeys = [
+        ForeignKey(
+            entity = Anillamiento::class,
+            parentColumns = ["codigoAnillamiento"],
+            childColumns = ["codigoAnillamiento"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
+data class Avistamiento(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val codigoAnillamiento: String,
+    val fecha: String,
+    val lugar: String,
+    val edad: String? = null,
+    val sexo: String? = null,
+    val peso: String? = null,
+    val ala: String? = null,
+    val observaciones: String? = null,
+    val userId: Int
+)
 
 

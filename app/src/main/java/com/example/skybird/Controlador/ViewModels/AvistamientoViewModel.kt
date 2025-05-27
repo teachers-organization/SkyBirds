@@ -1,10 +1,12 @@
 package com.example.skybird.Controlador.ViewModels
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.skybird.Modelo.API.RetrofitClient.inatApiSpecies
 import com.example.skybird.Modelo.BBDD.Anillamiento
+import com.example.skybird.Modelo.BBDD.Avistamiento
 import com.example.skybird.Modelo.BBDD.Especie
 import com.example.skybird.Modelo.BBDD.Questions
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
@@ -21,6 +23,9 @@ class AvistamientoViewModel: ViewModel() {
     //Almacenar la anilla seleccionada
     var anillaSeleccionada = mutableStateOf<Anillamiento?>(null)
 
+    //Almacenar el avistamiento seleccionado
+    var avistamientoSeleccionado = mutableStateOf<Avistamiento?>(null)
+
     var listaAnillas = MutableStateFlow<List<Anillamiento>>(emptyList())
 
     fun obtenerAnillas(skybirdDAO: SkybirdDAO): StateFlow<List<Anillamiento>> {
@@ -28,6 +33,15 @@ class AvistamientoViewModel: ViewModel() {
             listaAnillas.value = skybirdDAO.getAllAnillamientos().first()
         }
         return listaAnillas
+    }
+
+    var listaAvistamientos = MutableStateFlow<List<Avistamiento>>(emptyList())
+
+    fun obtenerAvistamientos(skybirdDAO: SkybirdDAO): StateFlow<List<Avistamiento>> {
+        viewModelScope.launch {
+            listaAvistamientos.value = skybirdDAO.getAllAvistamientosByCodAnill(anillaSeleccionada.value!!.codigoAnillamiento).first()
+        }
+        return listaAvistamientos
     }
 
     //Función para filtrar por anilla
@@ -55,8 +69,6 @@ class AvistamientoViewModel: ViewModel() {
             }
         }
     }
-
-    var numId = mutableStateOf<Int?>(null)
 
     //Crear especie
     fun crearEspecie(
@@ -105,6 +117,34 @@ class AvistamientoViewModel: ViewModel() {
             true
         } catch (e: Exception) {
             false
+        }
+    }
+
+    fun crearAvistamiento(
+        avistamiento: Avistamiento,
+        skybirdDAO: SkybirdDAO,
+        onResultado: (Boolean) -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                skybirdDAO.insertAvistamiento(avistamiento)
+                onResultado(true)
+            }catch (e: Exception){
+                onResultado(false)
+            }
+        }
+    }
+
+    var especieRecogida = mutableStateOf("")
+
+    fun buscarEspecieId(skybirdDAO: SkybirdDAO){
+        viewModelScope.launch {
+            try {
+                val especie = anillaSeleccionada.value?.let { skybirdDAO.getEspecieById(it.idEspecie).firstOrNull() }
+                especieRecogida.value = especie?.nombre ?: "desconocida"
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
         }
     }
 

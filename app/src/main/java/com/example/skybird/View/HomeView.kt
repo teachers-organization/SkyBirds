@@ -54,7 +54,7 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 60.dp)
-                .background(color = Color(0xFF687054))
+                .background(color = Color(0xFF56658C))
         ) {
             Row(
                 modifier = Modifier

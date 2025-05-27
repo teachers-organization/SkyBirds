@@ -71,7 +71,20 @@ interface SkybirdDAO {
     @Query("SELECT * FROM especies WHERE nombre = :query LIMIT 1")
     fun getEspecieByName(query: String): Flow<Especie>
 
+    @Query("SELECT * FROM especies WHERE id = :query")
+    fun getEspecieById(query: Int): Flow<Especie>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertEspecie(especie: Especie)
+
+    //Avistamientos
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertAvistamiento(avistamiento: Avistamiento)
+
+    @Query("SELECT * FROM avistamientos")
+    fun getAllAvistamientos(): Flow<List<Avistamiento>>
+
+    @Query("SELECT * FROM avistamientos WHERE codigoAnillamiento = :query")
+    fun getAllAvistamientosByCodAnill(query: String): Flow<List<Avistamiento>>
 
 }

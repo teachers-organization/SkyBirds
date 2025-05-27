@@ -103,7 +103,7 @@ fun ListaAnillamiento(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewMode
 
 @Composable
 fun MostrarAnillas(skybirdDAO: SkybirdDAO, navDetAnilla: () -> Unit, filtrarNumAnilla: String, avistamientoViewModel: AvistamientoViewModel) {
-    //Obtenemos todas las dudas almacenadas en la base de datos
+    //Obtenemos todas las anillas almacenadas en la base de datos
     var listaAnillas = avistamientoViewModel.obtenerAnillas(skybirdDAO).collectAsState(initial = emptyList()).value
 
     if (listaAnillas.isEmpty()) {

@@ -16,6 +16,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,12 +29,11 @@ import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.AvistamientoViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Modelo.BBDD.Anillamiento
+import com.example.skybird.Modelo.BBDD.Avistamiento
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 
 @Composable
-fun ListaAvistamientos(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewModel: SesionViewModel, avistamientoViewModel: AvistamientoViewModel, nuevoAnilla: () -> Unit){
-/*
-    val filtrarNumAnilla = remember { mutableStateOf("") }
+fun ListaAvistamientos(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewModel: SesionViewModel, avistamientoViewModel: AvistamientoViewModel, nuevoAvistamiento: () -> Unit, navDetAvistamiento: () -> Unit){
 
     Box(
         modifier = Modifier
@@ -58,7 +58,7 @@ fun ListaAvistamientos(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewMod
             }
 
             Text(
-                text = "Anillas",
+                text = "Avistamientos",
                 fontSize = 35.sp,
                 color = Color(0xFF1A2C47),
                 modifier = Modifier
@@ -66,24 +66,12 @@ fun ListaAvistamientos(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewMod
                     .padding(vertical = 16.dp)
             )
 
-            Row(Modifier.fillMaxWidth()) {
-                TextField(
-                    value = filtrarNumAnilla.value,
-                    onValueChange = { filtrarNumAnilla.value = it },
-                    modifier = Modifier.weight(1f)
-                        .padding(2.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    placeholder = { Text("Filtrar por número de anilla...", color = Color.Gray) }
-                )
-            }
-
-            MostrarAnillas(skybirdDAO)
-
+                MostrarAvistamientos(skybirdDAO, navDetAvistamiento, avistamientoViewModel)
         }
 
         if (sesionViewModel.usuarioActual.value?.admin == true) {
             Button(
-                onClick = { nuevoAnilla() },
+                onClick = { nuevoAvistamiento() },
                 shape = RoundedCornerShape(50),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFA3B18A),
@@ -94,7 +82,7 @@ fun ListaAvistamientos(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewMod
                     .padding(30.dp)
             ) {
                 Text(
-                    text = "Nuevo anillamiento"
+                    text = "Nuevo avistamiento"
                 )
             }
         }
@@ -102,21 +90,53 @@ fun ListaAvistamientos(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewMod
 }
 
 @Composable
-fun MostrarAnillas(skybirdDAO: SkybirdDAO, navDetAnilla: () -> Unit, filtrarNumAnilla: String, avistamientoViewModel: AvistamientoViewModel) {
-    //Obtenemos todas las dudas almacenadas en la base de datos
-    var listaAnillas = avistamientoViewModel.obtenerAnillas(skybirdDAO).collectAsState(initial = emptyList()).value
+fun MostrarAvistamientos(skybirdDAO: SkybirdDAO, navDetAvistamiento: () -> Unit, avistamientoViewModel: AvistamientoViewModel) {
+    //Obtenemos todos los avistamientos almacenados en la base de datos
+    var listaAvistamientos = avistamientoViewModel.obtenerAvistamientos(skybirdDAO).collectAsState(initial = emptyList()).value
 
-    if (listaAnillas.isEmpty()) {
+    avistamientoViewModel.buscarEspecieId(skybirdDAO)
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(12.dp)
+            .shadow(6.dp, shape = RoundedCornerShape(16.dp))
+            .background(color = Color(0xFFDCEAF5), shape = RoundedCornerShape(16.dp))
+            .padding(20.dp)
+        ) {
+        Column(Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Text(
+                text = "Código: " + avistamientoViewModel.anillaSeleccionada.value?.codigoAnillamiento,
+                fontSize = 24.sp,
+                color = Color(0xFF1A2C47)
+            )
+            Text(
+                text = "Especie: " + avistamientoViewModel.especieRecogida.value,
+                fontSize = 16.sp,
+                color = Color(0xFF2E2E2E)
+            )
+            Text(
+                text = "Lugar de anillamiento: " + avistamientoViewModel.anillaSeleccionada.value?.lugar,
+                fontSize = 16.sp,
+                color = Color(0xFF2E2E2E)
+            )
+            Text(
+                text = "Fecha de anillamiento: " + avistamientoViewModel.anillaSeleccionada.value?.fecha,
+                fontSize = 16.sp,
+                color = Color(0xFF2E2E2E)
+            )
+        }
+    }
+
+    if (listaAvistamientos.isEmpty()) {
         Text(
-            text = "Todavía no hay anillamientos",
+            text = "Todavía no hay avistamientos",
             color = Color.Black,
             fontSize = 20.sp,
             modifier = Modifier.padding(top = 20.dp)
         )
     } else {
-        if (filtrarNumAnilla != ""){
-            listaAnillas = avistamientoViewModel.filtrarAnillamientos(listaAnillas, filtrarNumAnilla)
-        }
 
         Column(
             modifier = Modifier
@@ -125,19 +145,19 @@ fun MostrarAnillas(skybirdDAO: SkybirdDAO, navDetAnilla: () -> Unit, filtrarNumA
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            listaAnillas.forEach { anilla ->
-                AnillaItem(anilla, navDetAnilla, avistamientoViewModel)
+            listaAvistamientos.forEach { avistamiento ->
+                AvistamientoItem(avistamiento, navDetAvistamiento, avistamientoViewModel)
             }
         }
     }
 }
 
 @Composable
-fun AnillaItem(anilla: Anillamiento, navDetAnilla: () -> Unit, avistamientoViewModel: AvistamientoViewModel){
+fun AvistamientoItem(avistamiento: Avistamiento, navDetAvistamiento: () -> Unit, avistamientoViewModel: AvistamientoViewModel){
 
     Button(
-        onClick = { avistamientoViewModel.anillaSeleccionada.value = anilla
-            navDetAnilla() },
+        onClick = { avistamientoViewModel.avistamientoSeleccionado.value = avistamiento
+            navDetAvistamiento() },
         modifier = Modifier
             .fillMaxWidth()
             .shadow(8.dp, RoundedCornerShape(16.dp)),
@@ -147,13 +167,23 @@ fun AnillaItem(anilla: Anillamiento, navDetAnilla: () -> Unit, avistamientoViewM
             contentColor = Color.White
         )
     ) {
-        Text(
-            text = anilla.codigoAnillamiento,
-            fontSize = 18.sp,
-            modifier = Modifier.padding(8.dp)
-                .fillMaxWidth()
-        )
-    }*/
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = avistamiento.fecha,
+                fontSize = 18.sp,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth()
+            )
+            Text(
+                text = avistamiento.lugar,
+                fontSize = 18.sp,
+                modifier = Modifier
+                    .padding(horizontal = 8.dp, vertical = 0.dp)
+                    .fillMaxWidth()
+            )
+        }
+    }
 }
 
 
