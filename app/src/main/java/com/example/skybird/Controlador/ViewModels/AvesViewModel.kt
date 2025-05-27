@@ -25,7 +25,6 @@ class AvesViewModel : ViewModel() {
     val comportamientoText = mutableStateOf<String?>(null)
 
     private var pagina = 1
-
     //Esta variable sirve para no lanzar varias llamadas a la api a la vez
     //Controla si todavía hay una llamada a la api para no poder hacer otra a la vez
     private var cargando = false
@@ -64,11 +63,16 @@ class AvesViewModel : ViewModel() {
 
     //Función para filtrar por nombre del ave
     fun filtrarNombre(lista: List<Bird>, texto: String): List<Bird> {
-        val listaFiltrada = lista.filter { pajaro ->
+        return try {
             val regex = Regex(".*${Regex.escape(texto)}.*", RegexOption.IGNORE_CASE)
-            regex.containsMatchIn(pajaro.name)
+            lista.filter { pajaro ->
+                pajaro.preferred_common_name?.let { nombre ->
+                    regex.containsMatchIn(nombre)
+                } ?: false //si es null, lo excluye de la lista
+            }
+        } catch (e: Exception) {
+            emptyList()
         }
-        return listaFiltrada
     }
 
     fun cargarDetallesHTML(nombreCientifico: String) {

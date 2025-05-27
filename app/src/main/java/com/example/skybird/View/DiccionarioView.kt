@@ -49,6 +49,7 @@ fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit, avesViewModel: Ave
     val filtrarNombre = remember { mutableStateOf("") }
     //Observamos la variable para que cuando la corrutina termine nos devuelve la lista de aves
     val listaAves by avesViewModel.aves
+    //val listaAves = avesViewModel.aves.value
 
     //Llamamos a obtenerAves solo una vez al entrar en la pantalla
     LaunchedEffect(Unit) {
@@ -132,12 +133,10 @@ fun MostrarAves(
     } else {
 
         //Filtramos las aves por nombre
-        val avesFiltradas = remember {
-            if (filtrarNombre != "") {
-                avesViewModel.filtrarNombre(listaAves, filtrarNombre)
-            } else {
-                listaAves
-            }
+        val avesFiltradas = if (filtrarNombre != "") {
+            avesViewModel.filtrarNombre(listaAves, filtrarNombre)
+        } else {
+            listaAves
         }
 
         //Detectar si llegó al final del scroll
