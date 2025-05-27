@@ -1,14 +1,12 @@
 package com.example.skybird.Controlador.ViewModels
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.skybird.Modelo.API.RetrofitClient.inatApiSpecies
 import com.example.skybird.Modelo.BBDD.Anillamiento
 import com.example.skybird.Modelo.BBDD.Avistamiento
 import com.example.skybird.Modelo.BBDD.Especie
-import com.example.skybird.Modelo.BBDD.Questions
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +16,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class AvistamientoViewModel: ViewModel() {
+class AvistamientoViewModel : ViewModel() {
 
     //Almacenar la anilla seleccionada
     var anillaSeleccionada = mutableStateOf<Anillamiento?>(null)
@@ -39,7 +37,9 @@ class AvistamientoViewModel: ViewModel() {
 
     fun obtenerAvistamientos(skybirdDAO: SkybirdDAO): StateFlow<List<Avistamiento>> {
         viewModelScope.launch {
-            listaAvistamientos.value = skybirdDAO.getAllAvistamientosByCodAnill(anillaSeleccionada.value!!.codigoAnillamiento).first()
+            listaAvistamientos.value =
+                skybirdDAO.getAllAvistamientosByCodAnill(anillaSeleccionada.value!!.codigoAnillamiento)
+                    .first()
         }
         return listaAvistamientos
     }
@@ -60,7 +60,8 @@ class AvistamientoViewModel: ViewModel() {
         onResultado: (Boolean) -> Unit
     ) {
         viewModelScope.launch {
-            val anillaExists = skybirdDAO.getAnillamientoByCodigo(anillamiento.codigoAnillamiento).firstOrNull()
+            val anillaExists =
+                skybirdDAO.getAnillamientoByCodigo(anillamiento.codigoAnillamiento).firstOrNull()
             if (anillaExists == null) {
                 skybirdDAO.insertAnillamiento(anillamiento)
                 onResultado(false)
@@ -129,7 +130,7 @@ class AvistamientoViewModel: ViewModel() {
             try {
                 skybirdDAO.insertAvistamiento(avistamiento)
                 onResultado(true)
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 onResultado(false)
             }
         }
@@ -137,12 +138,14 @@ class AvistamientoViewModel: ViewModel() {
 
     var especieRecogida = mutableStateOf("")
 
-    fun buscarEspecieId(skybirdDAO: SkybirdDAO){
+    fun buscarEspecieId(skybirdDAO: SkybirdDAO) {
         viewModelScope.launch {
             try {
-                val especie = anillaSeleccionada.value?.let { skybirdDAO.getEspecieById(it.idEspecie).firstOrNull() }
+                val especie = anillaSeleccionada.value?.let {
+                    skybirdDAO.getEspecieById(it.idEspecie).firstOrNull()
+                }
                 especieRecogida.value = especie?.nombre ?: "desconocida"
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }

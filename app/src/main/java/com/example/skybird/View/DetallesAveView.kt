@@ -1,6 +1,5 @@
 package com.example.skybird.View
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -37,7 +36,7 @@ import coil.request.ImageRequest
 import com.example.skybird.Controlador.ViewModels.AvesViewModel
 
 @Composable
-fun DetallesAve(volver: () -> Unit, avesViewModel: AvesViewModel){
+fun DetallesAve(volver: () -> Unit, avesViewModel: AvesViewModel) {
 
     LaunchedEffect(Unit) {
         avesViewModel.cargarInfoAve()
@@ -79,7 +78,7 @@ fun DetallesAve(volver: () -> Unit, avesViewModel: AvesViewModel){
 }
 
 @Composable
-fun MostrarDetallesAve(avesViewModel: AvesViewModel){
+fun MostrarDetallesAve(avesViewModel: AvesViewModel) {
 
     val scrollState = rememberScrollState()
     val primaryGreen = Color(0xFF2C6E49)
@@ -174,7 +173,7 @@ fun Section(
     ) {
         Text(
             text = title,
-            fontSize = 20.sp,
+            fontSize = 25.sp,
             color = titleColor,
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 6.dp)
@@ -186,7 +185,7 @@ fun Section(
         ) {
             Text(
                 text = content,
-                fontSize = 15.sp,
+                fontSize = 20.sp,
                 color = contentColor,
                 modifier = Modifier.padding(14.dp),
                 style = MaterialTheme.typography.bodyMedium

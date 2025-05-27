@@ -37,7 +37,13 @@ import com.example.skybird.Modelo.BBDD.SkybirdDAO
 import kotlinx.coroutines.flow.firstOrNull
 
 @Composable
-fun MostrarPregunta(skybirdDAO: SkybirdDAO, volver: () -> Unit, foroViewModel: ForoViewModel, sesionViewModel: SesionViewModel, responder: () -> Unit) {
+fun MostrarPregunta(
+    skybirdDAO: SkybirdDAO,
+    volver: () -> Unit,
+    foroViewModel: ForoViewModel,
+    sesionViewModel: SesionViewModel,
+    responder: () -> Unit
+) {
 
     val esAutor = foroViewModel.esAutorPregunta(sesionViewModel)
 
@@ -84,10 +90,12 @@ fun MostrarPregunta(skybirdDAO: SkybirdDAO, volver: () -> Unit, foroViewModel: F
                 .align(Alignment.BottomStart)
                 .padding(30.dp)
         ) {
-            Text(text = "Responder",
-                fontSize = 20.sp)
+            Text(
+                text = "Responder",
+                fontSize = 20.sp
+            )
         }
-        if (esAutor || sesionViewModel.usuarioActual.value!!.admin){
+        if (esAutor || sesionViewModel.usuarioActual.value!!.admin) {
             Button(
                 onClick = {
                     foroViewModel.borrarPregunta(skybirdDAO)
@@ -102,20 +110,27 @@ fun MostrarPregunta(skybirdDAO: SkybirdDAO, volver: () -> Unit, foroViewModel: F
                     .align(Alignment.BottomEnd)
                     .padding(30.dp)
             ) {
-                Text(text = "Borrar",
-                    fontSize = 20.sp)
+                Text(
+                    text = "Borrar",
+                    fontSize = 20.sp
+                )
             }
         }
     }
 }
 
 @Composable
-fun MostrarDudaYRespuestas(foroViewModel: ForoViewModel, skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel){
+fun MostrarDudaYRespuestas(
+    foroViewModel: ForoViewModel,
+    skybirdDAO: SkybirdDAO,
+    sesionViewModel: SesionViewModel
+) {
 
     val pregunta = foroViewModel.preguntaSeleccionada.value
     val creador = foroViewModel.obtenerCreador(skybirdDAO)
     //Obtenemos todas las respuestas almacenadas en la base de datos para esa pregunta
-    var listaRespuestas = foroViewModel.obtenerRespuestas(skybirdDAO).collectAsState(initial = emptyList()).value
+    var listaRespuestas =
+        foroViewModel.obtenerRespuestas(skybirdDAO).collectAsState(initial = emptyList()).value
 
     Column(
         modifier = Modifier
@@ -130,8 +145,10 @@ fun MostrarDudaYRespuestas(foroViewModel: ForoViewModel, skybirdDAO: SkybirdDAO,
                 .background(color = Color(0xFFDCEAF5), shape = RoundedCornerShape(16.dp))
                 .padding(20.dp)
         ) {
-            Column(Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Column(
+                Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
                 Text(
                     text = pregunta?.titulo ?: "Sin título",
                     fontSize = 24.sp,
@@ -195,7 +212,12 @@ fun MostrarDudaYRespuestas(foroViewModel: ForoViewModel, skybirdDAO: SkybirdDAO,
 }
 
 @Composable
-fun RespuestaItem(answer: Answers, foroViewModel: ForoViewModel, skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel){
+fun RespuestaItem(
+    answer: Answers,
+    foroViewModel: ForoViewModel,
+    skybirdDAO: SkybirdDAO,
+    sesionViewModel: SesionViewModel
+) {
     val creador = remember { mutableStateOf("Cargando...") }
     val esAutor = foroViewModel.esAutorRespuesta(sesionViewModel, answer)
 
@@ -237,7 +259,7 @@ fun RespuestaItem(answer: Answers, foroViewModel: ForoViewModel, skybirdDAO: Sky
                 color = Color.Gray,
                 modifier = Modifier.align(Alignment.End)
             )
-            if (esAutor || sesionViewModel.usuarioActual.value!!.admin){
+            if (esAutor || sesionViewModel.usuarioActual.value!!.admin) {
                 Button(
                     onClick = {
                         foroViewModel.borrarRespuesta(skybirdDAO, answer)
@@ -250,8 +272,10 @@ fun RespuestaItem(answer: Answers, foroViewModel: ForoViewModel, skybirdDAO: Sky
                     modifier = Modifier
                         .padding(3.dp)
                 ) {
-                    Text(text = "Borrar",
-                        fontSize = 15.sp)
+                    Text(
+                        text = "Borrar",
+                        fontSize = 15.sp
+                    )
                 }
             }
         }

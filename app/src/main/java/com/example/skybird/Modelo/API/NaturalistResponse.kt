@@ -21,14 +21,3 @@ data class DefaultPhoto(
 
 
 
-data class InatResponseSpecies(
-    val results: List<Bird>
-)
-
-data class BirdSpecies(
-    val name: String,
-    val preferred_common_name: String?
-)
-
-
-

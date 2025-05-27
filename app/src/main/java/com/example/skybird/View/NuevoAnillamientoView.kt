@@ -24,7 +24,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -37,7 +36,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.skybird.Controlador.ViewModels.AvesViewModel
 import com.example.skybird.Controlador.ViewModels.AvistamientoViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Modelo.BBDD.Anillamiento
@@ -293,7 +291,7 @@ fun NuevoAnillamiento(
                                     "Los campos con asterisco son OBLIGATORIOS",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                            }else if(!avistamientoViewModel.esFechaValida(fecha.value)){
+                            } else if (!avistamientoViewModel.esFechaValida(fecha.value)) {
                                 Toast.makeText(
                                     context,
                                     "Formato o fecha incorrecto",
@@ -301,7 +299,10 @@ fun NuevoAnillamiento(
                                 ).show()
                             } else {
                                 var numEspecie = 0
-                                avistamientoViewModel.crearEspecie(especie.value, skybirdDAO) { id ->
+                                avistamientoViewModel.crearEspecie(
+                                    especie.value,
+                                    skybirdDAO
+                                ) { id ->
                                     numEspecie = id
                                     avistamientoViewModel.comprobarAnillamiento(
                                         Anillamiento(
@@ -341,8 +342,10 @@ fun NuevoAnillamiento(
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Registrar",
-                            fontSize = 20.sp)
+                        Text(
+                            "Registrar",
+                            fontSize = 20.sp
+                        )
                     }
                 }
             }

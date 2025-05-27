@@ -37,7 +37,12 @@ import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 
 @Composable
-fun AñadirPregunta(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, foroViewModel: ForoViewModel, volver: () -> Unit){
+fun AñadirPregunta(
+    skybirdDAO: SkybirdDAO,
+    sesionViewModel: SesionViewModel,
+    foroViewModel: ForoViewModel,
+    volver: () -> Unit
+) {
 
     val scrollState = rememberScrollState()
     val titulo = remember { mutableStateOf("") }
@@ -124,19 +129,31 @@ fun AñadirPregunta(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, fo
 
                     Button(
                         onClick = {
-                            if(listOf(titulo, contenido).any { it.value.isBlank() }){
-                                Toast.makeText(context, "Por favor, rellene todos los campos", Toast.LENGTH_SHORT).show()
-                            }else{
+                            if (listOf(titulo, contenido).any { it.value.isBlank() }) {
+                                Toast.makeText(
+                                    context,
+                                    "Por favor, rellene todos los campos",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
                                 foroViewModel.crearPregunta(
                                     skybirdDAO,
                                     titulo.value,
                                     contenido.value,
                                     sesionViewModel.usuarioActual.value!!
-                                ){ correcto ->
-                                    if (correcto){
-                                        Toast.makeText(context, "Pregunta añadida correctamente al foro", Toast.LENGTH_SHORT).show()
-                                    }else{
-                                        Toast.makeText(context, "Error al añadir la pregunta al foro", Toast.LENGTH_SHORT).show()
+                                ) { correcto ->
+                                    if (correcto) {
+                                        Toast.makeText(
+                                            context,
+                                            "Pregunta añadida correctamente al foro",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } else {
+                                        Toast.makeText(
+                                            context,
+                                            "Error al añadir la pregunta al foro",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
                                 }
                             }
@@ -147,8 +164,10 @@ fun AñadirPregunta(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, fo
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Añadir pregunta",
-                            fontSize = 20.sp)
+                        Text(
+                            "Añadir pregunta",
+                            fontSize = 20.sp
+                        )
                     }
 
                 }

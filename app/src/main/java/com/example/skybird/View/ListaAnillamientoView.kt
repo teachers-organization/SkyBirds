@@ -36,7 +36,14 @@ import com.example.skybird.Modelo.BBDD.Anillamiento
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 
 @Composable
-fun ListaAnillamiento(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewModel: SesionViewModel, avistamientoViewModel: AvistamientoViewModel, nuevoAnilla: () -> Unit, avistamientosAnilla: () -> Unit){
+fun ListaAnillamiento(
+    skybirdDAO: SkybirdDAO,
+    volver: () -> Unit,
+    sesionViewModel: SesionViewModel,
+    avistamientoViewModel: AvistamientoViewModel,
+    nuevoAnilla: () -> Unit,
+    avistamientosAnilla: () -> Unit
+) {
 
     val filtrarNumAnilla = remember { mutableStateOf("") }
 
@@ -82,14 +89,20 @@ fun ListaAnillamiento(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewMode
                 TextField(
                     value = filtrarNumAnilla.value,
                     onValueChange = { filtrarNumAnilla.value = it },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
+                        .weight(1f)
                         .padding(2.dp),
                     shape = RoundedCornerShape(8.dp),
                     placeholder = { Text("Filtrar por número de anilla...", color = Color.Gray) }
                 )
             }
 
-            MostrarAnillas(skybirdDAO, avistamientosAnilla, filtrarNumAnilla.value, avistamientoViewModel)
+            MostrarAnillas(
+                skybirdDAO,
+                avistamientosAnilla,
+                filtrarNumAnilla.value,
+                avistamientoViewModel
+            )
 
         }
 
@@ -107,7 +120,7 @@ fun ListaAnillamiento(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewMode
             ) {
                 Text(
                     text = "Nuevo anillamiento",
-                            fontSize = 20.sp
+                    fontSize = 20.sp
                 )
             }
         }
@@ -115,9 +128,15 @@ fun ListaAnillamiento(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewMode
 }
 
 @Composable
-fun MostrarAnillas(skybirdDAO: SkybirdDAO, navDetAnilla: () -> Unit, filtrarNumAnilla: String, avistamientoViewModel: AvistamientoViewModel) {
+fun MostrarAnillas(
+    skybirdDAO: SkybirdDAO,
+    navDetAnilla: () -> Unit,
+    filtrarNumAnilla: String,
+    avistamientoViewModel: AvistamientoViewModel
+) {
     //Obtenemos todas las anillas almacenadas en la base de datos
-    var listaAnillas = avistamientoViewModel.obtenerAnillas(skybirdDAO).collectAsState(initial = emptyList()).value
+    var listaAnillas =
+        avistamientoViewModel.obtenerAnillas(skybirdDAO).collectAsState(initial = emptyList()).value
 
     if (listaAnillas.isEmpty()) {
         Text(
@@ -127,8 +146,9 @@ fun MostrarAnillas(skybirdDAO: SkybirdDAO, navDetAnilla: () -> Unit, filtrarNumA
             modifier = Modifier.padding(top = 20.dp)
         )
     } else {
-        if (filtrarNumAnilla != ""){
-            listaAnillas = avistamientoViewModel.filtrarAnillamientos(listaAnillas, filtrarNumAnilla)
+        if (filtrarNumAnilla != "") {
+            listaAnillas =
+                avistamientoViewModel.filtrarAnillamientos(listaAnillas, filtrarNumAnilla)
         }
 
         Column(
@@ -146,11 +166,17 @@ fun MostrarAnillas(skybirdDAO: SkybirdDAO, navDetAnilla: () -> Unit, filtrarNumA
 }
 
 @Composable
-fun AnillaItem(anilla: Anillamiento, navDetAnilla: () -> Unit, avistamientoViewModel: AvistamientoViewModel){
+fun AnillaItem(
+    anilla: Anillamiento,
+    navDetAnilla: () -> Unit,
+    avistamientoViewModel: AvistamientoViewModel
+) {
 
     Button(
-        onClick = { avistamientoViewModel.anillaSeleccionada.value = anilla
-                  navDetAnilla() },
+        onClick = {
+            avistamientoViewModel.anillaSeleccionada.value = anilla
+            navDetAnilla()
+        },
         modifier = Modifier
             .fillMaxWidth()
             .shadow(8.dp, RoundedCornerShape(16.dp)),
@@ -163,7 +189,8 @@ fun AnillaItem(anilla: Anillamiento, navDetAnilla: () -> Unit, avistamientoViewM
         Text(
             text = anilla.codigoAnillamiento,
             fontSize = 20.sp,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier
+                .padding(8.dp)
                 .fillMaxWidth()
         )
     }

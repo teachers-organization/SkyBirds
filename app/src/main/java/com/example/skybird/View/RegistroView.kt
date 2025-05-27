@@ -18,7 +18,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
@@ -40,7 +39,7 @@ import com.example.skybird.Modelo.BBDD.SkybirdDAO
 import com.example.skybird.Modelo.BBDD.Users
 
 @Composable
-fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volver: () -> Unit){
+fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volver: () -> Unit) {
 
     val nick = remember { mutableStateOf("") }
     val nombre = remember { mutableStateOf("") }
@@ -121,7 +120,12 @@ fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
                         onValueChange = { nombre.value = it },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
-                        placeholder = { Text("Introduce tu nombre completo...", color = Color.Gray) }
+                        placeholder = {
+                            Text(
+                                "Introduce tu nombre completo...",
+                                color = Color.Gray
+                            )
+                        }
                     )
 
                     Text(
@@ -147,7 +151,12 @@ fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
                         onValueChange = { email.value = it },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
-                        placeholder = { Text("Introduce tu correo electrónico...", color = Color.Gray) }
+                        placeholder = {
+                            Text(
+                                "Introduce tu correo electrónico...",
+                                color = Color.Gray
+                            )
+                        }
                     )
 
                     Text(
@@ -191,21 +200,44 @@ fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
                         onClick = {
                             //Recorre la lista de los campos comprobando que no hay ninguno vacío
                             //Si algún campo está vacío muestra la advertencia
-                            if(listOf(nombre, nick, email, contrasenya, repetirContrasenya).any { it.value.isBlank() }) {
+                            if (listOf(
+                                    nombre,
+                                    nick,
+                                    email,
+                                    contrasenya,
+                                    repetirContrasenya
+                                ).any { it.value.isBlank() }
+                            ) {
                                 Toast.makeText(
                                     context,
                                     "Por favor, rellene todos los campos",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                            }else if (!registroViewModel.esEmailValido(email.value)){
-                                Toast.makeText(context, "Correo electrónico no válido", Toast.LENGTH_SHORT).show()
-                            }else if (contrasenya.value.length < 5){
-                                Toast.makeText(context, "La contraseña debe contener al menos 5 caracteres", Toast.LENGTH_SHORT).show()
-                            }else if (contrasenya.value != repetirContrasenya.value){
-                                Toast.makeText(context, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
-                            }else if (!isChecked.value){
-                                Toast.makeText(context, "Debe aceptar los términos y condiciones", Toast.LENGTH_SHORT).show()
-                            }else{
+                            } else if (!registroViewModel.esEmailValido(email.value)) {
+                                Toast.makeText(
+                                    context,
+                                    "Correo electrónico no válido",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (contrasenya.value.length < 5) {
+                                Toast.makeText(
+                                    context,
+                                    "La contraseña debe contener al menos 5 caracteres",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (contrasenya.value != repetirContrasenya.value) {
+                                Toast.makeText(
+                                    context,
+                                    "Las contraseñas no coinciden",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (!isChecked.value) {
+                                Toast.makeText(
+                                    context,
+                                    "Debe aceptar los términos y condiciones",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
                                 registroViewModel.comprobarUsuario(
                                     Users(
                                         id = 0,
@@ -216,22 +248,33 @@ fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
                                         psswd = contrasenya.value
                                     ),
                                     skybirdDAO
-                                ){ yaExiste ->
-                                 if (yaExiste){
-                                        Toast.makeText(context, "Este correo ya existe", Toast.LENGTH_SHORT).show()
-                                }else{
-                                    Toast.makeText(context, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show()
+                                ) { yaExiste ->
+                                    if (yaExiste) {
+                                        Toast.makeText(
+                                            context,
+                                            "Este correo ya existe",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } else {
+                                        Toast.makeText(
+                                            context,
+                                            "Usuario registrado correctamente",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
                                 }
                             }
-                            }},
+                        },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFFA3B18A),
                             contentColor = Color.White
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(text = "Darme de alta",
-                            fontSize = 20.sp)
+                        Text(
+                            text = "Darme de alta",
+                            fontSize = 20.sp
+                        )
                     }
 
                 }

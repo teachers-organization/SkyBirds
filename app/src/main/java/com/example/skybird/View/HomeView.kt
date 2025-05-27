@@ -30,14 +30,21 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.R
 
 @Composable
-fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit, inicioSesion: () -> Unit, diccionarioAves: () -> Unit, adminUsers: () -> Unit, listaAnillamientos: () -> Unit) {
+fun Home(
+    sesionViewModel: SesionViewModel,
+    config: () -> Unit,
+    foro: () -> Unit,
+    inicioSesion: () -> Unit,
+    diccionarioAves: () -> Unit,
+    adminUsers: () -> Unit,
+    listaAnillamientos: () -> Unit
+) {
 
     val botonModifier = Modifier
         .fillMaxWidth()
@@ -114,7 +121,7 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit,
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (sesionViewModel.usuarioActual.value?.admin == true){
+            if (sesionViewModel.usuarioActual.value?.admin == true) {
                 Button(
                     onClick = { adminUsers() },
                     shape = RoundedCornerShape(50),
@@ -169,8 +176,10 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit,
             }
 
             Button(
-                onClick = { sesionViewModel.cerrarSesión()
-                          inicioSesion()},
+                onClick = {
+                    sesionViewModel.cerrarSesión()
+                    inicioSesion()
+                },
                 shape = RoundedCornerShape(50),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFBC4749),

@@ -12,18 +12,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class ForoViewModel: ViewModel() {
+class ForoViewModel : ViewModel() {
 
     //Almacenar la pregunta seleccionada
     var preguntaSeleccionada = mutableStateOf<Questions?>(null)
 
-    fun crearPregunta(skybirdDAO: SkybirdDAO,
-                      titulo: String,
-                      contenido: String,
-                      usuario: Users,
-                      onResultado: (Boolean) -> Unit
-                      )
-    {
+    fun crearPregunta(
+        skybirdDAO: SkybirdDAO,
+        titulo: String,
+        contenido: String,
+        usuario: Users,
+        onResultado: (Boolean) -> Unit
+    ) {
 
         val timestamp = System.currentTimeMillis()
         val pregunta = Questions(0, titulo, contenido, timestamp, usuario.id)
@@ -31,26 +31,28 @@ class ForoViewModel: ViewModel() {
             try {
                 skybirdDAO.insertQuestion(pregunta)
                 onResultado(true)
-            }catch(e: Exception){
+            } catch (e: Exception) {
                 onResultado(false)
             }
         }
     }
 
-    fun crearRespuesta(skybirdDAO: SkybirdDAO,
-                       contenido: String,
-                       usuario: Users,
-                       onResultado: (Boolean) -> Unit
-                       ){
+    fun crearRespuesta(
+        skybirdDAO: SkybirdDAO,
+        contenido: String,
+        usuario: Users,
+        onResultado: (Boolean) -> Unit
+    ) {
 
         val timestamp = System.currentTimeMillis()
-        val respuesta = Answers(0, contenido, timestamp, usuario.id, preguntaSeleccionada.value!!.id)
+        val respuesta =
+            Answers(0, contenido, timestamp, usuario.id, preguntaSeleccionada.value!!.id)
 
         viewModelScope.launch {
             try {
                 skybirdDAO.insertAnswer(respuesta)
                 onResultado(true)
-            }catch(e: Exception){
+            } catch (e: Exception) {
                 onResultado(false)
             }
         }
@@ -58,7 +60,7 @@ class ForoViewModel: ViewModel() {
 
     var listaPreguntas = MutableStateFlow<List<Questions>>(emptyList())
 
-    fun obtenerPreguntas(skybirdDAO: SkybirdDAO): StateFlow<List<Questions>>{
+    fun obtenerPreguntas(skybirdDAO: SkybirdDAO): StateFlow<List<Questions>> {
         viewModelScope.launch {
             listaPreguntas.value = skybirdDAO.getAllQuestions().first()
         }
@@ -67,7 +69,7 @@ class ForoViewModel: ViewModel() {
 
     var usuarioPregunta = MutableStateFlow<Users?>(null)
 
-    fun obtenerCreador(skybirdDAO: SkybirdDAO):String{
+    fun obtenerCreador(skybirdDAO: SkybirdDAO): String {
         viewModelScope.launch {
             val usuario = skybirdDAO.getUserById(preguntaSeleccionada.value!!.userId).first()
             usuarioPregunta.value = usuario
@@ -75,48 +77,42 @@ class ForoViewModel: ViewModel() {
         return usuarioPregunta.value?.nick ?: "Usuario desconocido"
     }
 
-    fun esAutorPregunta(sesionViewModel: SesionViewModel):Boolean{
+    fun esAutorPregunta(sesionViewModel: SesionViewModel): Boolean {
         try {
-            if (sesionViewModel.usuarioActual.value?.id == preguntaSeleccionada.value?.userId){
-                return true
-            }else{
-                return false
-            }
-        }catch (e: Exception){
+            return sesionViewModel.usuarioActual.value?.id == preguntaSeleccionada.value?.userId
+        } catch (e: Exception) {
             e.printStackTrace()
             return false
         }
     }
 
-    fun esAutorRespuesta(sesionViewModel: SesionViewModel, answer: Answers):Boolean{
+    fun esAutorRespuesta(sesionViewModel: SesionViewModel, answer: Answers): Boolean {
         try {
-            if (sesionViewModel.usuarioActual.value?.id == answer.userId){
-                return true
-            }else{
-                return false
-            }
-        }catch (e: Exception){
+            return sesionViewModel.usuarioActual.value?.id == answer.userId
+        } catch (e: Exception) {
             e.printStackTrace()
             return false
         }
     }
 
-    fun borrarPregunta(skybirdDAO: SkybirdDAO){
+    fun borrarPregunta(skybirdDAO: SkybirdDAO) {
         viewModelScope.launch {
             preguntaSeleccionada.value?.let { skybirdDAO.deleteQuestion(it) }
         }
     }
 
-    fun borrarRespuesta(skybirdDAO: SkybirdDAO, answer: Answers){
+    fun borrarRespuesta(skybirdDAO: SkybirdDAO, answer: Answers) {
         viewModelScope.launch {
-            skybirdDAO.deleteAnswer(answer) }
+            skybirdDAO.deleteAnswer(answer)
         }
+    }
 
     var listaRespuestas = MutableStateFlow<List<Answers>>(emptyList())
 
-    fun obtenerRespuestas(skybirdDAO: SkybirdDAO): StateFlow<List<Answers>>{
+    fun obtenerRespuestas(skybirdDAO: SkybirdDAO): StateFlow<List<Answers>> {
         viewModelScope.launch {
-            listaRespuestas.value = skybirdDAO.getAnswerByIdQuestion(preguntaSeleccionada.value!!.id).first()
+            listaRespuestas.value =
+                skybirdDAO.getAnswerByIdQuestion(preguntaSeleccionada.value!!.id).first()
         }
         return listaRespuestas
     }

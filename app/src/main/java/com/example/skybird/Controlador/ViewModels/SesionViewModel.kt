@@ -3,12 +3,10 @@ package com.example.skybird.Controlador.ViewModels
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.skybird.Modelo.BBDD.Questions
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 import com.example.skybird.Modelo.BBDD.Users
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class SesionViewModel : ViewModel() {
@@ -18,11 +16,12 @@ class SesionViewModel : ViewModel() {
 
     //Comprobar si el usuario existe en la base de datos
     //Si existe iniciamos sesión y almacenamos el usuario
-    fun iniciarSesion(skybirdDAO: SkybirdDAO,
-                      email: String,
-                      psswd: String,
-                      onResultado: (Boolean) -> Unit)
-    {
+    fun iniciarSesion(
+        skybirdDAO: SkybirdDAO,
+        email: String,
+        psswd: String,
+        onResultado: (Boolean) -> Unit
+    ) {
         viewModelScope.launch {
             val userExists = skybirdDAO.getUserByEmailAndPassword(email, psswd)
             if (userExists == null) {
@@ -34,30 +33,33 @@ class SesionViewModel : ViewModel() {
         }
     }
 
-    fun crearAdmin(skybirdDAO: SkybirdDAO)
-    {
+    fun crearAdmin(skybirdDAO: SkybirdDAO) {
         viewModelScope.launch {
             val userExists = skybirdDAO.getUserByEmailAndPassword("admin@admin.com", "admin")
             if (userExists == null) {
-                skybirdDAO.insertUser(Users(
-                    id = 0,
-                    nombreCompleto = "admin",
-                    admin = true,
-                    nick = "admin",
-                    email = "admin@admin.com",
-                    psswd = "admin"
-                ))
+                skybirdDAO.insertUser(
+                    Users(
+                        id = 0,
+                        nombreCompleto = "admin",
+                        admin = true,
+                        nick = "admin",
+                        email = "admin@admin.com",
+                        psswd = "admin"
+                    )
+                )
             }
         }
     }
 
     //Función para cambiar de contraseña
-    fun cambiarContrasenya(skybirdDAO: SkybirdDAO,
-                           contrasenyaNueva: String,
-                           contrasenyaAntigua: String,
-                           onResultado: (Boolean) -> Unit){
+    fun cambiarContrasenya(
+        skybirdDAO: SkybirdDAO,
+        contrasenyaNueva: String,
+        contrasenyaAntigua: String,
+        onResultado: (Boolean) -> Unit
+    ) {
 
-        if (contrasenyaAntigua == usuarioActual.value?.psswd){
+        if (contrasenyaAntigua == usuarioActual.value?.psswd) {
 
             //Creamos una copia del usuario actual, cambiamos el valor de la contraseña
             //y lo actualizamos en la base de datos
@@ -73,15 +75,17 @@ class SesionViewModel : ViewModel() {
 
             onResultado(true)
 
-        }else{
+        } else {
             onResultado(false)
         }
     }
 
     //Función para cambiar de nombre
-    fun cambiarNombre(skybirdDAO: SkybirdDAO,
-                      nombreNuevo: String,
-                      onResultado: (Boolean) -> Unit){
+    fun cambiarNombre(
+        skybirdDAO: SkybirdDAO,
+        nombreNuevo: String,
+        onResultado: (Boolean) -> Unit
+    ) {
 
         try {
             //Creamos una copia del usuario actual, cambiamos el valor del nombre
@@ -98,15 +102,17 @@ class SesionViewModel : ViewModel() {
 
             onResultado(true)
 
-        }catch (e:Exception) {
+        } catch (e: Exception) {
             onResultado(false)
         }
     }
 
     //Función para cambiar de nick
-    fun cambiarNick(skybirdDAO: SkybirdDAO,
-                    nuevoNick: String,
-                    onResultado: (Boolean) -> Unit){
+    fun cambiarNick(
+        skybirdDAO: SkybirdDAO,
+        nuevoNick: String,
+        onResultado: (Boolean) -> Unit
+    ) {
 
         try {
             //Creamos una copia del usuario actual, cambiamos el valor del nick
@@ -123,28 +129,28 @@ class SesionViewModel : ViewModel() {
 
             onResultado(true)
 
-        }catch (e:Exception) {
+        } catch (e: Exception) {
             onResultado(false)
         }
     }
 
     //Función para borrar usuario
-    fun borrarUsuario(skybirdDAO: SkybirdDAO, users: Users){
+    fun borrarUsuario(skybirdDAO: SkybirdDAO, users: Users) {
         try {
             viewModelScope.launch {
                 skybirdDAO.deleteUser(users)
                 usuarioActual.value = null
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
     //Función para cerrar sesión
-    fun cerrarSesión(){
+    fun cerrarSesión() {
         try {
             usuarioActual.value = null
-        }catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }

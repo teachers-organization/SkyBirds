@@ -38,7 +38,13 @@ import com.example.skybird.Modelo.BBDD.SkybirdDAO
 import com.example.skybird.R
 
 @Composable
-fun InicioSesion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, crearCuenta: () -> Unit, login: () -> Unit, modifier: Modifier = Modifier){
+fun InicioSesion(
+    skybirdDAO: SkybirdDAO,
+    sesionViewModel: SesionViewModel,
+    crearCuenta: () -> Unit,
+    login: () -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     val password = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }
@@ -49,9 +55,10 @@ fun InicioSesion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, crear
         sesionViewModel.crearAdmin(skybirdDAO)
     }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color(0xFFF5F5F5))
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFF5F5F5))
     )
     {
         Column(
@@ -127,29 +134,40 @@ fun InicioSesion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, crear
                         onClick = {
                             //Recorre la lista de los campos comprobando que no hay ninguno vacío
                             //Si algún campo está vacío muestra la advertencia
-                            if(listOf(password, email).any { it.value.isBlank() }){
-                                Toast.makeText(context, "Por favor, rellene todos los campos", Toast.LENGTH_SHORT).show()
-                            }else{
+                            if (listOf(password, email).any { it.value.isBlank() }) {
+                                Toast.makeText(
+                                    context,
+                                    "Por favor, rellene todos los campos",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
                                 sesionViewModel.iniciarSesion(
                                     skybirdDAO,
                                     email.value,
                                     password.value
-                                ){ yaExiste ->
-                                    if (yaExiste){
+                                ) { yaExiste ->
+                                    if (yaExiste) {
                                         login()
-                                    }else{
-                                        Toast.makeText(context, "Email o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                                    } else {
+                                        Toast.makeText(
+                                            context,
+                                            "Email o contraseña incorrectos",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
                                 }
-                            }  },
+                            }
+                        },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFFA3B18A),
                             contentColor = Color.White
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Iniciar sesión",
-                            fontSize = 20.sp)
+                        Text(
+                            "Iniciar sesión",
+                            fontSize = 20.sp
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -168,8 +186,10 @@ fun InicioSesion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, crear
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Crear cuenta",
-                            fontSize = 20.sp)
+                        Text(
+                            "Crear cuenta",
+                            fontSize = 20.sp
+                        )
                     }
                 }
             }

@@ -38,7 +38,12 @@ import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 
 @Composable
-fun ResponderPregunta(skybirdDAO: SkybirdDAO, volver: () -> Unit, foroViewModel: ForoViewModel, sesionViewModel: SesionViewModel) {
+fun ResponderPregunta(
+    skybirdDAO: SkybirdDAO,
+    volver: () -> Unit,
+    foroViewModel: ForoViewModel,
+    sesionViewModel: SesionViewModel
+) {
 
     val scrollState = rememberScrollState()
     val contenido = remember { mutableStateOf("") }
@@ -111,18 +116,30 @@ fun ResponderPregunta(skybirdDAO: SkybirdDAO, volver: () -> Unit, foroViewModel:
 
                     Button(
                         onClick = {
-                            if(listOf(contenido).any { it.value.isBlank() }){
-                                Toast.makeText(context, "Por favor, rellene el campo", Toast.LENGTH_SHORT).show()
-                            }else{
+                            if (listOf(contenido).any { it.value.isBlank() }) {
+                                Toast.makeText(
+                                    context,
+                                    "Por favor, rellene el campo",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
                                 foroViewModel.crearRespuesta(
                                     skybirdDAO,
                                     contenido.value,
                                     sesionViewModel.usuarioActual.value!!
-                                ){ correcto ->
-                                    if (correcto){
-                                        Toast.makeText(context, "Respuesta añadida correctamente", Toast.LENGTH_SHORT).show()
-                                    }else{
-                                        Toast.makeText(context, "Error al añadir la respuesta", Toast.LENGTH_SHORT).show()
+                                ) { correcto ->
+                                    if (correcto) {
+                                        Toast.makeText(
+                                            context,
+                                            "Respuesta añadida correctamente",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } else {
+                                        Toast.makeText(
+                                            context,
+                                            "Error al añadir la respuesta",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
                                 }
                             }
@@ -133,8 +150,10 @@ fun ResponderPregunta(skybirdDAO: SkybirdDAO, volver: () -> Unit, foroViewModel:
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Responder",
-                            fontSize = 20.sp)
+                        Text(
+                            "Responder",
+                            fontSize = 20.sp
+                        )
                     }
                 }
             }

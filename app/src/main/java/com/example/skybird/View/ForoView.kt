@@ -35,7 +35,13 @@ import com.example.skybird.Modelo.BBDD.Questions
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 
 @Composable
-fun Foro(skybirdDAO: SkybirdDAO, volver: () -> Unit, pregunta: () -> Unit, foroViewModel: ForoViewModel, navDetPregunta: () -> Unit){
+fun Foro(
+    skybirdDAO: SkybirdDAO,
+    volver: () -> Unit,
+    pregunta: () -> Unit,
+    foroViewModel: ForoViewModel,
+    navDetPregunta: () -> Unit
+) {
 
     val filtrarTitulo = remember { mutableStateOf("") }
 
@@ -81,14 +87,15 @@ fun Foro(skybirdDAO: SkybirdDAO, volver: () -> Unit, pregunta: () -> Unit, foroV
                 TextField(
                     value = filtrarTitulo.value,
                     onValueChange = { filtrarTitulo.value = it },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
+                        .weight(1f)
                         .padding(2.dp),
                     shape = RoundedCornerShape(8.dp),
                     placeholder = { Text("Filtrar por título...", color = Color.Gray) }
                 )
             }
 
-                MostrarDudas(skybirdDAO, foroViewModel, navDetPregunta, filtrarTitulo.value)
+            MostrarDudas(skybirdDAO, foroViewModel, navDetPregunta, filtrarTitulo.value)
 
         }
 
@@ -103,17 +110,25 @@ fun Foro(skybirdDAO: SkybirdDAO, volver: () -> Unit, pregunta: () -> Unit, foroV
                 .align(Alignment.BottomStart)
                 .padding(30.dp)
         ) {
-            Text(text = "+",
-                fontSize = 35.sp)
+            Text(
+                text = "+",
+                fontSize = 35.sp
+            )
         }
     }
 
 }
 
 @Composable
-fun MostrarDudas(skybirdDAO: SkybirdDAO, foroViewModel: ForoViewModel, navDetPregunta: () -> Unit, filtrarTitulo: String) {
+fun MostrarDudas(
+    skybirdDAO: SkybirdDAO,
+    foroViewModel: ForoViewModel,
+    navDetPregunta: () -> Unit,
+    filtrarTitulo: String
+) {
     //Obtenemos todas las dudas almacenadas en la base de datos
-    var listaPreguntas = foroViewModel.obtenerPreguntas(skybirdDAO).collectAsState(initial = emptyList()).value
+    var listaPreguntas =
+        foroViewModel.obtenerPreguntas(skybirdDAO).collectAsState(initial = emptyList()).value
 
     if (listaPreguntas.isEmpty()) {
         Text(
@@ -123,7 +138,7 @@ fun MostrarDudas(skybirdDAO: SkybirdDAO, foroViewModel: ForoViewModel, navDetPre
             modifier = Modifier.padding(top = 20.dp)
         )
     } else {
-        if (filtrarTitulo != ""){
+        if (filtrarTitulo != "") {
             listaPreguntas = foroViewModel.filtrarTitulo(listaPreguntas, filtrarTitulo)
         }
 
@@ -142,15 +157,17 @@ fun MostrarDudas(skybirdDAO: SkybirdDAO, foroViewModel: ForoViewModel, navDetPre
 }
 
 @Composable
-fun PreguntaItem(question: Questions, navDetPregunta: () -> Unit, foroViewModel: ForoViewModel){
+fun PreguntaItem(question: Questions, navDetPregunta: () -> Unit, foroViewModel: ForoViewModel) {
 
     val timestamp = System.currentTimeMillis()
     val diferenciaTiempo = timestamp - question.fechaCreacion
     val tiempoFormateado = foroViewModel.formatearTiempoTranscurrido(diferenciaTiempo)
 
     Button(
-        onClick = { foroViewModel.preguntaSeleccionada.value = question
-            navDetPregunta() },
+        onClick = {
+            foroViewModel.preguntaSeleccionada.value = question
+            navDetPregunta()
+        },
         modifier = Modifier
             .fillMaxWidth()
             .shadow(8.dp, RoundedCornerShape(16.dp)),
@@ -163,7 +180,8 @@ fun PreguntaItem(question: Questions, navDetPregunta: () -> Unit, foroViewModel:
         Text(
             text = question.titulo + "\n- " + tiempoFormateado + " -",
             fontSize = 20.sp,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier
+                .padding(8.dp)
                 .fillMaxWidth()
         )
     }

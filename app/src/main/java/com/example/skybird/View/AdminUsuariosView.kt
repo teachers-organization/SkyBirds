@@ -37,7 +37,7 @@ import com.example.skybird.Modelo.BBDD.SkybirdDAO
 import com.example.skybird.Modelo.BBDD.Users
 
 @Composable
-fun AdminUsuarios(volver: () -> Unit, skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel){
+fun AdminUsuarios(volver: () -> Unit, skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel) {
 
     val filtrarNombre = remember { mutableStateOf("") }
 
@@ -87,7 +87,8 @@ fun AdminUsuarios(volver: () -> Unit, skybirdDAO: SkybirdDAO, sesionViewModel: S
                 TextField(
                     value = filtrarNombre.value,
                     onValueChange = { filtrarNombre.value = it },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
+                        .weight(1f)
                         .padding(2.dp),
                     shape = RoundedCornerShape(8.dp),
                     placeholder = { Text("Filtrar por nombre...", color = Color.Gray) }
@@ -103,10 +104,14 @@ fun AdminUsuarios(volver: () -> Unit, skybirdDAO: SkybirdDAO, sesionViewModel: S
 }
 
 @Composable
-fun MostrarUsuarios(skybirdDAO: SkybirdDAO, filtrarNombre: String, sesionViewModel: SesionViewModel) {
+fun MostrarUsuarios(
+    skybirdDAO: SkybirdDAO,
+    filtrarNombre: String,
+    sesionViewModel: SesionViewModel
+) {
     var listaUsuarios = sesionViewModel.listaUsuarios.collectAsState().value
 
-    if (filtrarNombre != ""){
+    if (filtrarNombre != "") {
         listaUsuarios = sesionViewModel.filtrarNombre(listaUsuarios, filtrarNombre)
     }
 
@@ -123,7 +128,7 @@ fun MostrarUsuarios(skybirdDAO: SkybirdDAO, filtrarNombre: String, sesionViewMod
 }
 
 @Composable
-fun UsuarioItem(users: Users, sesionViewModel: SesionViewModel, skybirdDAO: SkybirdDAO){
+fun UsuarioItem(users: Users, sesionViewModel: SesionViewModel, skybirdDAO: SkybirdDAO) {
 
     Box(
         modifier = Modifier
@@ -169,8 +174,10 @@ fun UsuarioItem(users: Users, sesionViewModel: SesionViewModel, skybirdDAO: Skyb
                     ),
                     modifier = Modifier.padding(2.dp)
                 ) {
-                    Text("Borrar",
-                        fontSize = 20.sp)
+                    Text(
+                        "Borrar",
+                        fontSize = 20.sp
+                    )
                 }
             }
         }

@@ -1,6 +1,5 @@
 package com.example.skybird.View
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -20,26 +18,17 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import com.example.skybird.Controlador.ViewModels.AvesViewModel
 import com.example.skybird.Controlador.ViewModels.AvistamientoViewModel
-import com.example.skybird.Modelo.BBDD.Avistamiento
 
 @Composable
-fun DetallesAvistamiento(volver: () -> Unit, avistamientoViewModel: AvistamientoViewModel){
+fun DetallesAvistamiento(volver: () -> Unit, avistamientoViewModel: AvistamientoViewModel) {
 
     Box(
         modifier = Modifier
@@ -77,7 +66,7 @@ fun DetallesAvistamiento(volver: () -> Unit, avistamientoViewModel: Avistamiento
 }
 
 @Composable
-fun MostrarDetallesAvistamiento(avistamientoViewModel: AvistamientoViewModel){
+fun MostrarDetallesAvistamiento(avistamientoViewModel: AvistamientoViewModel) {
 
     val scrollState = rememberScrollState()
     val primaryGreen = Color(0xFF2C6E49)
@@ -92,15 +81,15 @@ fun MostrarDetallesAvistamiento(avistamientoViewModel: AvistamientoViewModel){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-                avistamientoViewModel.avistamientoSeleccionado.value?.let {
-                    Text(
-                        text = it.codigoAnillamiento,
-                        fontSize = 32.sp,
-                        color = primaryGreen,
-                        style = MaterialTheme.typography.headlineMedium,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
+        avistamientoViewModel.avistamientoSeleccionado.value?.let {
+            Text(
+                text = it.codigoAnillamiento,
+                fontSize = 32.sp,
+                color = primaryGreen,
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 

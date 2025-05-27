@@ -36,7 +36,12 @@ import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 
 @Composable
-fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volver: () -> Unit, inicio: () -> Unit){
+fun Configuracion(
+    skybirdDAO: SkybirdDAO,
+    sesionViewModel: SesionViewModel,
+    volver: () -> Unit,
+    inicio: () -> Unit
+) {
 
     val contrasenyaActual = remember { mutableStateOf("") }
     val nuevaContrasenya = remember { mutableStateOf("") }
@@ -47,9 +52,10 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
     val scrollState = rememberScrollState()
     val context = LocalContext.current
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color(0xFFF5F5F5))
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFF5F5F5))
     )
     {
         Column(
@@ -137,7 +143,12 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
                         onValueChange = { contrasenyaActual.value = it },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
-                        placeholder = { Text("Introduce tu contraseña actual...", color = Color.Gray) }
+                        placeholder = {
+                            Text(
+                                "Introduce tu contraseña actual...",
+                                color = Color.Gray
+                            )
+                        }
                     )
 
                     Text(
@@ -151,7 +162,12 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
                         onValueChange = { nuevaContrasenya.value = it },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
-                        placeholder = { Text("Introduce tu nueva contraseña...", color = Color.Gray) }
+                        placeholder = {
+                            Text(
+                                "Introduce tu nueva contraseña...",
+                                color = Color.Gray
+                            )
+                        }
                     )
 
                     Text(
@@ -187,31 +203,45 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
                                     "No coinciden los campos de la nueva contraseña",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                            }else if (nuevaContrasenya.value.length < 5){
+                            } else if (nuevaContrasenya.value.length < 5) {
                                 Toast.makeText(
                                     context,
                                     "La contraseña debe contener al menos 5 caracteres",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                            }else {
-                                sesionViewModel.cambiarContrasenya(skybirdDAO, nuevaContrasenya.value, contrasenyaActual.value)
+                            } else {
+                                sesionViewModel.cambiarContrasenya(
+                                    skybirdDAO,
+                                    nuevaContrasenya.value,
+                                    contrasenyaActual.value
+                                )
                                 { actualizado ->
-                                    if (actualizado){
-                                        Toast.makeText(context, "Contraseña actualizada correctamente", Toast.LENGTH_SHORT).show()
-                                    }else{
-                                        Toast.makeText(context, "ERROR. La contraseña introducida no coincide con la actual", Toast.LENGTH_SHORT).show()
+                                    if (actualizado) {
+                                        Toast.makeText(
+                                            context,
+                                            "Contraseña actualizada correctamente",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } else {
+                                        Toast.makeText(
+                                            context,
+                                            "ERROR. La contraseña introducida no coincide con la actual",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
                                 }
                             }
-                                  },
+                        },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFFA3B18A),
                             contentColor = Color.White
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Cambiar contraseña",
-                            fontSize = 20.sp)
+                        Text(
+                            "Cambiar contraseña",
+                            fontSize = 20.sp
+                        )
                     }
 
                     HorizontalDivider(
@@ -252,7 +282,7 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
                     Button(
                         onClick = {
                             if (listOf(
-                                nuevoNombre
+                                    nuevoNombre
                                 ).any { it.value.isBlank() }
                             ) {
                                 Toast.makeText(
@@ -260,12 +290,16 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
                                     "Por favor, rellene todos los campos",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                            }else {
+                            } else {
                                 sesionViewModel.cambiarNombre(skybirdDAO, nuevoNombre.value)
                                 { actualizado ->
-                                    if (actualizado){
-                                        Toast.makeText(context, "Nombre actualizado correctamente", Toast.LENGTH_SHORT).show()
-                                    }else{
+                                    if (actualizado) {
+                                        Toast.makeText(
+                                            context,
+                                            "Nombre actualizado correctamente",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } else {
                                         Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
                                     }
                                 }
@@ -277,8 +311,10 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Cambiar nombre",
-                            fontSize = 20.sp)
+                        Text(
+                            "Cambiar nombre",
+                            fontSize = 20.sp
+                        )
                     }
 
                     HorizontalDivider(
@@ -327,12 +363,16 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
                                     "Por favor, rellene todos los campos",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                            }else {
+                            } else {
                                 sesionViewModel.cambiarNick(skybirdDAO, nuevoNick.value)
                                 { actualizado ->
-                                    if (actualizado){
-                                        Toast.makeText(context, "Nick actualizado correctamente", Toast.LENGTH_SHORT).show()
-                                    }else{
+                                    if (actualizado) {
+                                        Toast.makeText(
+                                            context,
+                                            "Nick actualizado correctamente",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } else {
                                         Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
                                     }
                                 }
@@ -344,8 +384,10 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Cambiar nick",
-                            fontSize = 20.sp)
+                        Text(
+                            "Cambiar nick",
+                            fontSize = 20.sp
+                        )
                     }
 
                     HorizontalDivider(
@@ -371,7 +413,8 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
 
                     if (!comprobarBorrar.value) {
                         Button(
-                            onClick = { comprobarBorrar.value = true
+                            onClick = {
+                                comprobarBorrar.value = true
                             },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(0xFFF44336),
@@ -379,10 +422,12 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
                             ),
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text("Borrar cuenta",
-                                fontSize = 20.sp)
+                            Text(
+                                "Borrar cuenta",
+                                fontSize = 20.sp
+                            )
                         }
-                    }else{
+                    } else {
                         Text(
                             text = "Al borrar la cuenta perderás tus datos para siempre ¿Estás seguro/a de querer borrarla?",
                             fontSize = 20.sp,
@@ -391,34 +436,43 @@ fun Configuracion(skybirdDAO: SkybirdDAO, sesionViewModel: SesionViewModel, volv
                                 .align(Alignment.CenterHorizontally)
                                 .padding(bottom = 8.dp)
                         )
-                        Row (Modifier.fillMaxWidth()) {
+                        Row(Modifier.fillMaxWidth()) {
                             Button(
-                                onClick = { sesionViewModel.usuarioActual.value?.let {
-                                    sesionViewModel.borrarUsuario(skybirdDAO, it) }
+                                onClick = {
+                                    sesionViewModel.usuarioActual.value?.let {
+                                        sesionViewModel.borrarUsuario(skybirdDAO, it)
+                                    }
                                     inicio()
                                 },
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = Color(0xFFF44336),
                                     contentColor = Color.White
                                 ),
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier
+                                    .weight(1f)
                                     .padding(2.dp)
                             ) {
-                                Text("Sí, borrar",
-                                    fontSize = 20.sp)
+                                Text(
+                                    "Sí, borrar",
+                                    fontSize = 20.sp
+                                )
                             }
                             Button(
-                                onClick = { comprobarBorrar.value = false
+                                onClick = {
+                                    comprobarBorrar.value = false
                                 },
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = Color(0xFFA3B18A),
                                     contentColor = Color.White
                                 ),
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier
+                                    .weight(1f)
                                     .padding(2.dp)
                             ) {
-                                Text("No",
-                                    fontSize = 20.sp)
+                                Text(
+                                    "No",
+                                    fontSize = 20.sp
+                                )
                             }
                         }
                     }

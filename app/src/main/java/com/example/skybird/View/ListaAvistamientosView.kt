@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,12 +18,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -33,12 +28,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.AvistamientoViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
-import com.example.skybird.Modelo.BBDD.Anillamiento
 import com.example.skybird.Modelo.BBDD.Avistamiento
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 
 @Composable
-fun ListaAvistamientos(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewModel: SesionViewModel, avistamientoViewModel: AvistamientoViewModel, nuevoAvistamiento: () -> Unit, navDetAvistamiento: () -> Unit){
+fun ListaAvistamientos(
+    skybirdDAO: SkybirdDAO,
+    volver: () -> Unit,
+    sesionViewModel: SesionViewModel,
+    avistamientoViewModel: AvistamientoViewModel,
+    nuevoAvistamiento: () -> Unit,
+    navDetAvistamiento: () -> Unit
+) {
 
     Box(
         modifier = Modifier
@@ -78,7 +79,7 @@ fun ListaAvistamientos(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewMod
                     .padding(vertical = 16.dp)
             )
 
-                MostrarAvistamientos(skybirdDAO, navDetAvistamiento, avistamientoViewModel)
+            MostrarAvistamientos(skybirdDAO, navDetAvistamiento, avistamientoViewModel)
         }
 
         if (sesionViewModel.usuarioActual.value?.admin == true) {
@@ -103,9 +104,14 @@ fun ListaAvistamientos(skybirdDAO: SkybirdDAO, volver: () -> Unit, sesionViewMod
 }
 
 @Composable
-fun MostrarAvistamientos(skybirdDAO: SkybirdDAO, navDetAvistamiento: () -> Unit, avistamientoViewModel: AvistamientoViewModel) {
+fun MostrarAvistamientos(
+    skybirdDAO: SkybirdDAO,
+    navDetAvistamiento: () -> Unit,
+    avistamientoViewModel: AvistamientoViewModel
+) {
     //Obtenemos todos los avistamientos almacenados en la base de datos
-    var listaAvistamientos = avistamientoViewModel.obtenerAvistamientos(skybirdDAO).collectAsState(initial = emptyList()).value
+    var listaAvistamientos = avistamientoViewModel.obtenerAvistamientos(skybirdDAO)
+        .collectAsState(initial = emptyList()).value
 
     avistamientoViewModel.buscarEspecieId(skybirdDAO)
 
@@ -116,9 +122,11 @@ fun MostrarAvistamientos(skybirdDAO: SkybirdDAO, navDetAvistamiento: () -> Unit,
             .shadow(6.dp, shape = RoundedCornerShape(16.dp))
             .background(color = Color(0xFFDCEAF5), shape = RoundedCornerShape(16.dp))
             .padding(20.dp)
+    ) {
+        Column(
+            Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-        Column(Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(
                 text = "Código: " + avistamientoViewModel.anillaSeleccionada.value?.codigoAnillamiento,
                 fontSize = 24.sp,
@@ -166,11 +174,17 @@ fun MostrarAvistamientos(skybirdDAO: SkybirdDAO, navDetAvistamiento: () -> Unit,
 }
 
 @Composable
-fun AvistamientoItem(avistamiento: Avistamiento, navDetAvistamiento: () -> Unit, avistamientoViewModel: AvistamientoViewModel){
+fun AvistamientoItem(
+    avistamiento: Avistamiento,
+    navDetAvistamiento: () -> Unit,
+    avistamientoViewModel: AvistamientoViewModel
+) {
 
     Button(
-        onClick = { avistamientoViewModel.avistamientoSeleccionado.value = avistamiento
-            navDetAvistamiento() },
+        onClick = {
+            avistamientoViewModel.avistamientoSeleccionado.value = avistamiento
+            navDetAvistamiento()
+        },
         modifier = Modifier
             .fillMaxWidth()
             .shadow(8.dp, RoundedCornerShape(16.dp)),

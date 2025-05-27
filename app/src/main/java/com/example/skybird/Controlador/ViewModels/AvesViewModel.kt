@@ -4,18 +4,18 @@ import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.skybird.Modelo.API.RetrofitClient
-import kotlinx.coroutines.launch
 import androidx.lifecycle.viewModelScope
 import com.example.skybird.Modelo.API.Bird
+import com.example.skybird.Modelo.API.RetrofitClient
 import com.example.skybird.Modelo.API.WikiSummary
-import com.example.skybird.Modelo.BBDD.Users
+import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 
-class AvesViewModel: ViewModel() {
+class AvesViewModel : ViewModel() {
 
     private val _aves = mutableStateOf<List<Bird>>(emptyList())
     val aves: State<List<Bird>> = _aves
+
     //Almacenar pájaro
     var pajaroActual = mutableStateOf<Bird?>(null)
 
@@ -25,6 +25,7 @@ class AvesViewModel: ViewModel() {
     val comportamientoText = mutableStateOf<String?>(null)
 
     private var pagina = 1
+
     //Esta variable sirve para no lanzar varias llamadas a la api a la vez
     //Controla si todavía hay una llamada a la api para no poder hacer otra a la vez
     private var cargando = false
@@ -50,7 +51,8 @@ class AvesViewModel: ViewModel() {
     fun cargarInfoAve() {
         viewModelScope.launch {
             try {
-                val responseGeneral = pajaroActual.value?.let { RetrofitClient.wikipediaApi.getSummary(it.name) }
+                val responseGeneral =
+                    pajaroActual.value?.let { RetrofitClient.wikipediaApi.getSummary(it.name) }
                 wikiSummary.value = responseGeneral
                 pajaroActual.value?.let { cargarDetallesHTML(it.name) }
             } catch (e: Exception) {
@@ -77,9 +79,16 @@ class AvesViewModel: ViewModel() {
                     val html = response.body()?.string()
                     html?.let {
                         val secciones = extraerSecciones(it)
-                        alimentacionText.value = secciones.entries.find { it.key.contains("Alimentación", true) }?.value
-                        habitatText.value = secciones.entries.find { it.key.contains("Hábitat", true) }?.value
-                        comportamientoText.value = secciones.entries.find { it.key.contains("Comportamiento", true) }?.value
+                        alimentacionText.value =
+                            secciones.entries.find { it.key.contains("Alimentación", true) }?.value
+                        habitatText.value =
+                            secciones.entries.find { it.key.contains("Hábitat", true) }?.value
+                        comportamientoText.value = secciones.entries.find {
+                            it.key.contains(
+                                "Comportamiento",
+                                true
+                            )
+                        }?.value
                     }
                 }
             } catch (e: Exception) {
@@ -89,26 +98,32 @@ class AvesViewModel: ViewModel() {
     }
 
 
-   //Devuelve un mapa con el nombre de la sección encontrada en el html y su contenido
+    //Devuelve un mapa con el nombre de la sección encontrada en el html y su contenido
     fun extraerSecciones(html: String): Map<String, String> {
         //Parseamos el html para poder recorrerlo
         val doc = Jsoup.parse(html)
         val secciones = mutableMapOf<String, String>()
-       //Le indicamos qué tipo de encabezados vamos a buscar en el html
+        //Le indicamos qué tipo de encabezados vamos a buscar en el html
         val encabezados = doc.select("h2, h3")
 
-       //Recorremos todos los encabezados h2 y h3 que se encuentren en el html
+        //Recorremos todos los encabezados h2 y h3 que se encuentren en el html
         for (i in encabezados.indices) {
             val encabezado = encabezados[i]
             val titulo = encabezado.text()
 
             //Si el encabezado tiene alguno de estos títulos pasamos a obtener su contenido
-            if (titulo.contains("Hábitat", true) || titulo.contains("Alimentación", true) || titulo.contains("Comportamiento", true)) {
+            if (titulo.contains("Hábitat", true) || titulo.contains(
+                    "Alimentación",
+                    true
+                ) || titulo.contains("Comportamiento", true)
+            ) {
                 val contenido = StringBuilder()
                 var siguiente = encabezado.nextElementSibling()
 
                 //Recogemos el contenido hasta llegar al siguiente encabezado o que no haya más texto
-                while (siguiente != null && !siguiente.tagName().startsWith("h2") && !siguiente.tagName().startsWith("h3")) {
+                while (siguiente != null && !siguiente.tagName()
+                        .startsWith("h2") && !siguiente.tagName().startsWith("h3")
+                ) {
                     if (siguiente.tagName() == "p") {
                         contenido.append(siguiente.text()).append("\n\n")
                     }

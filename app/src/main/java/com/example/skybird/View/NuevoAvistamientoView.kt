@@ -265,7 +265,7 @@ fun NuevoAvistamiento(
                                     "Los campos con asterisco son OBLIGATORIOS",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                            }else if(!avistamientoViewModel.esFechaValida(fecha.value)){
+                            } else if (!avistamientoViewModel.esFechaValida(fecha.value)) {
                                 Toast.makeText(
                                     context,
                                     "Formato o fecha incorrecto",
@@ -273,7 +273,8 @@ fun NuevoAvistamiento(
                                 ).show()
                             } else {
                                 avistamientoViewModel.crearAvistamiento(
-                                    Avistamiento(0,
+                                    Avistamiento(
+                                        0,
                                         avistamientoViewModel.anillaSeleccionada.value!!.codigoAnillamiento,
                                         fecha.value,
                                         lugar.value,
@@ -285,7 +286,7 @@ fun NuevoAvistamiento(
                                         avistamientoViewModel.anillaSeleccionada.value!!.userId
                                     ),
                                     skybirdDAO
-                                ){ creado ->
+                                ) { creado ->
                                     if (creado) {
                                         Toast.makeText(
                                             context,
@@ -308,8 +309,10 @@ fun NuevoAvistamiento(
                         ),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Registrar",
-                            fontSize = 20.sp)
+                        Text(
+                            "Registrar",
+                            fontSize = 20.sp
+                        )
                     }
                 }
             }

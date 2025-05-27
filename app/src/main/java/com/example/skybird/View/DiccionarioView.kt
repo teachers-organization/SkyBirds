@@ -26,25 +26,25 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.skybird.Controlador.ViewModels.AvesViewModel
-import com.example.skybird.Modelo.API.Bird
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.skybird.Controlador.ViewModels.AvesViewModel
+import com.example.skybird.Modelo.API.Bird
 
 @Composable
-fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit, avesViewModel: AvesViewModel){
+fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit, avesViewModel: AvesViewModel) {
 
     val filtrarNombre = remember { mutableStateOf("") }
     //Observamos la variable para que cuando la corrutina termine nos devuelve la lista de aves
@@ -112,7 +112,12 @@ fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit, avesViewModel: Ave
 }
 
 @Composable
-fun MostrarAves(navDetPajaro: () -> Unit, filtrarNombre: String, listaAves: List<Bird>, avesViewModel: AvesViewModel) {
+fun MostrarAves(
+    navDetPajaro: () -> Unit,
+    filtrarNombre: String,
+    listaAves: List<Bird>,
+    avesViewModel: AvesViewModel
+) {
 
     //Variable para detectar si el usuario ha llegado al final del scroll
     val gridState = rememberLazyGridState()
@@ -124,14 +129,16 @@ fun MostrarAves(navDetPajaro: () -> Unit, filtrarNombre: String, listaAves: List
             fontSize = 20.sp,
             modifier = Modifier.padding(top = 20.dp)
         )
-    }else {
+    } else {
 
         //Filtramos las aves por nombre
-        val avesFiltradas = remember { if (filtrarNombre != "") {
-            avesViewModel.filtrarNombre(listaAves, filtrarNombre)
-        } else {
-            listaAves
-        }}
+        val avesFiltradas = remember {
+            if (filtrarNombre != "") {
+                avesViewModel.filtrarNombre(listaAves, filtrarNombre)
+            } else {
+                listaAves
+            }
+        }
 
         //Detectar si llegó al final del scroll
         //Cuando se llegan a los 3 últimos pájaros la variable se vuelve true
@@ -168,9 +175,9 @@ fun MostrarAves(navDetPajaro: () -> Unit, filtrarNombre: String, listaAves: List
 }
 
 @Composable
-fun PajaroItem(ave: Bird, navDetPajaro: () -> Unit, avesViewModel: AvesViewModel){
+fun PajaroItem(ave: Bird, navDetPajaro: () -> Unit, avesViewModel: AvesViewModel) {
 
-    Column() {
+    Column {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(ave.default_photo?.medium_url)
