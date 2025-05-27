@@ -15,17 +15,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
@@ -36,7 +41,7 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit,
 
     val botonModifier = Modifier
         .fillMaxWidth()
-        .height(65.dp)
+        .height(55.dp)
         .shadow(4.dp, RoundedCornerShape(50))
 
     val botonColors = ButtonDefaults.buttonColors(
@@ -47,14 +52,20 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit,
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF5F5F5))
+            .background(
+                //Degradado para el fondo
+                Brush.verticalGradient(
+                    colors = listOf(Color(0xFFE8F0F2), Color(0xFFDCEAF5))
+                )
+            )
+
     ) {
         //Menú superior
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 60.dp)
-                .background(color = Color(0xFF56658C))
+                .background(color = Color(0xFF3A4F66))
         ) {
             Row(
                 modifier = Modifier
@@ -81,15 +92,13 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit,
                     letterSpacing = 0.5.sp
                 )
 
-                Image(
-                    painter = painterResource(id = R.drawable.configuracion),
-                    contentDescription = "Botón de Configuración",
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = "Configuración",
+                    tint = Color.White,
                     modifier = Modifier
-                        .size(70.dp)
-                        .clip(CircleShape)
-                        .clickable { config() }
-                        .background(Color.White)
-                        .padding(12.dp)
+                        .size(45.dp)
+                        .clickable { config() },
                 )
             }
         }
@@ -100,7 +109,7 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit,
                 .align(Alignment.Center)
                 .padding(horizontal = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(32.dp)
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -122,13 +131,17 @@ fun Home(sesionViewModel: SesionViewModel, config: () -> Unit, foro: () -> Unit,
 
             Button(
                 onClick = { diccionarioAves() },
-                shape = RoundedCornerShape(50),
+                shape = RoundedCornerShape(40.dp),
                 colors = botonColors,
-                modifier = botonModifier
+                elevation = ButtonDefaults.elevatedButtonElevation(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
             ) {
                 Text(
                     text = "Diccionario de aves",
-                    fontSize = 20.sp,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium,
                     letterSpacing = 0.5.sp
                 )
             }
