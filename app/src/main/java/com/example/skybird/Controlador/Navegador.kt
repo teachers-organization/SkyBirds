@@ -16,6 +16,7 @@ import com.example.skybird.View.AdminUsuarios
 import com.example.skybird.View.AñadirPregunta
 import com.example.skybird.View.Configuracion
 import com.example.skybird.View.DetallesAve
+import com.example.skybird.View.DetallesAvistamiento
 import com.example.skybird.View.Diccionario
 import com.example.skybird.View.Foro
 import com.example.skybird.View.Home
@@ -83,10 +84,13 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier){
             NuevoAnillamiento(SkybirdDAO, avistamientoViewModel, volver = { navController.navigate("ListaAnillamientos") }, sesionViewModel)
         }
         composable(route = "AvistamientosAnilla"){
-            ListaAvistamientos(SkybirdDAO, volver = { navController.navigate("ListaAnillamientos") }, sesionViewModel, avistamientoViewModel, nuevoAvistamiento = { navController.navigate("NuevoAvistamiento") }, navDetAvistamiento = { navController.navigate("") })
+            ListaAvistamientos(SkybirdDAO, volver = { navController.navigate("ListaAnillamientos") }, sesionViewModel, avistamientoViewModel, nuevoAvistamiento = { navController.navigate("NuevoAvistamiento") }, navDetAvistamiento = { navController.navigate("DetallesAvistamiento") })
         }
         composable(route = "NuevoAvistamiento"){
             NuevoAvistamiento(SkybirdDAO, avistamientoViewModel, volver = { navController.navigate("AvistamientosAnilla") })
+        }
+        composable(route = "DetallesAvistamiento"){
+            DetallesAvistamiento(volver = { navController.navigate("AvistamientosAnilla") }, avistamientoViewModel)
         }
     }
 }

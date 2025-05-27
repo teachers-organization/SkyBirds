@@ -145,7 +145,7 @@ fun MostrarAvistamientos(skybirdDAO: SkybirdDAO, navDetAvistamiento: () -> Unit,
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            listaAvistamientos.forEach { avistamiento ->
+            listaAvistamientos.reversed().forEach { avistamiento ->
                 AvistamientoItem(avistamiento, navDetAvistamiento, avistamientoViewModel)
             }
         }
