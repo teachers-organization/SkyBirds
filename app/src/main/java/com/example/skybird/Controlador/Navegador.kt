@@ -61,7 +61,8 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier) {
             Registro(
                 SkybirdDAO,
                 registroViewModel,
-                volver = { navController.navigate("InicioSesion") })
+                volver = { navController.navigate("InicioSesion") },
+                sesionViewModel)
         }
         composable(route = "Home") {
             Home(

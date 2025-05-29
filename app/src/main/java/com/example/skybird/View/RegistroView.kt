@@ -35,11 +35,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.RegistroViewModel
+import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 import com.example.skybird.Modelo.BBDD.Users
 
 @Composable
-fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volver: () -> Unit) {
+fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volver: () -> Unit, sesionViewModel: SesionViewModel) {
 
     val nick = remember { mutableStateOf("") }
     val nombre = remember { mutableStateOf("") }
@@ -225,6 +226,12 @@ fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
                                     "La contraseña debe contener al menos 5 caracteres",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                            } else if (nick.value.length > 10) {
+                                Toast.makeText(
+                                    context,
+                                    "Nick demasiado largo",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             } else if (contrasenya.value != repetirContrasenya.value) {
                                 Toast.makeText(
                                     context,
@@ -235,6 +242,12 @@ fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
                                 Toast.makeText(
                                     context,
                                     "Debe aceptar los términos y condiciones",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (!sesionViewModel.validarContrasenya(contrasenya.value)) {
+                                Toast.makeText(
+                                    context,
+                                    "Debe contener al menos 1 mayúscula y 1 carácter especial !@#$%^&*()",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {

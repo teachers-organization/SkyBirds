@@ -201,7 +201,13 @@ fun CambioContraseña(
                             } else if (nuevaContrasenya.value.length < 5) {
                                 Toast.makeText(
                                     context,
-                                    "La contraseña debe contener al menos 5 caracteres",
+                                    "Debe contener al menos 5 caracteres",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (!sesionViewModel.validarContrasenya(nuevaContrasenya.value)) {
+                                Toast.makeText(
+                                    context,
+                                    "Debe contener al menos 1 mayúscula y 1 carácter especial !@#$%^&*()",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {

@@ -175,4 +175,12 @@ class SesionViewModel : ViewModel() {
         return listaFiltrada
     }
 
+    fun validarContrasenya(contrasenya: String): Boolean {
+        //Al menos una mayúscula y al menos un carácter especial
+        val regex = Regex("^(?=.*[A-Z])(?=.*[!@#\$%^&*(),.?\":{}|<>]).{1,}\$")
+        return regex.matches(contrasenya)
+    }
+
+
+
 }
