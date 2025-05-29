@@ -46,13 +46,13 @@ import com.example.skybird.Modelo.API.Bird
 @Composable
 fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit, avesViewModel: AvesViewModel) {
 
-    val filtrarNombre = remember { mutableStateOf("") }
-    //Observamos la variable para que cuando la corrutina termine nos devuelve la lista de aves
-    val listaAves by avesViewModel.aves
+    val filtrarNombre = remember {mutableStateOf("")}
 
     //Llamamos a obtenerAves solo una vez al entrar en la pantalla
     LaunchedEffect(Unit) {
         avesViewModel.obtenerAves()
+        avesViewModel.obtenerTodas()
+
     }
 
     Box(
@@ -105,7 +105,7 @@ fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit, avesViewModel: Ave
                 )
             }
 
-            MostrarAves(navDetPajaro, filtrarNombre.value, listaAves, avesViewModel)
+            MostrarAves(navDetPajaro, filtrarNombre.value, avesViewModel)
 
         }
     }
@@ -114,10 +114,12 @@ fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit, avesViewModel: Ave
 @Composable
 fun MostrarAves(
     navDetPajaro: () -> Unit,
-    filtrarNombre: String,
-    listaAves: List<Bird>,
+    filtro: String,
     avesViewModel: AvesViewModel
 ) {
+
+    //Observamos la variable para que cuando la corrutina termine nos devuelve la lista de aves
+    val listaAves by avesViewModel.aves
 
     //Variable para detectar si el usuario ha llegado al final del scroll
     val gridState = rememberLazyGridState()
@@ -132,10 +134,16 @@ fun MostrarAves(
     } else {
 
         //Filtramos las aves por nombre
-        val avesFiltradas = if (filtrarNombre != "") {
-            avesViewModel.filtrarNombre(listaAves, filtrarNombre)
-        } else {
-            listaAves
+        val listaMostrada by remember(filtro, avesViewModel.aves, avesViewModel.avesFiltradas) {
+            derivedStateOf {
+                if (filtro.isNotBlank()) {
+                    avesViewModel.avesFiltradas.value.filter {
+                        it.preferred_common_name?.contains(filtro, ignoreCase = true) == true
+                    }
+                } else {
+                    avesViewModel.aves.value
+                }
+            }
         }
 
         //Detectar si llegó al final del scroll
@@ -143,15 +151,13 @@ fun MostrarAves(
         val cargarMas = remember {
             derivedStateOf {
                 val lastVisible = gridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-                lastVisible >= avesFiltradas.size - 10
+                filtro.isBlank() && lastVisible >= listaMostrada.size - 3
             }
         }
 
-        //Carga los siguientes elementos de la api
+        //Cragar los siguientes elementos de la api
         LaunchedEffect(cargarMas.value) {
             if (cargarMas.value) {
-                println(gridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0)
-                println(avesFiltradas.size)
                 avesViewModel.obtenerAves()
             }
         }
@@ -165,7 +171,7 @@ fun MostrarAves(
                 .fillMaxSize()
                 .padding(top = 10.dp)
         ) {
-            items(avesFiltradas) { ave ->
+            items(listaMostrada) { ave ->
                 PajaroItem(ave, navDetPajaro, avesViewModel)
             }
         }

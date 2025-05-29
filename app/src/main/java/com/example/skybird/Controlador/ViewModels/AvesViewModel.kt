@@ -16,6 +16,9 @@ class AvesViewModel : ViewModel() {
     private val _aves = mutableStateOf<List<Bird>>(emptyList())
     val aves: State<List<Bird>> = _aves
 
+    private val _avesFiltradas = mutableStateOf<List<Bird>>(emptyList())
+    val avesFiltradas: State<List<Bird>> = _avesFiltradas
+
     //Almacenar pájaro
     var pajaroActual = mutableStateOf<Bird?>(null)
 
@@ -34,9 +37,8 @@ class AvesViewModel : ViewModel() {
             cargando = true
             viewModelScope.launch {
                 try {
-                    val response = RetrofitClient.inatApi.getBirds(perPage = 40, page = pagina)
+                    val response = RetrofitClient.inatApi.getBirds(perPage = 5, page = pagina)
                     _aves.value += response.results
-                    println(aves.value.size)
                     pagina++
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -61,17 +63,36 @@ class AvesViewModel : ViewModel() {
         }
     }
 
+    private var cargando2 = false
+
     //Función para filtrar por nombre del ave
-    fun filtrarNombre(lista: List<Bird>, texto: String): List<Bird> {
+    fun filtrarNombre(texto: String): List<Bird> {
         return try {
             val regex = Regex(".*${Regex.escape(texto)}.*", RegexOption.IGNORE_CASE)
-            lista.filter { pajaro ->
+            avesFiltradas.value.filter { pajaro ->
                 pajaro.preferred_common_name?.let { nombre ->
                     regex.containsMatchIn(nombre)
                 } ?: false //si es null, lo excluye de la lista
             }
         } catch (e: Exception) {
             emptyList()
+        }
+    }
+
+    fun obtenerTodas() {
+        if (!cargando2) {
+            cargando2 = true
+            viewModelScope.launch {
+                try {
+                    val response = RetrofitClient.inatApi.getBirds()
+                    _avesFiltradas.value += response.results
+                    pagina++
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } finally {
+                    cargando2 = false
+                }
+            }
         }
     }
 
