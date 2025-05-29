@@ -139,7 +139,6 @@ class SesionViewModel : ViewModel() {
         try {
             viewModelScope.launch {
                 skybirdDAO.deleteUser(users)
-                usuarioActual.value = null
             }
         } catch (e: Exception) {
             e.printStackTrace()

@@ -52,7 +52,7 @@ fun Home(
         .shadow(4.dp, RoundedCornerShape(50))
 
     val botonColors = ButtonDefaults.buttonColors(
-        containerColor = Color(0xFFA3B18A),
+        containerColor = Color(0xFFFFFFFF),
         contentColor = Color.White
     )
 
@@ -62,7 +62,7 @@ fun Home(
             .background(
                 //Degradado para el fondo
                 Brush.verticalGradient(
-                    colors = listOf(Color(0xFFE8F0F2), Color(0xFFDCEAF5))
+                    colors = listOf(Color(0xFFFFFFFF), Color(0xFFCAD7B4))
                 )
             )
 
@@ -72,7 +72,7 @@ fun Home(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 60.dp)
-                .background(color = Color(0xFF3A4F66))
+                .background(color = Color(0xFFA3B18A))
         ) {
             Row(
                 modifier = Modifier
@@ -124,54 +124,58 @@ fun Home(
             if (sesionViewModel.usuarioActual.value?.admin == true) {
                 Button(
                     onClick = { adminUsers() },
-                    shape = RoundedCornerShape(50),
+                    shape = RoundedCornerShape(10),
                     colors = botonColors,
                     modifier = botonModifier
                 ) {
                     Text(
                         text = "Administrar usuarios",
                         fontSize = 20.sp,
-                        letterSpacing = 0.5.sp
+                        letterSpacing = 0.5.sp,
+                        color = Color(0xFF646C53)
                     )
                 }
             }
 
             Button(
                 onClick = { diccionarioAves() },
-                shape = RoundedCornerShape(50),
+                shape = RoundedCornerShape(10),
                 colors = botonColors,
                 modifier = botonModifier
             ) {
                 Text(
                     text = "Diccionario de aves",
                     fontSize = 20.sp,
-                    letterSpacing = 0.5.sp
+                    letterSpacing = 0.5.sp,
+                    color = Color(0xFF646C53)
                 )
             }
 
             Button(
                 onClick = { foro() },
-                shape = RoundedCornerShape(50),
+                shape = RoundedCornerShape(10),
                 colors = botonColors,
                 modifier = botonModifier
             ) {
                 Text(
                     text = "Foro",
                     fontSize = 20.sp,
-                    letterSpacing = 0.5.sp
+                    letterSpacing = 0.5.sp,
+                    color = Color(0xFF646C53)
                 )
             }
 
             Button(
                 onClick = { listaAnillamientos() },
-                shape = RoundedCornerShape(50),
+                shape = RoundedCornerShape(10),
                 colors = botonColors,
                 modifier = botonModifier
             ) {
                 Text(
                     text = "Avistamientos",
                     fontSize = 20.sp,
-                    letterSpacing = 0.5.sp
+                    letterSpacing = 0.5.sp,
+                    color = Color(0xFF646C53)
                 )
             }
 
@@ -180,7 +184,7 @@ fun Home(
                     sesionViewModel.cerrarSesión()
                     inicioSesion()
                 },
-                shape = RoundedCornerShape(50),
+                shape = RoundedCornerShape(10),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFBC4749),
                     contentColor = Color.White

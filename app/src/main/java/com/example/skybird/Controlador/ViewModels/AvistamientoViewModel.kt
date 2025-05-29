@@ -100,6 +100,7 @@ class AvistamientoViewModel : ViewModel() {
             isLoading.value = true
             try {
                 val resultado = inatApiSpecies.getBirdsByName(query = nombre)
+                //Busca por el nombre común y si es null por el nombre científico
                 especies.value = resultado.results.map { it.preferred_common_name ?: it.name }
             } catch (e: Exception) {
                 especies.value = emptyList()
