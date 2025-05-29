@@ -231,6 +231,7 @@ fun CambioContraseña(
                                         ).show()
                                     }
                                 }
+                                volver()
                             }
                         },
                         colors = ButtonDefaults.buttonColors(

@@ -163,6 +163,7 @@ fun CambioNick(
                                         Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
                                     }
                                 }
+                                volver()
                             }
                         },
                         colors = ButtonDefaults.buttonColors(

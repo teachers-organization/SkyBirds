@@ -142,6 +142,7 @@ fun ResponderPregunta(
                                         ).show()
                                     }
                                 }
+                                volver()
                             }
                         },
                         colors = ButtonDefaults.buttonColors(

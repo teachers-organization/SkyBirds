@@ -301,6 +301,7 @@ fun NuevoAvistamiento(
                                         ).show()
                                     }
                                 }
+                                volver()
                             }
                         },
                         colors = ButtonDefaults.buttonColors(

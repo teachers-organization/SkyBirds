@@ -276,6 +276,7 @@ fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
                                         ).show()
                                     }
                                 }
+                                volver()
                             }
                         },
                         colors = ButtonDefaults.buttonColors(

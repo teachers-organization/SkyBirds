@@ -14,8 +14,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -31,25 +36,27 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 import com.example.skybird.R
 
+
 @Composable
 fun InicioSesion(
     skybirdDAO: SkybirdDAO,
     sesionViewModel: SesionViewModel,
     crearCuenta: () -> Unit,
-    login: () -> Unit,
-    modifier: Modifier = Modifier
+    login: () -> Unit
 ) {
 
     val password = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }
     val context = LocalContext.current
     val scrollState = rememberScrollState()
+    val showPassword = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         sesionViewModel.crearAdmin(skybirdDAO)
@@ -122,12 +129,18 @@ fun InicioSesion(
                     TextField(
                         value = password.value,
                         onValueChange = { password.value = it },
-                        visualTransformation = PasswordVisualTransformation(),
+                        placeholder = { Text("Introduce tu contraseña...", color = Color.Gray) },
+                        visualTransformation = if (showPassword.value) VisualTransformation.None else PasswordVisualTransformation(),
+                        trailingIcon = {
+                            IconButton(onClick = { showPassword.value = !showPassword.value }) {
+                                Icon(
+                                    imageVector = if (showPassword.value) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                    contentDescription = if (showPassword.value) "Ocultar contraseña" else "Mostrar contraseña"
+                                )
+                            }
+                        },
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(8.dp),
-                        placeholder = {
-                            Text("Introduce tu contraseña...", color = Color.Gray)
-                        }
+                        shape = RoundedCornerShape(8.dp)
                     )
 
                     Button(

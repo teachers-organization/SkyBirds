@@ -156,6 +156,7 @@ fun AñadirPregunta(
                                         ).show()
                                     }
                                 }
+                                volver()
                             }
                         },
                         colors = ButtonDefaults.buttonColors(

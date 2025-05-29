@@ -334,6 +334,7 @@ fun NuevoAnillamiento(
                                         }
                                     }
                                 }
+                                volver()
                             }
                         },
                         colors = ButtonDefaults.buttonColors(

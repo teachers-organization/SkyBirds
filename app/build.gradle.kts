@@ -53,6 +53,8 @@ android {
 
 dependencies {
 
+    implementation (libs.androidx.material.icons.extended)
+
     implementation(libs.jsoup.jsoup)
 
     implementation(libs.coil.compose)
