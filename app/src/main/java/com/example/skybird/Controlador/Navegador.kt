@@ -14,6 +14,10 @@ import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 import com.example.skybird.View.AdminUsuarios
 import com.example.skybird.View.AñadirPregunta
+import com.example.skybird.View.BorrarCuenta
+import com.example.skybird.View.CambioContraseña
+import com.example.skybird.View.CambioNick
+import com.example.skybird.View.CambioNombre
 import com.example.skybird.View.Configuracion
 import com.example.skybird.View.DetallesAve
 import com.example.skybird.View.DetallesAvistamiento
@@ -71,10 +75,37 @@ fun Navegador(SkybirdDAO: SkybirdDAO, modifier: Modifier = Modifier) {
         }
         composable(route = "Configuracion") {
             Configuracion(
+                sesionViewModel,
+                borrarCuenta = { navController.navigate("BorrarCuenta") },
+                cambioContraseña = { navController.navigate("CambioContraseña") },
+                cambioNick = { navController.navigate("CambioNick") },
+                cambioNombre = { navController.navigate("CambioNombre") },
+                volver = { navController.navigate("Home") })
+        }
+        composable(route = "BorrarCuenta") {
+            BorrarCuenta(
                 SkybirdDAO,
                 sesionViewModel,
-                volver = { navController.navigate("Home") },
+                volver = { navController.navigate("Configuracion") },
                 inicio = { navController.navigate("InicioSesion") })
+        }
+        composable(route = "CambioContraseña") {
+            CambioContraseña (
+                SkybirdDAO,
+                sesionViewModel,
+                volver = { navController.navigate("Configuracion") })
+        }
+        composable(route = "CambioNick") {
+            CambioNick (
+                SkybirdDAO,
+                sesionViewModel,
+                volver = { navController.navigate("Configuracion") })
+        }
+        composable(route = "CambioNombre") {
+            CambioNombre (
+                SkybirdDAO,
+                sesionViewModel,
+                volver = { navController.navigate("Configuracion") })
         }
         composable(route = "Foro") {
             Foro(
