@@ -182,7 +182,7 @@ fun AnillaItem(
             .shadow(8.dp, RoundedCornerShape(16.dp)),
         shape = RoundedCornerShape(16.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF56658C),
+            containerColor = Color(0xFF687054),
             contentColor = Color.White
         )
     ) {

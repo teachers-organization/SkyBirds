@@ -13,9 +13,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -48,143 +49,55 @@ fun Home(
 
     val botonModifier = Modifier
         .fillMaxWidth()
-        .height(55.dp)
-        .shadow(4.dp, RoundedCornerShape(50))
-
-    val botonColors = ButtonDefaults.buttonColors(
-        containerColor = Color(0xFFFFFFFF),
-        contentColor = Color.White
-    )
+        .height(60.dp)
+        .shadow(2.dp, RoundedCornerShape(8.dp))
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                //Degradado para el fondo
-                Brush.verticalGradient(
-                    colors = listOf(Color(0xFFFFFFFF), Color(0xFFCAD7B4))
-                )
-            )
-
+            .background(Color(0xFFFFFFFF))
     ) {
-        //Menú superior
-        Box(
+
+        //Logo superior
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 60.dp)
-                .background(color = Color(0xFFA3B18A))
+                .padding(100.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(
+
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "Header Image",
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 20.dp, horizontal = 24.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.user),
-                    contentDescription = "User Image",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(70.dp)
-                        .clip(CircleShape)
-                        .background(Color.White)
-                )
-
-                Text(
-                    text = sesionViewModel.usuarioActual.value?.nick ?: "Sin nombre",
-                    fontSize = 30.sp,
-                    color = Color.White,
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    letterSpacing = 0.5.sp
-                )
-
-                Icon(
-                    imageVector = Icons.Default.Settings,
-                    contentDescription = "Configuración",
-                    tint = Color.White,
-                    modifier = Modifier
-                        .size(45.dp)
-                        .clickable { config() },
-                )
-            }
+                    .height(120.dp)
+                    .clip(RoundedCornerShape(300.dp))
+            )
         }
 
+        //Botones de opciones
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.Center)
                 .padding(horizontal = 32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-
-            Spacer(modifier = Modifier.height(16.dp))
-
             if (sesionViewModel.usuarioActual.value?.admin == true) {
-                Button(
-                    onClick = { adminUsers() },
-                    shape = RoundedCornerShape(10),
-                    colors = botonColors,
-                    modifier = botonModifier
-                ) {
-                    Text(
-                        text = "Administrar usuarios",
-                        fontSize = 20.sp,
-                        letterSpacing = 0.5.sp,
-                        color = Color(0xFF646C53)
-                    )
-                }
+                ModernButton("Administrar usuarios", onClick = adminUsers)
             }
-
-            Button(
-                onClick = { diccionarioAves() },
-                shape = RoundedCornerShape(10),
-                colors = botonColors,
-                modifier = botonModifier
-            ) {
-                Text(
-                    text = "Diccionario de aves",
-                    fontSize = 20.sp,
-                    letterSpacing = 0.5.sp,
-                    color = Color(0xFF646C53)
-                )
-            }
-
-            Button(
-                onClick = { foro() },
-                shape = RoundedCornerShape(10),
-                colors = botonColors,
-                modifier = botonModifier
-            ) {
-                Text(
-                    text = "Foro",
-                    fontSize = 20.sp,
-                    letterSpacing = 0.5.sp,
-                    color = Color(0xFF646C53)
-                )
-            }
-
-            Button(
-                onClick = { listaAnillamientos() },
-                shape = RoundedCornerShape(10),
-                colors = botonColors,
-                modifier = botonModifier
-            ) {
-                Text(
-                    text = "Avistamientos",
-                    fontSize = 20.sp,
-                    letterSpacing = 0.5.sp,
-                    color = Color(0xFF646C53)
-                )
-            }
+            ModernButton("Diccionario de aves", onClick = diccionarioAves)
+            ModernButton("Foro", onClick = foro)
+            ModernButton("Avistamientos", onClick = listaAnillamientos)
 
             Button(
                 onClick = {
                     sesionViewModel.cerrarSesión()
                     inicioSesion()
                 },
-                shape = RoundedCornerShape(10),
+                shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFBC4749),
                     contentColor = Color.White
@@ -193,11 +106,81 @@ fun Home(
             ) {
                 Text(
                     text = "Cerrar sesión",
-                    fontSize = 20.sp,
-                    letterSpacing = 0.5.sp
+                    fontSize = 18.sp,
+                    modifier = Modifier.weight(1f)
+                )
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Cerrar sesión",
+                    modifier = Modifier.size(18.dp)
                 )
             }
-
         }
+
+        //Header inferior
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .background(color = Color(0xFFA3B18A))
+                .padding(start = 25.dp, end = 25.dp, top = 16.dp, bottom = 30.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.user),
+                    contentDescription = "User Image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                )
+
+                Text(
+                    text = sesionViewModel.usuarioActual.value?.nick ?: "Sin nombre",
+                    fontSize = 25.sp,
+                    color = Color.White
+                )
+
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = "Configuración",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clickable { config() }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ModernButton(text: String, onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        shape = RoundedCornerShape(8.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFFDAE1D5),
+            contentColor = Color(0xFF333333)
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
+            .shadow(2.dp, RoundedCornerShape(8.dp))
+    ) {
+        Text(
+            text = text,
+            fontSize = 18.sp,
+            modifier = Modifier.weight(1f)
+        )
+        Icon(
+            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+            contentDescription = "Ir a $text",
+            modifier = Modifier.size(18.dp)
+        )
     }
 }
