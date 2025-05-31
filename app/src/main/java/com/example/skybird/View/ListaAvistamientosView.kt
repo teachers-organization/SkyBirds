@@ -1,5 +1,6 @@
 package com.example.skybird.View
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +31,10 @@ import com.example.skybird.Controlador.ViewModels.AvistamientoViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Modelo.BBDD.Avistamiento
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @Composable
 fun ListaAvistamientos(
@@ -109,9 +114,16 @@ fun MostrarAvistamientos(
     navDetAvistamiento: () -> Unit,
     avistamientoViewModel: AvistamientoViewModel
 ) {
+
+    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
     //Obtenemos todos los avistamientos almacenados en la base de datos
     var listaAvistamientos = avistamientoViewModel.obtenerAvistamientos(skybirdDAO)
-        .collectAsState(initial = emptyList()).value
+        .collectAsState(initial = emptyList())
+        .value
+        .sortedByDescending { avistamiento ->
+            sdf.parse(avistamiento.fecha)
+        }
 
     avistamientoViewModel.buscarEspecieId(skybirdDAO)
 
@@ -166,7 +178,7 @@ fun MostrarAvistamientos(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            listaAvistamientos.reversed().forEach { avistamiento ->
+            listaAvistamientos.forEach { avistamiento ->
                 AvistamientoItem(avistamiento, navDetAvistamiento, avistamientoViewModel)
             }
         }
