@@ -84,11 +84,11 @@ fun ResponderPregunta(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 100.dp)
+                    .padding(bottom = 20.dp)
                     .shadow(8.dp, RoundedCornerShape(16.dp))
                     .verticalScroll(scrollState)
                     .background(
-                        color = Color(0xFFF0F8FF),  // Fondo azul claro
+                        color = Color(0xFFF0F8FF),
                         shape = RoundedCornerShape(16.dp)
                     )
             ) {

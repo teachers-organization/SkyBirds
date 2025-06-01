@@ -95,7 +95,7 @@ fun Registro(skybirdDAO: SkybirdDAO, registroViewModel: RegistroViewModel, volve
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 100.dp)
+                    .padding(bottom = 20.dp)
                     .shadow(8.dp, RoundedCornerShape(16.dp))
                     .background(
                         color = Color(0xFFF0F8FF),

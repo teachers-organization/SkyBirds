@@ -91,8 +91,8 @@ fun NuevoAvistamiento(
             Spacer(modifier = Modifier.height(40.dp))
 
             Text(
-                text = "Datos avistamiento",
-                fontSize = 35.sp,
+                text = "Nuevo avistamiento",
+                fontSize = 25.sp,
                 color = Color(0xFF1A2C47),
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
@@ -102,7 +102,7 @@ fun NuevoAvistamiento(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 100.dp)
+                    .padding(bottom = 20.dp)
                     .shadow(8.dp, RoundedCornerShape(16.dp))
                     .background(
                         color = Color(0xFFF0F8FF),

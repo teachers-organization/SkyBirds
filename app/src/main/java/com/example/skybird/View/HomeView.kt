@@ -13,7 +13,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Close
@@ -46,51 +49,44 @@ fun Home(
     adminUsers: () -> Unit,
     listaAnillamientos: () -> Unit
 ) {
+    val scrollState = rememberScrollState()
 
-    val botonModifier = Modifier
-        .fillMaxWidth()
-        .height(60.dp)
-        .shadow(2.dp, RoundedCornerShape(8.dp))
-
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFFFFFF))
+            .background(Color.White)
     ) {
-
-        //Logo superior
+        // Contenido que scrollea
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(100.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .weight(1f)
+                .verticalScroll(scrollState)
+                .padding(horizontal = 20.dp, vertical = 20.dp)
         ) {
-
             Image(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = "Header Image",
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.Fit,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .clip(RoundedCornerShape(300.dp))
+                    .sizeIn(maxWidth = 150.dp)
+                    .align(Alignment.CenterHorizontally)
             )
-        }
 
-        //Botones de opciones
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.Center)
-                .padding(horizontal = 32.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+            Spacer(modifier = Modifier.height(40.dp))
+
             if (sesionViewModel.usuarioActual.value?.admin == true) {
                 ModernButton("Administrar usuarios", onClick = adminUsers)
+                Spacer(modifier = Modifier.height(16.dp))
             }
+
             ModernButton("Diccionario de aves", onClick = diccionarioAves)
+            Spacer(modifier = Modifier.height(16.dp))
+
             ModernButton("Foro", onClick = foro)
+            Spacer(modifier = Modifier.height(16.dp))
+
             ModernButton("Avistamientos", onClick = listaAnillamientos)
+            Spacer(modifier = Modifier.height(16.dp))
 
             Button(
                 onClick = {
@@ -102,7 +98,10 @@ fun Home(
                     containerColor = Color(0xFFBC4749),
                     contentColor = Color.White
                 ),
-                modifier = botonModifier
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp)
+                    .shadow(2.dp, RoundedCornerShape(8.dp))
             ) {
                 Text(
                     text = "Cerrar sesión",
@@ -117,18 +116,17 @@ fun Home(
             }
         }
 
-        //Header inferior
+        // Footer fijo
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .background(color = Color(0xFFA3B18A))
-                .padding(start = 25.dp, end = 25.dp, top = 16.dp, bottom = 30.dp)
+                .background(Color(0xFFA3B18A))
+                .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 20.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.user),
@@ -139,10 +137,14 @@ fun Home(
                         .clip(RoundedCornerShape(12.dp))
                 )
 
+                // Nickname con elipsis si es demasiado largo
                 Text(
                     text = sesionViewModel.usuarioActual.value?.nick ?: "Sin nombre",
-                    fontSize = 25.sp,
-                    color = Color.White
+                    fontSize = 20.sp,
+                    color = Color.White,
+                    maxLines = 1,
+                    modifier = Modifier
+                        .weight(1f)
                 )
 
                 Icon(
@@ -150,13 +152,14 @@ fun Home(
                     contentDescription = "Configuración",
                     tint = Color.White,
                     modifier = Modifier
-                        .size(50.dp)
+                        .size(32.dp)
                         .clickable { config() }
                 )
             }
         }
     }
 }
+
 
 @Composable
 fun ModernButton(text: String, onClick: () -> Unit) {

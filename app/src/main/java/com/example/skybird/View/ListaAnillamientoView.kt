@@ -78,7 +78,7 @@ fun ListaAnillamiento(
 
             Text(
                 text = "Anillas",
-                fontSize = 35.sp,
+                fontSize = 25.sp,
                 color = Color(0xFF1A2C47),
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)

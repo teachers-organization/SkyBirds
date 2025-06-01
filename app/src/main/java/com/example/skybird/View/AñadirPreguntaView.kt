@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.ForoViewModel
@@ -84,7 +85,7 @@ fun AñadirPregunta(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 100.dp)
+                    .padding(bottom = 20.dp)
                     .shadow(8.dp, RoundedCornerShape(16.dp))
                     .verticalScroll(scrollState)
                     .background(
@@ -99,6 +100,13 @@ fun AñadirPregunta(
                         .padding(20.dp),
                     verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
+                    Text(
+                        text = "Nueva pregunta",
+                        color = Color(0xFF5A7391),
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
                     Text(
                         text = "Título",
                         color = Color(0xFF5A7391),

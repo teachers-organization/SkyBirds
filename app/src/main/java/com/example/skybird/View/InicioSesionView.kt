@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -72,7 +73,7 @@ fun InicioSesion(
             modifier = Modifier
                 .fillMaxSize()
                 .align(Alignment.Center)
-                .padding(top = 60.dp, bottom = 20.dp, start = 30.dp, end = 30.dp)
+                .padding(top = 30.dp, bottom = 20.dp, start = 30.dp, end = 30.dp)
         ) {
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -80,11 +81,10 @@ fun InicioSesion(
             Image(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = "Header Image",
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.Fit,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .clip(RoundedCornerShape(1000.dp))
+                    .sizeIn(maxWidth = 150.dp)
+                    .align(Alignment.CenterHorizontally)
             )
 
             Spacer(modifier = Modifier.height(40.dp))
@@ -92,7 +92,7 @@ fun InicioSesion(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 100.dp)
+                    .padding(bottom = 10.dp)
                     .shadow(8.dp, RoundedCornerShape(16.dp))
                     .background(Color(0xFFF0F8FF), shape = RoundedCornerShape(16.dp))
             ) {

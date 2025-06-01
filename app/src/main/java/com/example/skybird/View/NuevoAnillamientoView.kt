@@ -95,8 +95,8 @@ fun NuevoAnillamiento(
             Spacer(modifier = Modifier.height(40.dp))
 
             Text(
-                text = "Datos anillamiento",
-                fontSize = 35.sp,
+                text = "Nuevo anillamiento",
+                fontSize = 25.sp,
                 color = Color(0xFF1A2C47),
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
@@ -106,7 +106,7 @@ fun NuevoAnillamiento(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 100.dp)
+                    .padding(bottom = 20.dp)
                     .shadow(8.dp, RoundedCornerShape(16.dp))
                     .background(
                         color = Color(0xFFF0F8FF),

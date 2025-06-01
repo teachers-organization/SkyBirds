@@ -77,7 +77,7 @@ fun ListaAvistamientos(
 
             Text(
                 text = "Avistamientos",
-                fontSize = 35.sp,
+                fontSize = 25.sp,
                 color = Color(0xFF1A2C47),
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
@@ -114,11 +114,9 @@ fun MostrarAvistamientos(
     navDetAvistamiento: () -> Unit,
     avistamientoViewModel: AvistamientoViewModel
 ) {
-
     val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
-    //Obtenemos todos los avistamientos almacenados en la base de datos
-    var listaAvistamientos = avistamientoViewModel.obtenerAvistamientos(skybirdDAO)
+    val listaAvistamientos = avistamientoViewModel.obtenerAvistamientos(skybirdDAO)
         .collectAsState(initial = emptyList())
         .value
         .sortedByDescending { avistamiento ->
@@ -127,63 +125,64 @@ fun MostrarAvistamientos(
 
     avistamientoViewModel.buscarEspecieId(skybirdDAO)
 
-    Box(
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(12.dp)
-            .shadow(6.dp, shape = RoundedCornerShape(16.dp))
-            .background(color = Color(0xFFDCEAF5), shape = RoundedCornerShape(16.dp))
-            .padding(20.dp)
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(top = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Column(
-            Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Text(
-                text = "Código: " + avistamientoViewModel.anillaSeleccionada.value?.codigoAnillamiento,
-                fontSize = 24.sp,
-                color = Color(0xFF1A2C47)
-            )
-            Text(
-                text = "Especie: " + avistamientoViewModel.especieRecogida.value,
-                fontSize = 16.sp,
-                color = Color(0xFF2E2E2E)
-            )
-            Text(
-                text = "Lugar de anillamiento: " + avistamientoViewModel.anillaSeleccionada.value?.lugar,
-                fontSize = 16.sp,
-                color = Color(0xFF2E2E2E)
-            )
-            Text(
-                text = "Fecha de anillamiento: " + avistamientoViewModel.anillaSeleccionada.value?.fecha,
-                fontSize = 16.sp,
-                color = Color(0xFF2E2E2E)
-            )
-        }
-    }
-
-    if (listaAvistamientos.isEmpty()) {
-        Text(
-            text = "Todavía no hay avistamientos",
-            color = Color.Black,
-            fontSize = 20.sp,
-            modifier = Modifier.padding(top = 20.dp)
-        )
-    } else {
-
-        Column(
+        //Tarjeta con info de la anilla seleccionada
+        Box(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 10.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp)
+                .shadow(6.dp, shape = RoundedCornerShape(16.dp))
+                .background(color = Color(0xFFDCEAF5), shape = RoundedCornerShape(16.dp))
+                .padding(20.dp)
         ) {
+            Column(
+                Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Text(
+                    text = "Código: " + avistamientoViewModel.anillaSeleccionada.value?.codigoAnillamiento,
+                    fontSize = 24.sp,
+                    color = Color(0xFF1A2C47)
+                )
+                Text(
+                    text = "Especie: " + avistamientoViewModel.especieRecogida.value,
+                    fontSize = 16.sp,
+                    color = Color(0xFF2E2E2E)
+                )
+                Text(
+                    text = "Lugar de anillamiento: " + avistamientoViewModel.anillaSeleccionada.value?.lugar,
+                    fontSize = 16.sp,
+                    color = Color(0xFF2E2E2E)
+                )
+                Text(
+                    text = "Fecha de anillamiento: " + avistamientoViewModel.anillaSeleccionada.value?.fecha,
+                    fontSize = 16.sp,
+                    color = Color(0xFF2E2E2E)
+                )
+            }
+        }
+
+        if (listaAvistamientos.isEmpty()) {
+            Text(
+                text = "Todavía no hay avistamientos",
+                color = Color.Black,
+                fontSize = 20.sp,
+                modifier = Modifier.padding(top = 20.dp, start = 12.dp)
+            )
+        } else {
             listaAvistamientos.forEach { avistamiento ->
                 AvistamientoItem(avistamiento, navDetAvistamiento, avistamientoViewModel)
             }
         }
     }
 }
+
 
 @Composable
 fun AvistamientoItem(
