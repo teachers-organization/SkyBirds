@@ -1,4 +1,4 @@
-package com.example.skybird.View
+package com.example.skybird.Vista
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -6,8 +6,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -17,7 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -29,28 +30,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.skybird.Controlador.ViewModels.ForoViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 
 @Composable
-fun CambioNombre(
+fun ResponderPregunta(
     skybirdDAO: SkybirdDAO,
-    sesionViewModel: SesionViewModel,
-    volver: () -> Unit
+    volver: () -> Unit,
+    foroViewModel: ForoViewModel,
+    sesionViewModel: SesionViewModel
 ) {
 
-    val nuevoNombre = remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
+    val contenido = remember { mutableStateOf("") }
     val context = LocalContext.current
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF5F5F5))
-    )
-    {
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -76,20 +79,14 @@ fun CambioNombre(
                 )
             }
 
-            Text(
-                text = "Configuración",
-                fontSize = 35.sp,
-                color = Color(0xFF1A2C47),
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(vertical = 16.dp)
-            )
+            Spacer(modifier = Modifier.height(40.dp))
 
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 50.dp)
+                    .padding(bottom = 20.dp)
                     .shadow(8.dp, RoundedCornerShape(16.dp))
+                    .verticalScroll(scrollState)
                     .background(
                         color = Color(0xFFF0F8FF),
                         shape = RoundedCornerShape(16.dp)
@@ -99,68 +96,50 @@ fun CambioNombre(
                     modifier = Modifier
                         .align(Alignment.Center)
                         .fillMaxSize()
-                        .padding(20.dp)
-                        .verticalScroll(scrollState),
+                        .padding(20.dp),
                     verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
-
-                    HorizontalDivider(
-                        modifier = Modifier.padding(vertical = 16.dp),
-                        thickness = 1.dp,
-                        color = Color.LightGray
-                    )
-
                     Text(
-                        text = "Cambiar nombre",
-                        fontSize = 20.sp,
+                        text = "Respuesta",
                         color = Color(0xFF5A7391),
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(bottom = 8.dp)
-                    )
-
-                    HorizontalDivider(
-                        modifier = Modifier.padding(bottom = 16.dp),
-                        thickness = 1.dp,
-                        color = Color.LightGray
-                    )
-
-                    Text(
-                        text = "Nuevo nombre",
-                        color = Color(0xFF5A7391),
-                        fontSize = 20.sp
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold
                     )
 
                     TextField(
-                        value = nuevoNombre.value,
-                        onValueChange = { nuevoNombre.value = it },
+                        value = contenido.value,
+                        onValueChange = { contenido.value = it },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
-                        placeholder = { Text("Introduce tu nuevo nombre...", color = Color.Gray) }
+                        placeholder = { Text(text = "Escribe tu respuesta...", color = Color.Gray) }
                     )
 
                     Button(
                         onClick = {
-                            if (listOf(
-                                    nuevoNombre
-                                ).any { it.value.isBlank() }
-                            ) {
+                            if (listOf(contenido).any { it.value.isBlank() }) {
                                 Toast.makeText(
                                     context,
-                                    "Por favor, rellene todos los campos",
+                                    "Por favor, rellene el campo",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
-                                sesionViewModel.cambiarNombre(skybirdDAO, nuevoNombre.value)
-                                { actualizado ->
-                                    if (actualizado) {
+                                foroViewModel.crearRespuesta(
+                                    skybirdDAO,
+                                    contenido.value,
+                                    sesionViewModel.usuarioActual.value!!
+                                ) { correcto ->
+                                    if (correcto) {
                                         Toast.makeText(
                                             context,
-                                            "Nombre actualizado correctamente",
+                                            "Respuesta añadida correctamente",
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     } else {
-                                        Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            context,
+                                            "Error al añadir la respuesta",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
                                 }
                                 volver()
@@ -173,7 +152,7 @@ fun CambioNombre(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            "Cambiar nombre",
+                            "Responder",
                             fontSize = 20.sp
                         )
                     }

@@ -1,4 +1,4 @@
-package com.example.skybird.View
+package com.example.skybird.Vista
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -37,27 +37,23 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skybird.Controlador.ViewModels.AvistamientoViewModel
-import com.example.skybird.Controlador.ViewModels.SesionViewModel
-import com.example.skybird.Modelo.BBDD.Anillamiento
+import com.example.skybird.Modelo.BBDD.Avistamiento
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 
 @Composable
-fun NuevoAnillamiento(
+fun NuevoAvistamiento(
     skybirdDAO: SkybirdDAO,
     avistamientoViewModel: AvistamientoViewModel,
-    volver: () -> Unit,
-    sesionViewModel: SesionViewModel
+    volver: () -> Unit
 ) {
 
     val fecha = remember { mutableStateOf("") }
     val lugar = remember { mutableStateOf("") }
-    val codigoAnilla = remember { mutableStateOf("") }
     val sexo = remember { mutableStateOf<String?>(null) }
     val edad = remember { mutableStateOf<String?>(null) }
     val longitud_ala = remember { mutableStateOf<String?>(null) }
     val peso = remember { mutableStateOf<String?>(null) }
     val observaciones = remember { mutableStateOf<String?>(null) }
-    val especie = remember { mutableStateOf("") }
 
     val scrollState = rememberScrollState()
     val context = LocalContext.current
@@ -95,7 +91,7 @@ fun NuevoAnillamiento(
             Spacer(modifier = Modifier.height(40.dp))
 
             Text(
-                text = "Nuevo anillamiento",
+                text = "Nuevo avistamiento",
                 fontSize = 25.sp,
                 color = Color(0xFF1A2C47),
                 modifier = Modifier
@@ -121,26 +117,6 @@ fun NuevoAnillamiento(
                         .verticalScroll(scrollState),
                     verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
-
-                    Text(
-                        buildAnnotatedString {
-                            append("Código de la anilla")
-                            withStyle(style = SpanStyle(color = Color.Red)) {
-                                append(" *")
-                            }
-                        },
-                        color = Color(0xFF5A7391),
-                        fontSize = 20.sp
-                    )
-                    TextField(
-                        value = codigoAnilla.value,
-                        onValueChange = { codigoAnilla.value = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(8.dp),
-                        placeholder = { Text("Código de la anilla...", color = Color.Gray) }
-                    )
-
-                    especie.value = Desplegable(avistamientoViewModel)
 
                     Text(
                         buildAnnotatedString {
@@ -280,10 +256,8 @@ fun NuevoAnillamiento(
                             //Recorre la lista de los campos comprobando que no hay ninguno vacío
                             //Si algún campo está vacío muestra la advertencia
                             if (listOf(
-                                    especie,
                                     fecha,
-                                    lugar,
-                                    codigoAnilla
+                                    lugar
                                 ).any { it.value.isBlank() }
                             ) {
                                 Toast.makeText(
@@ -298,40 +272,33 @@ fun NuevoAnillamiento(
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
-                                var numEspecie = 0
-                                avistamientoViewModel.crearEspecie(
-                                    especie.value,
+                                avistamientoViewModel.crearAvistamiento(
+                                    Avistamiento(
+                                        0,
+                                        avistamientoViewModel.anillaSeleccionada.value!!.codigoAnillamiento,
+                                        fecha.value,
+                                        lugar.value,
+                                        edad.value,
+                                        sexo.value,
+                                        peso.value,
+                                        longitud_ala.value,
+                                        observaciones.value,
+                                        avistamientoViewModel.anillaSeleccionada.value!!.userId
+                                    ),
                                     skybirdDAO
-                                ) { id ->
-                                    numEspecie = id
-                                    avistamientoViewModel.comprobarAnillamiento(
-                                        Anillamiento(
-                                            codigoAnillamiento = codigoAnilla.value,
-                                            numEspecie,
-                                            fecha = fecha.value,
-                                            lugar = lugar.value,
-                                            edad = edad.value,
-                                            sexo = sexo.value,
-                                            peso = peso.value,
-                                            ala = longitud_ala.value,
-                                            observaciones = observaciones.value,
-                                            userId = sesionViewModel.usuarioActual.value!!.id
-                                        ),
-                                        skybirdDAO
-                                    ) { yaExiste ->
-                                        if (yaExiste) {
-                                            Toast.makeText(
-                                                context,
-                                                "Esta anilla ya ha sido asignada",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        } else {
-                                            Toast.makeText(
-                                                context,
-                                                "Anillamiento registrado correctamente",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
+                                ) { creado ->
+                                    if (creado) {
+                                        Toast.makeText(
+                                            context,
+                                            "Avistamiento registrado correctamente",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } else {
+                                        Toast.makeText(
+                                            context,
+                                            "Error al registrar avistamiento",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
                                 }
                                 volver()
@@ -354,67 +321,7 @@ fun NuevoAnillamiento(
     }
 }
 
-@Composable
-fun Desplegable(avistamientoViewModel: AvistamientoViewModel): String {
-    val especie = remember { mutableStateOf("") }
-    val expanded = remember { mutableStateOf(false) }
-    val especiesSugeridas = avistamientoViewModel.especies.value
-    val especieInput = especie.value
 
-    Text(
-        buildAnnotatedString {
-            append("Especie")
-            withStyle(style = SpanStyle(color = Color.Red)) {
-                append(" *")
-            }
-        },
-        color = Color(0xFF5A7391),
-        fontSize = 20.sp
-    )
-
-    Column {
-        TextField(
-            value = especieInput,
-            onValueChange = {
-                especie.value = it
-                if (it.isNotEmpty()) {
-                    avistamientoViewModel.buscarEspecies(it)
-                    expanded.value = true
-                } else {
-                    expanded.value = false
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
-            placeholder = { Text("Nombre de la especie...", color = Color.Gray) }
-        )
-
-        if (expanded.value && especiesSugeridas.isNotEmpty()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White)
-                    .shadow(2.dp, shape = RoundedCornerShape(4.dp))
-            ) {
-                especiesSugeridas.take(5).forEach { sugerencia ->
-                    Text(
-                        text = sugerencia,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp)
-                            .background(Color(0xFFF5F5F5))
-                            .clickable {
-                                especie.value = sugerencia
-                                expanded.value = false
-                            }
-                    )
-                }
-            }
-        }
-    }
-    return especie.value
-}
 
 
 

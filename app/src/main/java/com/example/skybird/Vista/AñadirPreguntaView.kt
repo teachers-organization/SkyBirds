@@ -1,4 +1,4 @@
-package com.example.skybird.View
+package com.example.skybird.Vista
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -6,8 +6,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -17,7 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -29,30 +30,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.skybird.Controlador.ViewModels.ForoViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 
 @Composable
-fun CambioContraseña(
+fun AñadirPregunta(
     skybirdDAO: SkybirdDAO,
     sesionViewModel: SesionViewModel,
+    foroViewModel: ForoViewModel,
     volver: () -> Unit
 ) {
 
-    val contrasenyaActual = remember { mutableStateOf("") }
-    val nuevaContrasenya = remember { mutableStateOf("") }
-    val repetirContrasenya = remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
+    val titulo = remember { mutableStateOf("") }
+    val contenido = remember { mutableStateOf("") }
     val context = LocalContext.current
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF5F5F5))
-    )
-    {
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -78,20 +80,14 @@ fun CambioContraseña(
                 )
             }
 
-            Text(
-                text = "Configuración",
-                fontSize = 35.sp,
-                color = Color(0xFF1A2C47),
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(vertical = 16.dp)
-            )
+            Spacer(modifier = Modifier.height(40.dp))
 
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 50.dp)
+                    .padding(bottom = 20.dp)
                     .shadow(8.dp, RoundedCornerShape(16.dp))
+                    .verticalScroll(scrollState)
                     .background(
                         color = Color(0xFFF0F8FF),
                         shape = RoundedCornerShape(16.dp)
@@ -101,132 +97,69 @@ fun CambioContraseña(
                     modifier = Modifier
                         .align(Alignment.Center)
                         .fillMaxSize()
-                        .padding(20.dp)
-                        .verticalScroll(scrollState),
+                        .padding(20.dp),
                     verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
-
-                    HorizontalDivider(
-                        modifier = Modifier.padding(vertical = 16.dp),
-                        thickness = 1.dp,
-                        color = Color.LightGray
-                    )
-
                     Text(
-                        text = "Cambiar contraseña",
-                        fontSize = 20.sp,
+                        text = "Nueva pregunta",
                         color = Color(0xFF5A7391),
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(bottom = 8.dp)
-                    )
-
-                    HorizontalDivider(
-                        modifier = Modifier.padding(bottom = 16.dp),
-                        thickness = 1.dp,
-                        color = Color.LightGray
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold
                     )
 
                     Text(
-                        text = "Contraseña actual",
+                        text = "Título",
                         color = Color(0xFF5A7391),
                         fontSize = 20.sp
                     )
 
                     TextField(
-                        value = contrasenyaActual.value,
-                        onValueChange = { contrasenyaActual.value = it },
+                        value = titulo.value,
+                        onValueChange = { titulo.value = it },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
-                        placeholder = {
-                            Text(
-                                "Introduce tu contraseña actual...",
-                                color = Color.Gray
-                            )
-                        }
+                        placeholder = { Text("Introduce un título...", color = Color.Gray) }
                     )
 
                     Text(
-                        text = "Nueva contraseña",
+                        text = "Contenido",
                         color = Color(0xFF5A7391),
                         fontSize = 20.sp
                     )
 
                     TextField(
-                        value = nuevaContrasenya.value,
-                        onValueChange = { nuevaContrasenya.value = it },
+                        value = contenido.value,
+                        onValueChange = { contenido.value = it },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
-                        placeholder = {
-                            Text(
-                                "Introduce tu nueva contraseña...",
-                                color = Color.Gray
-                            )
-                        }
-                    )
-
-                    Text(
-                        text = "Repetir nueva contraseña",
-                        color = Color(0xFF5A7391),
-                        fontSize = 20.sp
-                    )
-
-                    TextField(
-                        value = repetirContrasenya.value,
-                        onValueChange = { repetirContrasenya.value = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(8.dp),
-                        placeholder = { Text("Repite tu nueva contraseña...", color = Color.Gray) }
+                        placeholder = { Text("Describe tu duda...", color = Color.Gray) }
                     )
 
                     Button(
                         onClick = {
-                            if (listOf(
-                                    contrasenyaActual,
-                                    nuevaContrasenya,
-                                    repetirContrasenya
-                                ).any { it.value.isBlank() }
-                            ) {
+                            if (listOf(titulo, contenido).any { it.value.isBlank() }) {
                                 Toast.makeText(
                                     context,
                                     "Por favor, rellene todos los campos",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                            } else if (nuevaContrasenya.value != repetirContrasenya.value) {
-                                Toast.makeText(
-                                    context,
-                                    "No coinciden los campos de la nueva contraseña",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else if (nuevaContrasenya.value.length < 5) {
-                                Toast.makeText(
-                                    context,
-                                    "Debe contener al menos 5 caracteres",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else if (!sesionViewModel.validarContrasenya(nuevaContrasenya.value)) {
-                                Toast.makeText(
-                                    context,
-                                    "Debe contener al menos 1 mayúscula y 1 carácter especial !@#$%^&*()",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                             } else {
-                                sesionViewModel.cambiarContrasenya(
+                                foroViewModel.crearPregunta(
                                     skybirdDAO,
-                                    nuevaContrasenya.value,
-                                    contrasenyaActual.value
-                                )
-                                { actualizado ->
-                                    if (actualizado) {
+                                    titulo.value,
+                                    contenido.value,
+                                    sesionViewModel.usuarioActual.value!!
+                                ) { correcto ->
+                                    if (correcto) {
                                         Toast.makeText(
                                             context,
-                                            "Contraseña actualizada correctamente",
+                                            "Pregunta añadida correctamente al foro",
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     } else {
                                         Toast.makeText(
                                             context,
-                                            "ERROR. La contraseña introducida no coincide con la actual",
+                                            "Error al añadir la pregunta al foro",
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     }
@@ -241,12 +174,17 @@ fun CambioContraseña(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            "Cambiar contraseña",
+                            "Añadir pregunta",
                             fontSize = 20.sp
                         )
                     }
+
                 }
             }
+
         }
+
+
     }
+
 }

@@ -12,26 +12,26 @@ import com.example.skybird.Controlador.ViewModels.ForoViewModel
 import com.example.skybird.Controlador.ViewModels.RegistroViewModel
 import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
-import com.example.skybird.View.AdminUsuarios
-import com.example.skybird.View.AñadirPregunta
-import com.example.skybird.View.BorrarCuenta
-import com.example.skybird.View.CambioContraseña
-import com.example.skybird.View.CambioNick
-import com.example.skybird.View.CambioNombre
-import com.example.skybird.View.Configuracion
-import com.example.skybird.View.DetallesAve
-import com.example.skybird.View.DetallesAvistamiento
-import com.example.skybird.View.Diccionario
-import com.example.skybird.View.Foro
-import com.example.skybird.View.Home
-import com.example.skybird.View.InicioSesion
-import com.example.skybird.View.ListaAnillamiento
-import com.example.skybird.View.ListaAvistamientos
-import com.example.skybird.View.MostrarPregunta
-import com.example.skybird.View.NuevoAnillamiento
-import com.example.skybird.View.NuevoAvistamiento
-import com.example.skybird.View.Registro
-import com.example.skybird.View.ResponderPregunta
+import com.example.skybird.Vista.AdminUsuarios
+import com.example.skybird.Vista.AñadirPregunta
+import com.example.skybird.Vista.BorrarCuenta
+import com.example.skybird.Vista.CambioContraseña
+import com.example.skybird.Vista.CambioNick
+import com.example.skybird.Vista.CambioNombre
+import com.example.skybird.Vista.Configuracion
+import com.example.skybird.Vista.DetallesAve
+import com.example.skybird.Vista.DetallesAvistamiento
+import com.example.skybird.Vista.Diccionario
+import com.example.skybird.Vista.Foro
+import com.example.skybird.Vista.Home
+import com.example.skybird.Vista.InicioSesion
+import com.example.skybird.Vista.ListaAnillamiento
+import com.example.skybird.Vista.ListaAvistamientos
+import com.example.skybird.Vista.MostrarPregunta
+import com.example.skybird.Vista.NuevoAnillamiento
+import com.example.skybird.Vista.NuevoAvistamiento
+import com.example.skybird.Vista.Registro
+import com.example.skybird.Vista.ResponderPregunta
 
 
 @Composable

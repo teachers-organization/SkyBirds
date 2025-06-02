@@ -1,4 +1,4 @@
-package com.example.skybird.View
+package com.example.skybird.Vista
 
 import android.widget.Toast
 import androidx.compose.foundation.background

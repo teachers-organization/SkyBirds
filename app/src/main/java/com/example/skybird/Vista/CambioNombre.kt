@@ -1,11 +1,11 @@
-package com.example.skybird.View
+package com.example.skybird.Vista
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,6 +20,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,15 +35,15 @@ import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 
 @Composable
-fun BorrarCuenta(
+fun CambioNombre(
     skybirdDAO: SkybirdDAO,
     sesionViewModel: SesionViewModel,
-    volver: () -> Unit,
-    inicio: () -> Unit
+    volver: () -> Unit
 ) {
 
-    val comprobarBorrar = remember { mutableStateOf(false) }
+    val nuevoNombre = remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier
@@ -110,7 +111,7 @@ fun BorrarCuenta(
                     )
 
                     Text(
-                        text = "Borrar cuenta",
+                        text = "Cambiar nombre",
                         fontSize = 20.sp,
                         color = Color(0xFF5A7391),
                         modifier = Modifier
@@ -124,70 +125,57 @@ fun BorrarCuenta(
                         color = Color.LightGray
                     )
 
-                    if (!comprobarBorrar.value) {
-                        Button(
-                            onClick = {
-                                comprobarBorrar.value = true
-                            },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFFF44336),
-                                contentColor = Color.White
-                            ),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text(
-                                "Borrar cuenta",
-                                fontSize = 20.sp
-                            )
-                        }
-                    } else {
-                        Text(
-                            text = "Al borrar la cuenta perderás tus datos para siempre ¿Estás seguro/a de querer borrarla?",
-                            fontSize = 20.sp,
-                            color = Color(0xFF5A7391),
-                            modifier = Modifier
-                                .align(Alignment.CenterHorizontally)
-                                .padding(bottom = 8.dp)
-                        )
-                        Row(Modifier.fillMaxWidth()) {
-                            Button(
-                                onClick = {
-                                    sesionViewModel.usuarioActual.value?.let {
-                                        sesionViewModel.borrarUsuario(skybirdDAO, it)
+                    Text(
+                        text = "Nuevo nombre",
+                        color = Color(0xFF5A7391),
+                        fontSize = 20.sp
+                    )
+
+                    TextField(
+                        value = nuevoNombre.value,
+                        onValueChange = { nuevoNombre.value = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp),
+                        placeholder = { Text("Introduce tu nuevo nombre...", color = Color.Gray) }
+                    )
+
+                    Button(
+                        onClick = {
+                            if (listOf(
+                                    nuevoNombre
+                                ).any { it.value.isBlank() }
+                            ) {
+                                Toast.makeText(
+                                    context,
+                                    "Por favor, rellene todos los campos",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                sesionViewModel.cambiarNombre(skybirdDAO, nuevoNombre.value)
+                                { actualizado ->
+                                    if (actualizado) {
+                                        Toast.makeText(
+                                            context,
+                                            "Nombre actualizado correctamente",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } else {
+                                        Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
                                     }
-                                    inicio()
-                                },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFFF44336),
-                                    contentColor = Color.White
-                                ),
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(2.dp)
-                            ) {
-                                Text(
-                                    "Sí, borrar",
-                                    fontSize = 20.sp
-                                )
+                                }
+                                volver()
                             }
-                            Button(
-                                onClick = {
-                                    comprobarBorrar.value = false
-                                },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFFA3B18A),
-                                    contentColor = Color.White
-                                ),
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(2.dp)
-                            ) {
-                                Text(
-                                    "No",
-                                    fontSize = 20.sp
-                                )
-                            }
-                        }
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFA3B18A),
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            "Cambiar nombre",
+                            fontSize = 20.sp
+                        )
                     }
                 }
             }
