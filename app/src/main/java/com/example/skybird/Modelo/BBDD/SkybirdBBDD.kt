@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [Users::class, Questions::class, Answers::class, Anillamiento::class, Especie::class, Avistamiento::class],
-    version = 9,
+    version = 10,
     exportSchema = false
 )
 abstract class SkybirdBBDD : RoomDatabase() {

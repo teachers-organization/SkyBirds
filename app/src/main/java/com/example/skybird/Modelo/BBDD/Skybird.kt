@@ -107,6 +107,12 @@ data class Especie(
             parentColumns = ["codigoAnillamiento"],
             childColumns = ["codigoAnillamiento"],
             onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = Users::class,
+            parentColumns = ["id"],
+            childColumns = ["userId"],
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )
