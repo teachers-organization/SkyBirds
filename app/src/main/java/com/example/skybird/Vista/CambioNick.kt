@@ -126,6 +126,12 @@ fun CambioNick(
                     )
 
                     Text(
+                        text = "Nick actual: " + (sesionViewModel.usuarioActual.value?.nick ?: "Sin nick"),
+                        color = Color(0xFF5A7391),
+                        fontSize = 20.sp
+                    )
+
+                    Text(
                         text = "Nuevo nick",
                         color = Color(0xFF5A7391),
                         fontSize = 20.sp

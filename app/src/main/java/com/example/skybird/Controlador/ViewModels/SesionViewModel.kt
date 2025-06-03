@@ -170,7 +170,7 @@ class SesionViewModel : ViewModel() {
     fun filtrarNombre(lista: List<Users>, texto: String): List<Users> {
         val listaFiltrada = lista.filter { user ->
             val regex = Regex(".*${Regex.escape(texto)}.*", RegexOption.IGNORE_CASE)
-            regex.containsMatchIn(user.nombreCompleto)
+            regex.containsMatchIn(user.nick)
         }
         return listaFiltrada
     }

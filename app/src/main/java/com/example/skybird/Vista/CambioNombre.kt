@@ -126,6 +126,13 @@ fun CambioNombre(
                     )
 
                     Text(
+                        text = "Nombre actual: " + (sesionViewModel.usuarioActual.value?.nombreCompleto
+                            ?: "Sin nombre"),
+                        color = Color(0xFF5A7391),
+                        fontSize = 20.sp
+                    )
+
+                    Text(
                         text = "Nuevo nombre",
                         color = Color(0xFF5A7391),
                         fontSize = 20.sp

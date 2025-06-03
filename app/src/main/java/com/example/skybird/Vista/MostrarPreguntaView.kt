@@ -47,6 +47,10 @@ fun MostrarPregunta(
 
     val esAutor = foroViewModel.esAutorPregunta(sesionViewModel)
 
+    LaunchedEffect(Unit) {
+        foroViewModel.obtenerRespuestas(skybirdDAO)
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -129,8 +133,7 @@ fun MostrarDudaYRespuestas(
     val pregunta = foroViewModel.preguntaSeleccionada.value
     val creador = foroViewModel.obtenerCreador(skybirdDAO)
     //Obtenemos todas las respuestas almacenadas en la base de datos para esa pregunta
-    var listaRespuestas =
-        foroViewModel.obtenerRespuestas(skybirdDAO).collectAsState(initial = emptyList()).value
+   var listaRespuestas = foroViewModel.listaRespuestas.collectAsState().value
 
     Column(
         modifier = Modifier

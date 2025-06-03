@@ -107,14 +107,17 @@ class ForoViewModel : ViewModel() {
         }
     }
 
-    var listaRespuestas = MutableStateFlow<List<Answers>>(emptyList())
 
-    fun obtenerRespuestas(skybirdDAO: SkybirdDAO): StateFlow<List<Answers>> {
+    private val _listaRespuestas = MutableStateFlow<List<Answers>>(emptyList())
+    val listaRespuestas: StateFlow<List<Answers>> = _listaRespuestas
+
+    //Función para obtener todas las respuestas
+    fun obtenerRespuestas(skybirdDAO: SkybirdDAO) {
         viewModelScope.launch {
-            listaRespuestas.value =
-                skybirdDAO.getAnswerByIdQuestion(preguntaSeleccionada.value!!.id).first()
+            skybirdDAO.getAnswerByIdQuestion(preguntaSeleccionada.value!!.id).collect { respuesta ->
+                _listaRespuestas.value = respuesta
+            }
         }
-        return listaRespuestas
     }
 
     fun formatearTiempoTranscurrido(millis: Long): String {
