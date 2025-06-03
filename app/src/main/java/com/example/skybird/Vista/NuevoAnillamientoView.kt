@@ -20,10 +20,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -41,6 +46,7 @@ import com.example.skybird.Controlador.ViewModels.SesionViewModel
 import com.example.skybird.Modelo.BBDD.Anillamiento
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NuevoAnillamiento(
     skybirdDAO: SkybirdDAO,
@@ -184,47 +190,32 @@ fun NuevoAnillamiento(
                         fontSize = 20.sp
                     )
 
-                    Row {
-                        Button(
-                            onClick = { sexo.value = "F" },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFFA3B18A),
-                                contentColor = Color.White
-                            ),
-                            modifier = Modifier
-                                .weight(0.75f)
-                                .padding(2.dp)
-                        ) {
-                            Text("F")
-                        }
-                        Button(
-                            onClick = { sexo.value = "M" },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFFA3B18A),
-                                contentColor = Color.White
-                            ),
-                            modifier = Modifier
-                                .weight(0.75f)
-                                .padding(2.dp)
-                        ) {
-                            Text("M")
-                        }
-                        Button(
-                            onClick = { sexo.value = null },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFFA3B18A),
-                                contentColor = Color.White
-                            ),
-                            modifier = Modifier
-                                .weight(1.5f)
-                                .padding(2.dp)
-                        ) {
-                            Text("Indeterminado")
+                    val selectedIndex = remember { mutableIntStateOf(0) }
+                    val options = listOf("nulo", "M", "F")
+
+                    SingleChoiceSegmentedButtonRow {
+                        options.forEachIndexed { index, label ->
+                            SegmentedButton(
+                                shape = SegmentedButtonDefaults.itemShape(
+                                    index = index,
+                                    count = options.size
+                                ),
+                                onClick = { selectedIndex.intValue = index
+                                            sexo.value = label},
+                                selected = index == selectedIndex.intValue,
+                                colors = SegmentedButtonDefaults.colors(
+                                    activeContainerColor = Color(0xFFA3B18A),
+                                    activeContentColor = Color.White,
+                                    inactiveContainerColor = Color.LightGray,
+                                    inactiveContentColor = Color.DarkGray,
+                                ),
+                                label = { Text(label) },
+                            )
                         }
                     }
 
                     Text(
-                        text = "Edad",
+                        text = "Edad (años)",
                         color = Color(0xFF5A7391),
                         fontSize = 20.sp
                     )
@@ -237,7 +228,7 @@ fun NuevoAnillamiento(
                     )
 
                     Text(
-                        text = "Longitud del ala",
+                        text = "Longitud del ala (cm)",
                         color = Color(0xFF5A7391),
                         fontSize = 20.sp
                     )
@@ -250,7 +241,7 @@ fun NuevoAnillamiento(
                     )
 
                     Text(
-                        text = "Peso",
+                        text = "Peso (gramos)",
                         color = Color(0xFF5A7391),
                         fontSize = 20.sp
                     )
@@ -407,7 +398,9 @@ fun Desplegable(avistamientoViewModel: AvistamientoViewModel): String {
                             .clickable {
                                 especie.value = sugerencia
                                 expanded.value = false
-                            }
+                            },
+                        color = Color.Black
+
                     )
                 }
             }

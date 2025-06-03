@@ -20,10 +20,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -40,6 +45,7 @@ import com.example.skybird.Controlador.ViewModels.AvistamientoViewModel
 import com.example.skybird.Modelo.BBDD.Avistamiento
 import com.example.skybird.Modelo.BBDD.SkybirdDAO
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NuevoAvistamiento(
     skybirdDAO: SkybirdDAO,
@@ -160,42 +166,30 @@ fun NuevoAvistamiento(
                         fontSize = 20.sp
                     )
 
-                    Row {
-                        Button(
-                            onClick = { sexo.value = "F" },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFFA3B18A),
-                                contentColor = Color.White
-                            ),
-                            modifier = Modifier
-                                .weight(0.75f)
-                                .padding(2.dp)
-                        ) {
-                            Text("F")
-                        }
-                        Button(
-                            onClick = { sexo.value = "M" },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFFA3B18A),
-                                contentColor = Color.White
-                            ),
-                            modifier = Modifier
-                                .weight(0.75f)
-                                .padding(2.dp)
-                        ) {
-                            Text("M")
-                        }
-                        Button(
-                            onClick = { sexo.value = null },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFFA3B18A),
-                                contentColor = Color.White
-                            ),
-                            modifier = Modifier
-                                .weight(1.5f)
-                                .padding(2.dp)
-                        ) {
-                            Text("Indeterminado")
+                    val selectedIndex = remember { mutableIntStateOf(0) }
+                    val options = listOf("nulo", "M", "F")
+
+                    SingleChoiceSegmentedButtonRow {
+                        options.forEachIndexed { index, label ->
+                            SegmentedButton(
+                                shape = SegmentedButtonDefaults.itemShape(
+                                    index = index,
+                                    count = options.size
+                                ),
+                                onClick = { selectedIndex.intValue = index
+                                    sexo.value = label},
+                                selected = index == selectedIndex.intValue,
+                                colors = SegmentedButtonDefaults.colors(
+                                    activeContainerColor = Color(0xFFA3B18A),
+                                    activeContentColor = Color.White,
+                                    inactiveContainerColor = Color.LightGray,
+                                    inactiveContentColor = Color.DarkGray,
+                                ),
+                                label = { Text(
+                                    text = label,
+                                    fontSize = 20.sp
+                                ) },
+                            )
                         }
                     }
 
@@ -271,6 +265,12 @@ fun NuevoAvistamiento(
                                     "Formato o fecha incorrecto",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                            }else if (!avistamientoViewModel.comprobarFecha(fecha.value)) {
+                                    Toast.makeText(
+                                        context,
+                                        "La fecha del avistamiento no puede ser anterior a la fecha de anillamiento",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                             } else {
                                 avistamientoViewModel.crearAvistamiento(
                                     Avistamiento(

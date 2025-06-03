@@ -122,6 +122,24 @@ class AvistamientoViewModel : ViewModel() {
         }
     }
 
+    //Comprueba que la fecha del avistamiento es posterior a la fecha del anillamiento
+    fun comprobarFecha(fecha: String): Boolean {
+        val formato = "dd/MM/yyyy"
+        val fechaAnillamientoStr = anillaSeleccionada.value?.fecha ?: return false
+
+        return try {
+            val formatoFecha = SimpleDateFormat(formato, Locale.getDefault())
+            formatoFecha.isLenient = false
+
+            val fechaIngresada = formatoFecha.parse(fecha)
+            val fechaAnillamiento = formatoFecha.parse(fechaAnillamientoStr)
+
+            fechaIngresada != null && fechaIngresada.after(fechaAnillamiento)
+        } catch (e: Exception) {
+            false
+        }
+    }
+
     fun crearAvistamiento(
         avistamiento: Avistamiento,
         skybirdDAO: SkybirdDAO,

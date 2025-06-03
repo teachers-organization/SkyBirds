@@ -115,12 +115,12 @@ fun Home(
             }
         }
 
-        // Footer fijo
+        //Footer fijo
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color(0xFFA3B18A))
-                .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 20.dp)
+                .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 40.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -136,7 +136,6 @@ fun Home(
                         .clip(RoundedCornerShape(12.dp))
                 )
 
-                // Nickname con elipsis si es demasiado largo
                 Text(
                     text = sesionViewModel.usuarioActual.value?.nick ?: "Sin nombre",
                     fontSize = 20.sp,
@@ -151,7 +150,7 @@ fun Home(
                     contentDescription = "Configuración",
                     tint = Color.White,
                     modifier = Modifier
-                        .size(32.dp)
+                        .size(40.dp)
                         .clickable { config() }
                 )
             }
