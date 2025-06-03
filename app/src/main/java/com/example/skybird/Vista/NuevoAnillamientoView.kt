@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -201,7 +200,7 @@ fun NuevoAnillamiento(
                                     count = options.size
                                 ),
                                 onClick = { selectedIndex.intValue = index
-                                            sexo.value = label},
+                                    sexo.value = label},
                                 selected = index == selectedIndex.intValue,
                                 colors = SegmentedButtonDefaults.colors(
                                     activeContainerColor = Color(0xFFA3B18A),
@@ -408,6 +407,4 @@ fun Desplegable(avistamientoViewModel: AvistamientoViewModel): String {
     }
     return especie.value
 }
-
-
 

@@ -65,20 +65,6 @@ class AvesViewModel : ViewModel() {
 
     private var cargando2 = false
 
-    //Función para filtrar por nombre del ave
-    fun filtrarNombre(texto: String): List<Bird> {
-        return try {
-            val regex = Regex(".*${Regex.escape(texto)}.*", RegexOption.IGNORE_CASE)
-            avesFiltradas.value.filter { pajaro ->
-                pajaro.preferred_common_name?.let { nombre ->
-                    regex.containsMatchIn(nombre)
-                } ?: false //si es null, lo excluye de la lista
-            }
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-
     fun obtenerTodas() {
         if (!cargando2) {
             cargando2 = true
@@ -86,7 +72,6 @@ class AvesViewModel : ViewModel() {
                 try {
                     val response = RetrofitClient.inatApi.getBirds()
                     _avesFiltradas.value += response.results
-                    pagina++
                 } catch (e: Exception) {
                     e.printStackTrace()
                 } finally {

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -54,8 +53,9 @@ fun Diccionario(volver: () -> Unit, navDetPajaro: () -> Unit, avesViewModel: Ave
     //Llamamos a obtenerAves solo una vez al entrar en la pantalla
     LaunchedEffect(Unit) {
         avesViewModel.obtenerAves()
+        if(avesViewModel.avesFiltradas.value.isEmpty()){
         avesViewModel.obtenerTodas()
-
+        }
     }
 
     Box(
