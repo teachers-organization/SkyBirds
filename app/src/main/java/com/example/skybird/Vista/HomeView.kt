@@ -120,7 +120,7 @@ fun Home(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color(0xFFA3B18A))
-                .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 40.dp)
+                .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 50.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),

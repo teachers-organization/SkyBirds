@@ -194,7 +194,7 @@ fun NuevoAvistamiento(
                     }
 
                     Text(
-                        text = "Edad",
+                        text = "Edad (años)",
                         color = Color(0xFF5A7391),
                         fontSize = 20.sp
                     )
@@ -207,7 +207,7 @@ fun NuevoAvistamiento(
                     )
 
                     Text(
-                        text = "Longitud del ala",
+                        text = "Longitud del ala (cm)",
                         color = Color(0xFF5A7391),
                         fontSize = 20.sp
                     )
@@ -220,7 +220,7 @@ fun NuevoAvistamiento(
                     )
 
                     Text(
-                        text = "Peso",
+                        text = "Peso (gramos)",
                         color = Color(0xFF5A7391),
                         fontSize = 20.sp
                     )
